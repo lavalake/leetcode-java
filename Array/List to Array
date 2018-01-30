@@ -1,0 +1,3 @@
+https://leetcode.com/problems/keyboard-row/description/
+1. can not use char array to init set because set only accept object not primitive
+2. ArrayList.toArray(T[])
