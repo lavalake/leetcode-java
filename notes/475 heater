@@ -1,2 +1,3 @@
 need to find the closest heater for every house.
 So use binnarySearch to find the closed heater index for every house, then calculate the distance and remember the max distance.
+Arrays.binnarySearch() return (-(insert index)-1)
