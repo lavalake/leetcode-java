@@ -1,0 +1,4 @@
+In java, problem with queue, as they are significant sourcese of garbage.
+1. object need to be allocated
+2. if linked list based, a node need to be allocated
+when on longer needed, all these object need to be re-claimed
