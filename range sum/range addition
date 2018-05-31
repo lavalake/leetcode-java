@@ -1,0 +1,3 @@
+https://leetcode.com/problems/range-addition/discuss/129511/Java-O(n+k)-time-O(1)-space-solution-explained
+the key point of this quetion is to add the starting index to inc and decrease the ending+1 index to inc. then sum all
+index
