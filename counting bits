@@ -1,0 +1,2 @@
+https://leetcode.com/problems/counting-bits/discuss/79539/Three-Line-Java-Solution
+An easy recurrence for this problem is f[i] = f[i / 2] + i % 2
