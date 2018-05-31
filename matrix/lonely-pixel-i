@@ -1,0 +1,5 @@
+https://leetcode.com/problems/lonely-pixel-i/discuss/100091/Java-O(mn)-time-O(m)-space.-28ms
+//check each row
+                //if each row has only one pixel, then check that column, 
+                //if both return true - yes lonely
+                //else no
