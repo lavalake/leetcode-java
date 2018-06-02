@@ -7,3 +7,10 @@ for loops, col=0,n-1
               find next 1 in this row
                 col2=col+1,n
                 find if col2,row and col2,row2 are 1
+Optimization:
+we can save one loop, using trick count*(count-1)/2
+calculate every two row together, if they have the same col as 1, count++
+row=0,n
+  row1=row+1,n
+    col=0,m
+      if(row,col && row1,col) count++
