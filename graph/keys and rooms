@@ -1,2 +1,3 @@
 https://leetcode.com/problems/keys-and-rooms/description/
-this is a graph question. Use bfs. Create a queue.
+this is a graph question. Use bfs. Create a queue and visit array. Remember to check whether it's visited. Otherwise there
+will be dead circle
