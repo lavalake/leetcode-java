@@ -1,0 +1,9 @@
+https://leetcode.com/problems/number-of-corner-rectangles/description/
+brutal force:
+for loops, col=0,n-1
+            row=0,m-1
+              find first 1
+              row2=row+1,n
+              find next 1 in this row
+                col2=col+1,n
+                find if col2,row and col2,row2 are 1
