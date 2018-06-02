@@ -1,0 +1,8 @@
+http://www.cnblogs.com/grandyang/p/7679036.html
+there are two method to solve this one:
+O(n) just OR every element, the remaining nmuber is the it.
+O(logn) use binnary search, for example
+1 2 2 3 3
+1 1 2 2 3
+for first one, the mid number is 2, compare with left and right side, we found the single element should be in left.
+for seconde one, the mid number is 2, compare with left and right, the single element should be in right
