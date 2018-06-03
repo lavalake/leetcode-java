@@ -1,0 +1,6 @@
+https://leetcode.com/problems/shortest-completing-word/description/
+https://leetcode.com/problems/shortest-completing-word/discuss/110152/Java-hashMap-solution-with-straightforward-logic
+The idea is to count the frequency of characters in the licensePlate, and then check the given words array to see if each character in the licensePlate exist in the word and the number of times they occur is equal to or greater than the frequency in the licensePlate.
+
+Time complexity: O(nlogn)
+Space complexity: O(n)
