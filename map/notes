@@ -1,0 +1,8 @@
+https://www.geeksforgeeks.org/iterate-map-java/
+we cannot iterate a Map directly using iterators, because Map are not Collection. 
+Iterating over Map.entrySet() using For-Each loop
+  for (Map.Entry<String,String> entry : gfg.entrySet())
+Iterating over keys or values using keySet() and values() methods
+  for (String name : gfg.keySet())
+Iterating using iterators over Map.Entry<K, V>
+  Iterator<Map.Entry<String, String>> itr = gfg.entrySet().iterator();
