@@ -1,0 +1,3 @@
+https://leetcode.com/problems/top-k-frequent-elements/description/
+priorityQueue 使用一个小堆，堆顶总是当前最小的。比较与当前堆顶，如果大于， 则移除堆顶，放入新数字。始终保持小堆中不超过K个元素
+最后按相反顺序移除堆
