@@ -1,0 +1,4 @@
+use stack. check cur node whehter have right node, if yes, push right node first, then push cur node. Then go down to left
+node until there is no left node.
+Then pop top node, if the stack top node now is the right node of the cur node, that means right node is not visited.
+Then pop the top node and push cur node. visit the right tree first.
