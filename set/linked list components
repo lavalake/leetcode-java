@@ -1,0 +1,2 @@
+https://leetcode.com/problems/linked-list-components/discuss/123918/Java-solution-using-hashset
+connected componts means all connected node, not only pair. for example: [1,2,3,4,5] [1,2,3,6], [1,2,3] is one connected componts.
