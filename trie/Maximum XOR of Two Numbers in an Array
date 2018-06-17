@@ -1,1 +1,4 @@
 
+/*bit manipulation
+     利用XOR特性， a^b=c, a^c=b.
+     利用mask， 从最高位到最低位取所有数的prefix，存入set。用预期的最大数ret^ set中的数，如果结果也在set中，则数组中的数可以通过XOR得到最大数。否则不能。*/
