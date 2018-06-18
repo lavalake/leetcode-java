@@ -1,0 +1,2 @@
+https://leetcode.com/problems/brick-wall/discuss/101728/I-DON'T-THINK-THERE-IS-A-BETTER-PERSON-THAN-ME-TO-ANSWER-THIS-QUESTION
+We want to cut from the edge of the most common location among all the levels, hence using a map to record the locations and their corresponding occurrence
