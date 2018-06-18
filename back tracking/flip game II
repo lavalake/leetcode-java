@@ -1,0 +1,5 @@
+https://leetcode.com/problems/flip-game-ii/description/
+遍历整个string，P1走的每一步，check p2是否可以赢。backtracking
+i: 0-n-2
+if([i]=='+' and [i+1]='+')
+  revert i and i+1. check p2 can win? if p2 can not win, check next possible move. If p2 can win,then return false;
