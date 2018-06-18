@@ -1,0 +1,2 @@
+https://github.com/lavalake/leetcode-java/tree/master/Array
+use map to store the add of A and B. then query the map when go through -1*(C+D)
