@@ -1,7 +1,19 @@
 1. Subsets
 https://leetcode.com/problems/subsets/description/
-from start to num
-    list.add(start)
+subSets, it's similar with combination, the order does not matter. the difference is every set is added to the final list.
+  not only length to target. So the implimentaion is slightly different with combination.
+  ret.add(subSet)
+  from start to num
+    subSet.add(start)
     helper(i+1)
-    list.remove(list.size()-1)
-2. 
+    subSet.remove(list.size()-1)
+2. Subsets II
+    this quetion may contains duplicated in nums. So two points:
+    1. need sort the nums first
+    2. need to skip duplicate nums when we go through
+        for (int i=pos; i<nums.length; i++) {
+            if (i > pos && nums[i]==nums[i-1]) continue;
+            subSet.add(nums[i]);
+            helper(nums, i+1, ret, subSet);
+            subSet.remove(subSet.size()-1);
+        }
