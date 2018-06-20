@@ -1,0 +1,24 @@
+http://www.cnblogs.com/grandyang/p/4315649.html
+然后我们来看看其他的解法，参考维基百科上关于格雷码的性质，有一条是说镜面排列的，
+n位元的格雷码可以从n-1位元的格雷码以上下镜射后加上新位元的方式快速的得到，如下图所示一般。
+
+
+
+有了这条性质，我们很容易的写出代码如下：
+public List<Integer> grayCode(int n) {
+        List<Integer> ret = new ArrayList<>();
+        if(n < 0) return ret;
+        
+        ret.add(0);
+        for(int i=1; i<=n; i++) {
+            int firstBit = 1 << (i-1);
+            int size = ret.size();
+            //*********镜射, so need loop from end to begining ***************
+            for(int j=size-1; j>=0; j--) {
+                ret.add(firstBit + ret.get(j));
+            }
+        }
+        
+        return ret;
+
+ 
