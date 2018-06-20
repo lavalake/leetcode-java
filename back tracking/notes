@@ -1,1 +1,8 @@
-一般DFS用于输出所有情况，然后如果是问能不能一般都用DFS+全局变量，DFS来更新全局变量。
+1. 一般DFS用于输出所有情况，然后如果是问能不能一般都用DFS+全局变量，DFS来更新全局变量。
+2. Permutaion vs combination
+  Permutaion, the order matters. So we need for loop for every iteration call to helper function.
+  the point is swap every node with cur node, and calculate the remaining permutaion without current node.
+  from start to num
+    swap(cur, i)
+    helper(start+1)
+    swap(cur, i)
