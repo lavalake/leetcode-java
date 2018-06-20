@@ -1,5 +1,5 @@
 1. 一般DFS用于输出所有情况，然后如果是问能不能一般都用DFS+全局变量，DFS来更新全局变量。
-2. Permutaion vs combination
+2. Permutaion vs combination vs subSets
   Permutaion, the order matters. So we need for loop from **start** for every iteration call to helper function.
   the point is swap every node with cur node, and calculate the remaining permutaion without current node.
   from start to num
@@ -15,3 +15,11 @@
     list.add(start)
     helper(i+1)
     list.remove(list.size()-1)
+    
+  subSets, it's similar with combination, the order does not matter. the difference is every set is added to the final list.
+  not only length to target. So the implimentaion is slightly different with combination.
+  ret.add(subSet)
+  from start to num
+    subSet.add(start)
+    helper(i+1)
+    subSet.remove(list.size()-1)
