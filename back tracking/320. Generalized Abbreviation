@@ -1,0 +1,46 @@
+https://leetcode.com/problems/generalized-abbreviation/description/
+https://segmentfault.com/a/1190000005762481
+对于要求输出所有情况的题目，要用dfs
+复杂度
+O(2^N) 时间 O(N) 空间
+
+思路
+是子集问题的一个变种，拿到例子一开始没明白，为什么没有"22","1111"，后来仔细一想，"22"就是"4"，"1111"也是"4"。
+思路如下：
+拿到一个String的word，从头到尾依次对于每一个char，可以选择缩写也可以不缩写：
+回溯方法的interface:
+
+void explore(int cur, //该处理哪个字符？进来的一刹那(或者说进来之前)，cur并没有被处理
+             StringBuilder sb, //进来的一刹那或者说进来之前(cur还未被考虑)的已有前缀
+             int count, //进来的一刹那或进来之前(cur还未被考虑)cur前面还未结束的缩写数
+             List<String> result, //存最后的结果
+             String word) //输入，不用解释
+注意
+对每个char，如果选择缩写它，不要立刻把他写成1append在stringbuilder里，因为万一后面的也选择缩写那么这两个字符就得缩写成"2"。所以一旦选择缩写一个字符，别把他变成数字，记下来，累积着，直到对于下一个字符我们选择不缩写(或到头了，即一直缩写到最后一个字符)，再把之前累计的缩写的个数append在stringbuilder里。
+
+代码
+public class Solution {
+    public List<String> generateAbbreviations(String word) {
+        List<String> result = new ArrayList<String>();
+        StringBuilder sb = new StringBuilder();
+        explore(0, sb, 0, result, word);
+        return result;
+    }
+    public void explore(int cur, StringBuilder sb, int count, List<String> result, String word) {
+        //到头了，返回条件
+        if (cur == word.length()) {
+            int i = sb.length();
+            if (count != 0) {
+                sb.append(count);
+            }
+            result.add(sb.toString());
+            sb.delete(i, sb.length());
+            return;
+        }
+        //abrv this char
+        explore(cur + 1, sb, count + 1, result, word);
+        
+        //keep this char
+        int i = sb.length();
+        if (count != 0) {
+            sb.append(
