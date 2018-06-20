@@ -1,0 +1,7 @@
+1. Generate Parentheses
+https://leetcode.com/problems/generate-parentheses/description/
+Use backtracking. Key notes is when generate right parenthese, we need to check if (right < left) because right can not 
+be more than left. left only need to check whether less then N.
+if (left < n) helper (n, left+1, right, ret, p+"(")
+if (right < left) helper(n, left, right+1, ret, p+")")
+
