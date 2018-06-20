@@ -1,4 +1,4 @@
-Letter Case Permutation
+1. Letter Case Permutation
 https://leetcode.com/problems/letter-case-permutation/description/
 When I saw a problem, my first step is to draw a figure. See the figure below:
 abc
@@ -14,3 +14,12 @@ main() -> helper(s, 0, ret)
               if (digit) helper(s, i+1, ret)
               toLowercase(s[i]) helper(s, i+1, ret)
               toUppercase(s[i]) helper(s, i+1, ret)
+              
+2. Palindrome Permutation
+https://leetcode.com/problems/palindrome-permutation/description/
+
+this one only need to return false or true does not need to return all the cases. So we can use hashtable.
+
+3. Palindrome Permutation II
+https://leetcode.com/problems/palindrome-permutation-ii/description/
+
