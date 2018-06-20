@@ -1,0 +1,3 @@
+Flip Game II
+first flip two ++. then check whehter p2 can  win.
+p2 = canWin();
