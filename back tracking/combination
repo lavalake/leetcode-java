@@ -1,2 +1,24 @@
-1. Combination Sum
+1. combination
+https://leetcode.com/problems/combinations/description/
+Combination, the order does not maters. So we need to loop from i not start for every helper call. This is the difference
+  with permutaions.
+  the therey is pick one from the num, then pick (k-1) from the remaining number. Because order does not matter. so we do not
+  need to start from start index, all the preceeding numbers has already been checked. So we only need to check from i+1 in
+  the remaining numbers.
+  from start to num
+    list.add(start)
+    helper(i+1)
+    list.remove(list.size()-1)
+2. Combination Sum
 https://leetcode.com/problems/combination-sum/description/
+for this question. It's a little different with combination. The number can be resued. So we need start from i untill the
+sum is equals the target. or large than target.
+from start to num
+    list.add(start)
+    helper(i+1)
+    list.remove(list.size()-1)
+    
+3. Combination Sum II
+https://leetcode.com/problems/combination-sum-ii/description/
+same as combination. but
+can not have duplicate combination. So need sort it first and compare cur with pre, if equal, then skip.
