@@ -22,3 +22,9 @@ from start to num
 https://leetcode.com/problems/combination-sum-ii/description/
 same as combination. but
 can not have duplicate combination. So need sort it first and compare cur with pre, if equal, then skip.
+for (int i=pos; i<nums.length; i++) {
+            if (i > pos && nums[i]==nums[i-1]) continue;
+            subSet.add(nums[i]);
+            helper(nums, i+1, ret, subSet);
+            subSet.remove(subSet.size()-1);
+        }
