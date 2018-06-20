@@ -1,0 +1,7 @@
+1. Subsets
+https://leetcode.com/problems/subsets/description/
+from start to num
+    list.add(start)
+    helper(i+1)
+    list.remove(list.size()-1)
+2. 
