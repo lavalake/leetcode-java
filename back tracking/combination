@@ -28,3 +28,30 @@ for (int i=pos; i<nums.length; i++) {
             helper(nums, i+1, ret, subSet);
             subSet.remove(subSet.size()-1);
         }
+        
+ 4. Factor Combinations
+ https://leetcode.com/problems/factor-combinations/description/
+ http://www.cnblogs.com/grandyang/p/5332722.html
+ 这道题给了我们一个正整数n，让我们写出所有的因子相乘的形式，而且规定了因子从小到大的顺序排列，
+ 那么对于这种需要列出所有的情况的题目，通常都是用回溯法来求解的，由于题目中说明了1和n本身不能算其因子，
+ 那么我们可以从2开始遍历到n，如果当前的数i可以被n整除，说明i是n的一个因子，我们将其存入一位数组out中，
+ 然后递归调用n/i，此时不从2开始遍历，而是从i遍历到n/i，停止的条件是当n等于1时, 且数组总元素大于1. 因为如果数组中只有一个元素，
+ 则是N本身，应该被排除。
+ public List<List<Integer>> getFactors(int n) {
+        List<List<Integer>> ret = new ArrayList<>();
+        helper(n, 2, ret, new ArrayList<>());
+        return ret;
+    }
+    private void helper(int n, int factor, List<List<Integer>> ret, List<Integer> factorSet) {
+    /********note, size should larger than 1 because n should not be included*********/
+        if (n == 1 && factorSet.size() > 1) {
+            ret.add(new ArrayList<>(factorSet));
+            return;
+        }
+        for (int i=factor; i<=n; i++) {
+            if (n % i != 0) continue;
+            factorSet.add(i);
+            helper(n/i, i, ret, factorSet);
+            factorSet.remove(factorSet.size()-1);
+        }
+    }
