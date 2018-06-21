@@ -28,3 +28,72 @@ public boolean exist(char[][] board, String word) {
         }
             return false;
     }
+2. word search II
+This one need to find all words in dictonary. So we should use trie. User the words to build the trie first.
+Then go through the board and search the trie for every char, if it exist and if match a whole word, add to result.
+1. should use set to filter duplicated
+ ['a', 'a'] ['a'] this will return two 'a' if we do not use set.
+ class Solution {
+    TrieNode root;
+    public List<String> findWords(char[][] board, String[] words) {
+        root = new TrieNode();
+        
+        boolean[][] visited = new boolean[board.length][board[0].length];
+        for (String word : words) {
+            TrieNode temp = root;
+            for (char c : word.toCharArray()) {
+                if (temp.children[c-'a'] == null) {
+                    temp.children[c-'a'] = new TrieNode();
+                }
+                temp = temp.children[c-'a'];
+            }
+            temp.setIsLeaf(true);
+            temp.setWord(word);
+        }
+        StringBuilder builder = new StringBuilder();
+        Set<String> ret = new HashSet<>();
+        for (int i=0; i<board.length; i++) {
+            for (int j=0; j<board[0].length; j++) {
+                search(board, i, j, visited, ret, root);
+            }
+        }
+        return new ArrayList<>(ret);
+    }
+    private void search(char[][] board, int i, int j, boolean[][] visited, Set<String> ret, TrieNode root) {
+        if (i < 0 || i>= board.length || j<0 || j>= board[0].length) return;
+        char c = board[i][j];
+        if (visited[i][j]) return;
+        if (root.children[c-'a'] != null) {
+            root = root.children[c-'a'];
+            if (root.getIsLeaf()) ret.add(root.getWord());
+            visited[i][j] = true;
+            search(board, i+1, j, visited, ret, root);
+            search(board, i-1, j, visited, ret, root);
+            search(board, i, j+1, visited, ret, root);
+            search(board, i, j-1, visited, ret, root);
+            visited[i][j] = false;
+        }
+    }
+    public static class TrieNode {
+        private TrieNode[] children;
+        private boolean isLeaf;
+        private String word;
+        public TrieNode() {
+            children = new TrieNode[26];
+            isLeaf = false;
+            word = null;
+        }
+        public void setWord(String word) {
+            this.word = word;
+        }
+        public String getWord() {
+            return word;
+        }
+        public void setIsLeaf(boolean isLeaf) {
+            this.isLeaf = isLeaf;
+            
+        }
+        public boolean getIsLeaf() {
+            return isLeaf;
+        }
+    }
