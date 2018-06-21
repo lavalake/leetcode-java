@@ -1,0 +1,90 @@
+https://leetcode.com/problems/word-squares/discuss/91333/Explained.-My-Java-solution-using-Trie-126ms-1616
+My first approach is brute-force, try every possible word sequences, and use the solution of Problem 422 (https://leetcode.com/problems/valid-word-square/) to check each sequence. This solution is straightforward, but too slow (TLE).
+
+A better approach is to check the validity of the word square while we build it.
+Example: ["area","lead","wall","lady","ball"]
+We know that the sequence contains 4 words because the length of each word is 4.
+Every word can be the first word of the sequence, let's take "wall" for example.
+Which word could be the second word? Must be a word start with "a" (therefore "area"), because it has to match the second letter of word "wall".
+Which word could be the third word? Must be a word start with "le" (therefore "lead"), because it has to match the third letter of word "wall" and the third letter of word "area".
+What about the last word? Must be a word start with "lad" (therefore "lady"). For the same reason above.
+
+The picture below shows how the prefix are matched while building the sequence.
+
+/**
+trie + backtracking
+build a prefix trie and record all the words for every prefix. So trie node need 
+an extra fied List<> prefix. Then can query the prefix list.
+loop from every word, and build the prefix from the word added. then qurey the trie
+for every word match this prefix, use backtracing to try every one.
+**/
+class Solution {
+    TrieNode root;
+    public static class TrieNode {
+        TrieNode[] children;
+        List<String> prefix;
+        public TrieNode() {
+            children = new TrieNode[26];
+            prefix = new ArrayList<>();
+        }
+        public List<String> getPrefixList() {
+            return prefix;
+        }
+        public void putPrefix(String w) {
+            prefix.add(w);
+        }
+    }
+    private List<String> findPrefixList(String prefix) {
+        List<String> words = new ArrayList<>();
+        TrieNode temp = root;
+        for (char c : prefix.toCharArray()) {
+            if (temp.children[c-'a'] == null) return words;
+            temp = temp.children[c-'a'];
+        }
+        return temp.getPrefixList();
+    }
+    public List<List<String>> wordSquares(String[] words) {
+        root = new TrieNode();
+        List<String> builder = new ArrayList<>();
+        List<List<String>> ret = new ArrayList<>();
+        
+
+        for (String w : words) {
+            TrieNode temp = root;
+            for (char c : w.toCharArray()) {
+                if (temp.children[c-'a'] == null) {
+                    temp.children[c-'a'] = new TrieNode();
+                }
+                temp = temp.children[c-'a'];
+                temp.putPrefix(w);
+                
+            }
+        }
+        
+        int len = words[0].length();
+        for (String w : words) {
+            builder.add(w);
+            search(builder, ret, len);
+            builder.remove(builder.size()-1);
+        }
+        return ret;
+    }
+    private void search(List<String> builder, List<List<String>> ret, int len) {
+        int index = builder.size();
+        if (index == len) {
+            ret.add(new ArrayList<>(builder));
+            return;
+        }
+        StringBuilder prefix = new StringBuilder();
+        for (String s : builder) {
+            prefix.append(s.charAt(index));
+        }
+        List<String> candidates = findPrefixList(prefix.toString());
+        for (String word : candidates) {
+            builder.add(word);
+            search(builder, ret, len);
+            builder.remove(builder.size()-1);
+        }
+        return;
+    }
+}
