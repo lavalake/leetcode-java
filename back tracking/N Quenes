@@ -1,0 +1,46 @@
+经典的N皇后问题，基本所有的算法书中都会包含的问题，经典解法为回溯递归，一层一层的向下扫描，需要用到一个pos数组，
+其中pos[i]表示第i行皇后的位置，初始化为-1，然后从第0开始递归，每一行都一次遍历各列，判断如果在该位置放置皇后会不会有冲突，
+以此类推，当到最后一行的皇后放好后，一种解法就生成了，将其存入结果res中，然后再还会继续完成搜索所有的情况
+每一层，遍历每一个col。检查是否合法。
+从row 0 到当前row，有没有占用col， 有没有对角线冲突
+0 - row
+col == pos[i]
+abs(col-pos[i]) == abs(row-i)
+class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        int[] pos = new int[n];
+        Arrays.fill(pos, -1);
+        List<List<String>> ret = new ArrayList<>();
+        solve(pos, 0, ret);
+        return ret;
+    }
+    private void solve(int[] pos, int row, List<List<String>> ret) {
+        int n = pos.length;
+        if (row == n) {
+            List<String> matrix = new ArrayList<>();
+            for (int i=0; i<n; i++) {
+                char[] newRow = new char[n];
+                for (int j=0; j<n; j++) {
+                    newRow[j] = '.';
+                }
+                newRow[pos[i]] = 'Q';
+                matrix.add(new String(newRow));
+            }
+            ret.add(matrix);
+        } else {
+            for (int col=0; col<n; col++) {
+                if (isValid(pos, row, col)) {
+                    pos[row] = col;
+                    solve(pos, row+1, ret);
+                    pos[row] = -1;
+                }
+            }
+        }
+    }
+    private boolean isValid(int[] pos, int row, int col) {
+        for (int i=0; i<row; i++) {
+            if (col == pos[i] || (Math.abs(col-pos[i]) == Math.abs(row-i))) return false;
+        }
+        return true;
+    }
+}
