@@ -1,11 +1,36 @@
-https://www.geeksforgeeks.org/iterate-map-java/
+1.https://www.geeksforgeeks.org/iterate-map-java/
 we cannot iterate a Map directly using iterators, because Map are not Collection. 
 Do you want to iterate the entries (key+value) or only keys or only values? 
 That's why you obtain the specific collection and obtain an iterator
 
-Iterating over Map.entrySet() using For-Each loop
+2.Iterating over Map.entrySet() using For-Each loop
   for (Map.Entry<String,String> entry : gfg.entrySet())
-Iterating over keys or values using keySet() and values() methods
+3.Iterating over keys or values using keySet() and values() methods
   for (String name : gfg.keySet())
-Iterating using iterators over Map.Entry<K, V>
+4.Iterating using iterators over Map.Entry<K, V>
   Iterator<Map.Entry<String, String>> itr = gfg.entrySet().iterator();
+5.总结下 hashmap, hashset, hashtable
+
+hashmap vs hashtable
+
+hashmap supports null key and value
+hashtable does not suppot null key or value
+
+hashmap is not sychronized, we should use CurrentHashMap if we want
+hashtable is synchronized
+
+hashset can also add null element
+hashset extends hashmap
+when hashset adds element:
+private final Object newObject = new Object();
+
+public boolean add(K k) {
+return map.put(k, newObject) == null ? false : true;
+}
+
+hashmap put null key into bucket 0
+
+作者：Richardo92
+链接：https://www.jianshu.com/p/87cdd98b933f
+來源：简书
+简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。
