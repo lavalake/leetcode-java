@@ -1,0 +1,48 @@
+https://leetcode.com/problems/house-robber/description/
+recursive is brutal force
+/*thisi is brutal force*/
+class Solution {
+    public int rob(int[] nums) {
+         return search(0, nums);
+    }
+    private int search(int i, int[] nums) {
+        if(i > nums.length-1) return 0;
+        return Math.max(search(i+2, nums)+nums[i], search(i+1, nums));
+    }
+}
+
+memorization is top to bottom. It cache the intermiddieat result and not calculate it again.
+this has the same time complexity with DP but space conplexsity is worse than DP.
+/*thisi is memorization*/
+class Solution {
+    public int rob(int[] nums) {
+        Map<Integer, Integer> mem = new HashMap<>();
+         return search(0, nums, mem);
+    }
+    private int search(int i, int[] nums, Map<Integer, Integer> mem) {
+        if(i > nums.length-1) return 0;
+        if (mem.containsKey(i)) {
+            return mem.get(i);
+        }
+        int wt = search(i+2, nums, mem)+nums[i];
+        int wto = search(i+1, nums, mem);
+        int value = Math.max(wt,wto);
+        mem.put(i, value);
+        return value;
+    }
+}
+
+DP use bottom up. So no need to store intermidiate result.
+class Solution {
+    public int rob(int[] nums) {
+        if (nums.length == 0) return 0;
+         int[] dp = new int[nums.length+1];
+        dp[0] = 0;
+        dp[1] = nums[0];
+        for (int i=2; i<=nums.length; i++) {
+            dp[i] = Math.max(dp[i-2]+nums[i-1], dp[i-1]);
+        }
+        return dp[nums.length];
+    }
+    
+}
