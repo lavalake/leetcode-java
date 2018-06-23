@@ -1,0 +1,31 @@
+1
+10
+11
+100
+101
+110
+111
+1000
+
+规律：
+
+count[]: bits count for num i
+count[2] = count[1] + 0;
+count[3] = count[1] + 1;
+count[4] = count[2] + 0;
+count[5] = count[2] + 1;
+count[6] = count[3] + 0;
+count[7] = count[3] + 1;
+count[8] = count[4] + 0;
+
+so count[i] = count[i>>2] + i&0x1;
+
+class Solution {
+    public int[] countBits(int num) {
+        int[] count = new int[num+1];
+        for (int i=1; i<=num; i++) {
+            count[i] = count[i>>1] + (i&1);
+        }
+        return count;
+    }
+}
