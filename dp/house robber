@@ -25,3 +25,25 @@ class Solution {
     }
     
 }
+
+
+2. paint fence
+
+brutal force first
+class Solution {
+    private static final int COLOR_COUNT = 3;
+    public int minCost(int[][] costs) {
+        if (costs.length == 0 || costs[0].length == 0) return 0;
+        int minxCost = 0;
+        int costWithColor1 = search(costs, 1, 0) + costs[0][0];
+        int costWithColor2 = search(costs, 1, 1) + costs[0][1];
+        int costWithColor3 = search(costs, 1, 2) + costs[0][2];
+        return Math.min(Math.min(costWithColor1,costWithColor2), costWithColor3);
+    }
+    private int search(int[][] costs, int house, int color) {
+        if (house > costs.length-1) return 0;
+        int costWithColor1 = search(costs, house+1, (color+1)%COLOR_COUNT) + costs[house][(color+1)%COLOR_COUNT];
+        int costWithColor2 = search(costs, house+1, (color+2)%COLOR_COUNT) + costs[house][(color+2)%COLOR_COUNT];
+        return Math.min(costWithColor1, costWithColor2);
+    }
+}
