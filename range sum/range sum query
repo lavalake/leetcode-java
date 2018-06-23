@@ -1,0 +1,5 @@
+1. range sum query immutable
+https://leetcode.com/problems/range-sum-query-immutable/description/
+for immutable, one time calculation is good enough.
+so use a array to store all the sum [0,i]
+then range sum [i,j] is sum[j]-sum[i]
