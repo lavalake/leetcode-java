@@ -3,3 +3,67 @@ https://leetcode.com/problems/range-sum-query-immutable/description/
 for immutable, one time calculation is good enough.
 so use a array to store all the sum [0,i]
 then range sum [i,j] is sum[j]-sum[i]
+
+2. range sum query mutable
+Range Sum Query - Mutable
+use segment tree
+/*note leftNode is left to mid, rightNode is mid+1 to right*/
+class NumArray {
+    private class Node{
+        public int left, right;
+        public Node leftNode, rightNode;
+        public int sum;
+        public Node(int left, int right) {
+            this.left = left;
+            this.right = right;
+        }
+    }
+    public Node root;
+    public NumArray(int[] nums) {
+        root = buildTree(nums, 0, nums.length-1);
+    }
+    
+    public void update(int i, int val) {
+        updateTree(root,i,val);
+    }
+    
+    public int sumRange(int i, int j) {
+        return calSum(root,i,j);
+    }
+    private Node buildTree(int[] nums, int left, int right) {
+        if (left > right) return null;
+        Node newNode = new Node(left, right);
+        if (left == right) {
+            newNode.sum = nums[left];
+            return newNode;
+        }
+        int mid = left + (right-left)/2;
+        
+        newNode.leftNode = buildTree(nums,left,mid);
+        newNode.rightNode = buildTree(nums,mid+1,right);
+        newNode.sum = newNode.leftNode.sum + newNode.rightNode.sum;
+        return newNode;
+    }
+    private void updateTree(Node root, int pos, int val) {
+        if (root.left == root.right) {
+            root.sum = val;
+            return;
+        }
+        if (pos <= (root.left+(root.right-root.left)/2)) {
+            updateTree(root.leftNode,pos,val);
+        } else {
+            updateTree(root.rightNode,pos,val);
+        }
+        root.sum = root.leftNode.sum + root.rightNode.sum;
+    }
+    private int calSum(Node root, int i ,int j) {
+        if (root.left == i && root.right == j) return root.sum;
+        
+        int mid = (root.left+(root.right-root.left)/2);
+        /*should be <= */
+        if (mid+1 <= i) return calSum(root.rightNode,i,j);
+        if (mid >= j) return calSum(root.leftNode,i,j);
+        return calSum(root.leftNode,i,mid) + calSum(root.rightNode,mid+1,j);
+    }
+}
+
