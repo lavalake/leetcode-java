@@ -1,0 +1,2 @@
+https://leetcode.com/problems/number-of-corner-rectangles/description/
+这种方法的原理是两行同时遍历，如果两行中相同列位置的值都为1，则计数器cnt自增1，那么最后就相当于有了(cnt - 1)个相邻的格子，问题就转化为了求cnt-1个相邻的格子能组成多少个矩形，就变成了初中数学问题了，共有cnt*(cnt-1)/2个
