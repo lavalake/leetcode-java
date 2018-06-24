@@ -1,0 +1,16 @@
+1. 01 背包
+暴力搜索
+对每一个背包，都有两种情况， 拿还是不拿。我们可以对每个背包分两种情况搜索。这样时间复杂度为2的N次方。
+f(index,s) 对每一个背包和总重量，会计算多次。
+通过memorization, 记住计算过的值，避免重复计算。
+private int search(int idx, int[] w, int[] v, int n, int s, int W, int[][] memo) { //
+if (idx >= n) { return 0;
+}
+if (memo[idx][s] != ‐1) {
+return memo[idx][s]; }
+//
+if (s + w[idx] > W) {
+return memo[idx][s] = search(idx + 1, w, v, n, s, W, memo);
+}
+// idx !
+return memo[idx][s] = Math.max(search(idx + 1, w, v, n, s + w[idx], W, memo) + v[id }
