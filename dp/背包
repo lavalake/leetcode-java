@@ -15,3 +15,19 @@ F[i,v] i个物品放入容量为v的背包的最大价值。
 F[i,v]有两种情况，放或者不放。不放i，则F[i,v] = F[i-1,v]. select i, F[i,v] = F[i-1,v-c[i]]+w[i]
 so
 F[i,v] = max{F[i-1,v], F[i-1,v-c[i]]+w[i]}
+
+F[0, 0..V] = 0
+for i = 1 to N
+  for v = 0 to C[i]
+    F[i,v] = F[i-1,v]
+  for v = C[i] to V
+    F[i,v] = max{F[i-1,v], F[i-1, v-C[i]]+W[i]}
+
+The time and space complexity is O(VN). We can optimize space complexity to O(V).
+Use one dimention array F[V], this equals F[i,V]. That means we only memorize the max value for current object.
+Because when we calculate i+1, we only need current value of i. F[i-1,V] and F[i-1,v-c[i]]. So no need to use two
+dimention array to recored all previous calculation. 
+F[0..V] = 0
+for i = 0 to N
+  for v = V to C[i]
+    F[v] = max{F[v], F[v-C[i]]+W[i]}
