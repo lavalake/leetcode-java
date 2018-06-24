@@ -31,3 +31,20 @@ Now making it a DP where dp[i] is the solution to sub-problem maxA(i)
         }
         return dp[n];
     }
+
+2. 2 key board
+class Solution {
+    public int minSteps(int n) {
+        int[] dp = new int[n+1];
+        for (int i=2; i<=n; i++) {
+            dp[i] = i;
+            for (int j=2; j<=i/2; j++) {
+                if (i%j == 0) {
+                    dp[i] = Math.min(dp[i], dp[j]+i/j);
+
+                }
+            }
+        }
+        return dp[n];
+    }
+}
