@@ -1,0 +1,17 @@
+1. 01背包
+N件物品放入容量V的背包，每种物品只有一件，没有重复。
+recursive, every object has two options, select or not. SO the time complexity is 2N.
+
+search(N,V,C[0],W[0],1)
+search(N,V,0,0,1)
+search() {
+  if (index >= N) || (w + w[index] > V) maxW = Math.max(maxW, w);
+  search(N,V,c+C[index], w+w[index],index+1)
+  search(N,V,c,w,index+1)
+  
+DP Solution
+如果只考虑第i个物品的策略，放或者不放，定义
+F[i,v] i个物品放入容量为v的背包的最大价值。
+F[i,v]有两种情况，放或者不放。不放i，则F[i,v] = F[i-1,v]. select i, F[i,v] = F[i-1,v-c[i]]+w[i]
+so
+F[i,v] = max{F[i-1,v], F[i-1,v-c[i]]+w[i]}
