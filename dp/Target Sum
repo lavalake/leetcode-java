@@ -1,0 +1,28 @@
+1. user brutal force recursive
+http://www.cnblogs.com/grandyang/p/6395843.html
+for every number, two cases:
+1. select -
+2. select +
+for every numver, recursively call the search to times
+class Solution {
+    private int count = 0;
+    public int findTargetSumWays(int[] nums, int S) {
+        search(nums, S, nums[0]*(-1), 1);
+        search(nums, S, nums[0], 1);
+        return count;
+    }
+    private void search(int[] nums, int target, int sum, int index) {
+        if (index == nums.length) {
+            if(target == sum)
+                count++;
+            return;
+        }
+        search(nums, target, sum+nums[index]*(-1), index+1);
+        search(nums, target, sum+nums[index], index+1);
+    }
+}
+
+from burtal force to dp
+https://leetcode.com/problems/target-sum/discuss/97369/evolve-from-brute-force-to-dp
+
+2. Partition Equal Subset Sum
