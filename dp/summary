@@ -1,0 +1,5 @@
+1. 01 backpack
+  F(v) = max{V[i], V[i-cost[i]]+W[i]}
+  
+2. gold miniral
+  F(V) = max{V[i], V[i-work[i]]+W[i]}
