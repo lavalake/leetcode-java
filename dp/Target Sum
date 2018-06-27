@@ -21,6 +21,30 @@ class Solution {
 }
 
 from burtal force to dp
+memrization solution. Use a ArrayLIst<Map<>>, for every index, we could calculate different target value and could
+calculate multi times. Map<Index,target> to memerizae the calculation
+class Solution {
+    
+    public int findTargetSumWays(int[] nums, int S) {
+        List<Map<Integer,Integer>> mem = new ArrayList<>();
+        for (int i=0; i<nums.length; i++) {
+            mem.add(new HashMap<Integer,Integer>());
+        }
+        return search(nums, S, 0, mem);
+    }
+    private int search(int[] nums, int target, int index, List<Map<Integer,Integer>> mem) {
+        if (index == nums.length) {
+            
+            return target == 0? 1:0;
+        }
+        if (mem.get(index) != null && mem.get(index).containsKey(target)) return mem.get(index).get(target);
+        int value = search(nums, target+nums[index], index+1, mem) + 
+                search(nums, target-nums[index], index+1, mem);
+        mem.get(index).put(target,value);
+        return value;
+    }
+}
+
 https://leetcode.com/problems/target-sum/discuss/97369/evolve-from-brute-force-to-dp
 
 2. Partition Equal Subset Sum
