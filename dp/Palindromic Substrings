@@ -7,3 +7,59 @@ i=0, n-1
   dp[i][i]=true;
   j=0;i
     dp[i][j]=true if (s.charAt(i)==s.charAt(j) && ((j==i+1)||(j==j+2)||(dp[j+1][i-1])
+ class Solution {
+    public String longestPalindrome(String s) {
+        boolean[][] dp = new boolean[s.length()][s.length()];
+        int maxLen = 1, start = 0;
+        for (int i=0; i<s.length(); i++) {
+            dp[i][i] = true;
+            for (int j=0; j<=i; j++) {
+                if (s.charAt(i)==s.charAt(j) && ((i-j<=2) || dp[j+1][i-1])){
+                    dp[j][i] = true;
+                    if ((i-j+1) > maxLen) {
+                        start = j;
+                        maxLen = i-j+1;
+                    }
+                }
+            }
+        }
+        return s.substring(start, start+maxLen);
+    }
+}
+
+2. Longest Palindromic Subsequence
+https://leetcode.com/problems/longest-palindromic-subsequence/description/
+这道题给了我们一个字符串，让我们求最大的回文子序列，子序列和子字符串不同，不需要连续。而关于回文串的题之前也做了不少，
+处理方法上就是老老实实的两两比较吧。像这种有关极值的问题，最应该优先考虑的就是贪婪算法和动态规划，这道题显然使用DP更加合适。
+我们建立一个二维的DP数组，其中dp[j][i]表示[j,i]区间内的字符串的最长回文子序列，那么对于递推公式我们分析一下，如果s[i]==s[j]，
+那么i和j就可以增加2个回文串的长度，我们知道中间dp[j + 1][i - 1]的值，那么其加上2就是dp[j][i]的值。如果s[i] != s[j]，
+那么我们可以去掉i或j其中的一个字符，然后比较两种情况下所剩的字符串谁dp值大，就赋给dp[j][i]，那么递推公式如下：
+
+              /  dp[j + 1][i - 1] + 2                       if (s[i] == s[j])
+
+dp[i][j] =
+
+              \  max(dp[j + 1][i], dp[j][i - 1])        if (s[i] != s[j])
+              
+我们计算dp[j][i]的时候要用的dp[j+1][i], 所以j应该从大往小遍历
+class Solution {
+    public int longestPalindromeSubseq(String s) {
+        int[][] dp = new int[s.length()][s.length()];
+        int max = 0;
+        
+        for (int i=0; i<s.length(); i++) {
+            dp[i][i] = 1;
+            for (int j=i-1; j>=0; j--) {
+                
+                if (s.charAt(i)==s.charAt(j)) {
+                    
+                        dp[j][i] = dp[j+1][i-1] + 2;
+                } else {
+                    dp[j][i] = Math.max(dp[j][i-1], dp[j+1][i]);
+                }
+                
+            }
+        }
+        return dp[0][s.length()-1];
+    }
+}
