@@ -1,0 +1,57 @@
+recursive
+we pick every number and calculate the count of combination of target-nums[i]
+public int combinationSum4(int[] nums, int target) {
+        int res = 0;
+        if (target == 0) {
+            return 1;
+        }
+        for (int i=0; i<nums.length; i++) {
+            if (nums[i] <= target) {
+                res += combinationSum4(nums, target-nums[i]);
+            }
+        }
+        return res;
+    }
+
+memorization method
+Map<Integer,Integer> mem = new HashMap<>();
+    public int combinationSum4(int[] nums, int target) {
+        int res = 0;
+        if (target == 0) {
+            return 1;
+        }
+        if (mem.containsKey(target)) {
+            return mem.get(target);
+        }
+        for (int i=0; i<nums.length; i++) {
+            if (nums[i] <= target) {
+                res += combinationSum4(nums, target-nums[i]);
+            }
+        }
+        mem.put(target, res);
+        return res;
+    }
+    
+DP solution
+class Solution {
+    public int combinationSum4(int[] nums, int target) {
+        int[] dp = new int[target+1];
+        dp[0] = 1;
+        for (int i=1; i<=target; i++) {
+        for (int j=0; j<nums.length; j++) {
+            
+            if (i >= nums[j]) {
+                dp[i] +=  dp[i-nums[j]];
+            }
+                
+            }
+        }
+        return dp[target];
+    }
+}
+
+http://www.cnblogs.com/grandyang/p/5705750.html
+而这道题的真正解法应该是用DP来做，解题思想有点像之前爬梯子的那道题Climbing Stairs，我们需要一个一维数组dp，
+其中dp[i]表示目标数为i的解的个数，然后我们从1遍历到target，对于每一个数i，遍历nums数组，如果i>=x, dp[i] += dp[i - x]。
+这个也很好理解，比如说对于[1,2,3] 4，这个例子，当我们在计算dp[3]的时候，3可以拆分为1+x，而x即为dp[2]，3也可以拆分为2+x，
+此时x为dp[1]，3同样可以拆为3+x，此时x为dp[0]，我们把所有的情况加起来就是组成3的所有情况了
