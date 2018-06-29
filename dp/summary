@@ -1,5 +1,14 @@
 1. 01 backpack
+  i = 0 to N
+  v = V to Cost[i]
   F(v) = max{V[i], V[i-cost[i]]+W[i]}
   
 2. gold miniral
-  F(V) = max{V[i], V[i-work[i]]+W[i]}
+  i = 0 to N
+  v = V to Cost[i]
+  F(v) = max{v[i], v[i-work[i]]+W[i]}
+  
+3. complete backpack
+  i = 0 to N
+  v = Cost[i] to V
+  F(v) = max{V[i], V[i-cost[i]]+W[i]}
