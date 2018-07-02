@@ -1,0 +1,61 @@
+1. brutal force, recursive
+from 1 to n, pick every number as root, then recursivly count the tree of the left and right nums.
+class Solution {
+    public int numTrees(int n) {
+        return countNum(1,n,n);
+    }
+    private int countNum(int start, int end, int num) {
+        if (start > end || start < 1 || end > num) return 0;
+        if (start==end) return 1;
+        int cnt = 0;
+        for (int i=start; i<=end; i++) {
+            int left = countNum(start, i-1, num);
+            int right = countNum(i+1, end, num);
+            if (left != 0 && right != 0) cnt += left*right;
+            else cnt += left + right;
+        }
+        return cnt;
+    }
+}
+
+2. memorization top down
+class Solution {
+    public int numTrees(int n) {
+        Map<pair,Integer> mem = new HashMap<>();
+        return countNum(1,n,n,mem);
+    }
+    private int countNum(int start, int end, int num, Map<pair,Integer> mem) {
+        if (start > end || start < 1 || end > num) return 0;
+        if (start==end) return 1;
+        pair newPair = new pair(start ,end);
+        if (mem.containsKey(newPair)) return mem.get(newPair);
+        int cnt = 0;
+        for (int i=start; i<=end; i++) {
+            int left = countNum(start, i-1, num, mem);
+            int right = countNum(i+1, end, num, mem);
+            if (left != 0 && right != 0) cnt += left*right;
+            else cnt += left + right;
+        }
+        mem.put(newPair, cnt);
+        return cnt;
+    }
+    public static class pair {
+        public int start, end;
+        public pair(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+        @Override
+        public boolean equals(Object comp) {
+            if (this == comp) return true;
+            if (comp == null) return false;
+            if (getClass() != comp.getClass()) return false;
+            pair p = (pair) comp;
+            return this.start==p.start && this.end==p.end;
+        }
+        @Override
+        public int hashCode() {
+            return start+end;
+        }
+    }
+}
