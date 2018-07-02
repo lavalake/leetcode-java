@@ -59,3 +59,5 @@ class Solution {
         }
     }
 }
+可以优化。因为start，end不重要，end-start是我们需要的。所以map可以定义为Map<Integer,Integer>
+if (mem.containsKey(end-start+1)) return mem.get(end-start+1);
