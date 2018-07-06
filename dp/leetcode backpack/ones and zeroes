@@ -1,0 +1,38 @@
+1. ones and zeroes
+https://leetcode.com/problems/ones-and-zeroes/discuss/95807/0-1-knapsack-detailed-explanation.
+This problem is a typical 0-1 knapsack problem, we need to pick several strings in provided strings to get the maximum number of strings using limited number 0 and 1. We can create a three dimensional array, in which dp[i][j][k] means the maximum number of strings we can get from the first i argument strs using limited j number of '0's and k number of '1's.
+
+For dp[i][j][k], we can get it by fetching the current string i or discarding the current string, which would result in dp[i][j][k] = dp[i-1][j-numOfZero(strs[i])][i-numOfOnes(strs[i])] and dp[i][j][k] = dp[i-1][j][k]; We only need to treat the larger one in it as the largest number for dp[i][j][k].
+
+
+class Solution {
+    public int findMaxForm(String[] strs, int m, int n) {
+        int[][][] dp = new int[strs.length+1][m+1][n+1];
+        for (int i=1; i<=strs.length; i++) {
+            int[] nums = calculate(strs[i-1]);
+            
+            for (int j=0; j<=m; j++) {
+                for (int k=0; k<=n; k++) {
+                    if (j>=nums[0] && k>=nums[1]) {
+                        dp[i][j][k] = Math.max(dp[i-1][j-nums[0]][k-nums[1]]+1, dp[i-1][j][k]);
+                    } else {
+                        dp[i][j][k] = dp[i-1][j][k];
+                    }
+                    
+                }
+            }
+        }
+        return dp[strs.length][m][n];
+    }
+    private int[] calculate(String s) {
+        int[] nums = new int[2];
+        for (char c : s.toCharArray()) {
+            if (c == '0') {
+                nums[0] += 1;
+            } else {
+                nums[1] += 1;
+            }
+        }
+        return nums;
+    }
+}
