@@ -1,0 +1,36 @@
+https://xingxingpark.com/Leetcode-808-Soup-Servings/
+
+初始状态下，A和B同时拥有N的汤。
+终结状态下，
+
+若A先被倒完，则A剩余的汤为0或负数。（因为在剩余汤不足时，可以倒比所需少的量）此时B剩余的汤应当大于0。
+若A和B同时倒完，则A和B的汤均为0或负数。
+若B先被倒完，则B剩余的汤为0或负数。此时A剩余的汤应当大于0。
+有了初始状态和终结状态，可以想到用递归的方法来求解。在结算时，因为同时倒完的概率只需计算一半。因此，判断其为A先倒完时，返回1，而同时倒完时返回0.5。
+又考虑到所有操作中汤的份量都是25的倍数，实际中间状态的可能最多为Ceil(N/25)^2。因此可以用动态规划来避免冗余计算。
+
+以上基本实现了本题的主体解法。然而这是一个两次方复杂度的解法，随着N的上升，需要指数的时间去计算。此时我们可以利用题目中提到的精度要
+求来做文章。让我们从概率的角度重新审题。四个操作对汤消耗的期望值为A = 62.5, B = 37.5。A的消耗速度远高于B。因此，当N变大时，
+A先倒完的概率趋向于1。我们尝试不断递增的N来运行程序后，可以发现当N>4800时，所得概率已经落在1 - 10^-6内。也就是说所有大于4800的输
+入，都可以直接输出1作为结果
+
+class Solution {
+    public double soupServings(int N) {
+        if (N > 5000) return 1.0;
+        int[][] serve = {{100,75,50,25}, {0,25,50,75}};
+        
+        return helper(N, N, new Double[N+1][N+1], serve);
+    }
+    private double helper(int aRemaining, int bRemaining, Double[][] mem, int[][] serve) {
+        if (aRemaining <= 0 && bRemaining <= 0) return 0.5;
+        if (aRemaining <= 0) return 1.0;
+        if (bRemaining <= 0) return 0.0;
+        if (mem[aRemaining][bRemaining] != null) return mem[aRemaining][bRemaining];
+        mem[aRemaining][bRemaining] = 0.0;
+        for (int i=0; i<serve[0].length; i++) {
+            mem[aRemaining][bRemaining] += helper(aRemaining-serve[0][i], bRemaining-serve[1][i], mem, serve);
+        }
+        mem[aRemaining][bRemaining] *= 0.25;
+        return mem[aRemaining][bRemaining];
+    }
+}
