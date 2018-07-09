@@ -1,5 +1,7 @@
 https://xingxingpark.com/Leetcode-808-Soup-Servings/
-
+/***************************
+use recursive and memorization
+***************************/
 初始状态下，A和B同时拥有N的汤。
 终结状态下，
 
