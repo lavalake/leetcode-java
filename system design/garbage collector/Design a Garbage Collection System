@@ -1,0 +1,57 @@
+http://blog.gainlo.co/index.php/2016/07/25/design-a-garbage-collection-system-part-i/
+Our system design interview series gets a lot of feedback in the past couple of months. I’m glad to know that our readers find it helpful.
+
+One advice I always give is that don’t take these articles as standard answers. System design interview questions are usually open-ended and it’s all about analysis and communication. Any point in the discussion can go deeper based on interviewers’ preferences.
+
+This week, the question is slightly different as it’s a little low-level but at the same times quite useful – garbage collection system. Not only is garbage collection system widely used in many modern programming languages, the same idea can adapt to other areas as well.
+
+
+ 
+
+What do you know about garbage collection?
+Many interviewers like to discuss language preference with candidates. Sometimes it’s like a warm-up discussion, but sometimes they’d like to go deeper. Inevitability, garbage collection will be included in the discussion for sure as it’s one of the most important concepts in almost all programming languages.
+
+As an interviewer, I’d like to start the discussion by asking “tell me about what you know about garbage collection”. This question can give me an idea of how familiar the candidate is with this topic.
+
+Remember that to perform well in this interview, you don’t necessarily need to know a lot about garbage collection as interviewers care about analysis rather than knowledge. On the flip side, knowing a lot about garbage collection doesn’t mean you can easily pass the interview.
+
+Back to the question, garbage collection is a system that automatically recycles unused memory in programming languages. A most popular example is Java. When writing Java, you don’t need to control how memory is allocated and recycled. Everything happens in the background.
+
+ 
+
+Pros & cons
+So why do we need garbage collection? Many people can easily tell the advantages of garbage collection, but get confused when asked about the disadvantages. Again, if you have a good grasp of how program works, you can easily come up with good answers by analyzing the problem and this is not something you need to remember as facts.
+
+The most obvious benefit of having garbage collection is that it makes programming much easier. Remember when we write C++, we need to be extremely careful about pointers and memory allocation. By handling all of these by the program itself, developers can focus more on the core logic.
+
+More specifically, garbage collection helps developers avoid several memory problems. First, it prevents accessing dangling pointers that point to an object that no longer exists. Secondly, it prevents freeing a region of memory that is already freed (double free). Last, it avoids memory leak, which means an unreachable region of memory that can never be freed. All of them are common pitfalls when developers try to manage memory manually.
+
+So what are the disadvantages? Apparently, there are many languages that don’t have built-in garbage collection like C++.
+
+The biggest disadvantage is that garbage collection consumes computing resources. Think about this, not only does garbage collection need to implement logics to recycle memory, it also consumes memory to store the status of objects. In some naive garbage collection implementation, the recycle process may even block the program potentially.
+
+Another way to think about this is that without garbage collection, the developer has the full control over how memory is used, which gives the program much more flexibility and much easier to optimize. That’s one of the reasons why C++ is more efficient. Of course, it’s also prone to error.
+
+ 
+
+Design a simple garbage collection system
+So how would you design a garbage collection system? Try to think about this problem by yourself. It’s even better if you have no prior knowledge. Instead of jumping to solutions, I’d like to tell you how to analyze this problem step by step.
+
+Since the essence of a garbage collection system is to recycle unused memory in the program, the key is to identify which piece of memory is unused. More specifically, we should search for variables that are no longer referenced.
+
+If you think about all the objects (variables) in a program, it’s like a directional graph that each object references other objects and at the same time is also referenced by some objects. As a result, unreachable objects, which are those without any reference, should be recycled. As you can see, the big problem has been simplified to a graph problem – find unreachable nodes in a graph.
+
+ 
+
+Naive mark-and-sweep
+In fact, the above solution is just the most naive approach, which is called mark-and-sweep. To begin with, the garbage collection system does a tree traversal following object references and mark all the visited objects. In the second phase, for all the unreachable objects, free their memory.
+
+But how does the system track those unreachable objects? One easy way is to keep a set of all the objects in the program. Whenever a new object is initialized, add it to the pool.
+
+ 
+
+Summary
+As you can see, the essence of the mark-and-sweep approach is no different from a simple graph traversal problem. That’s why I always emphasize on base data structures/algorithms, which are really the foundation of all technical interview questions.
+
+In the second post of garbage collection system, we will talk about problems of mark-and-sweep and compare with other implementations. We’ll also discuss garbage collection in modern languages as well.
+
