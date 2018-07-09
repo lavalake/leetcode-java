@@ -1,0 +1,33 @@
+http://www.cnblogs.com/grandyang/p/4743837.html
+这道题是之前那道Ugly Number 丑陋数的延伸，这里让我们找到第n个丑陋数，还好题目中给了很多提示，基本上相当于告诉我们解法了，根据提示中的信息，我们知道丑陋数序列可以拆分为下面3个子列表：
+
+(1) 1x2,  2x2, 2x2, 3x2, 3x2, 4x2, 5x2...
+(2) 1x3,  1x3, 2x3, 2x3, 2x3, 3x3, 3x3...
+(3) 1x5,  1x5, 1x5, 1x5, 2x5, 2x5, 2x5...
+仔细观察上述三个列表，我们可以发现每个子列表都是一个丑陋数分别乘以2,3,5，而要求的丑陋数就是从已经生成的序列中取出来的，我们每次都从三个列表中取出当前最小的那个加入序列
+
+We have an array k of first n ugly number. We only know, at the beginning, the first one, which is 1. Then
+
+k[1] = min( k[0]x2, k[0]x3, k[0]x5). The answer is k[0]x2. So we move 2's pointer to 1. Then we test:
+
+k[2] = min( k[1]x2, k[0]x3, k[0]x5). And so on. 
+／＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+Be careful about the cases such as 6, in which we need to forward both pointers of 2 and 3.
+＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+
+class Solution {
+    public int nthUglyNumber(int n) {
+        List<Integer> nums = new ArrayList<>();
+        nums.add(1);
+        int i2 = 0, i3 = 0, i5 = 0;
+        for (int i=1; i<n; i++) {
+            int m2 = nums.get(i2)*2, m3 = nums.get(i3)*3, m5 = nums.get(i5)*5;
+            int nextValue = Math.min(m2, Math.min(m3,m5));
+            if (nextValue == m2) i2++;
+            if (nextValue == m3) i3++;
+            if (nextValue == m5) i5++;
+            nums.add(nextValue);
+        }
+        return nums.get(nums.size()-1);
+    }
+}
