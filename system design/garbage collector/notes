@@ -1,0 +1,9 @@
+1. advantage
+  easy to use
+  no need to worry about memory manipuliation
+2. disadvantage
+  lose flexibility
+  effeciency
+3. design
+  the big problem has been simplified to a graph problem – find unreachable nodes in a graph
+  
