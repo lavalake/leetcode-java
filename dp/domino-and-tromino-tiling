@@ -1,0 +1,17 @@
+https://leetcode.com/problems/domino-and-tromino-tiling/discuss/116581/Detail-and-explanation-of-O(n)-solution-why-dpn2*dn-1+dpn-3
+dp[n]=dp[n-1]+dp[n-2]+ 2*(dp[n-3]+...+d[0])
+=dp[n-1]+dp[n-2]+dp[n-3]+dp[n-3]+2*(dp[n-4]+...+d[0])
+=dp[n-1]+dp[n-3]+(dp[n-2]+dp[n-3]+2*(dp[n-4]+...+d[0]))
+=dp[n-1]+dp[n-3]+dp[n-1]
+=2*dp[n-1]+dp[n-3]
+For this kind of dp, usually if you write out the recursive equation for both dp[n] and dp[n-1] then do some math trick will give what you need.
+.
+.
+For this problem:
+dp[n] = dp[n-1] + dp[n-2] + 2 * (dp[n-3] + ... + dp[0]) -- E1
+dp[n-1] = dp[n-2] + dp[n-3] + 2 * (dp[n-4] + ... + dp[0]) -- E2
+.
+.
+E1 - E2:
+dp[n] - dp[n-1] = dp[n-1] + dp[n-3]
+--> dp[n] = 2*dp[n-1] + dp[n-3]
