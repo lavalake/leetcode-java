@@ -1,0 +1,44 @@
+
+1. Continuous Subarray Sum
+https://leetcode.com/problems/continuous-subarray-sum/description/
+Given a list of non-negative numbers and a target integer k, write a function to check if the array has a continuous subarray of size at least 2 that sums up to the multiple of k, that is, sums up to n*k where n is also an integer.
+http://www.cnblogs.com/grandyang/p/6504158.html
+calculate sum array
+class Solution {
+    public boolean checkSubarraySum(int[] nums, int k) {
+        int[] sum = new int[nums.length+1];
+        for (int i=1; i<=nums.length; i++) {
+            sum[i] = sum[i-1] + nums[i-1];
+        }
+        for (int i=2; i<sum.length; i++) {
+            for (int j=0; j<i-1; j++) {
+                int sub = k==0?sum[i]-sum[j]:(sum[i]-sum[j])%k;
+                if (sub==0) return true;
+            }
+        }
+        return false;
+    }
+}
+下面这种方法用了些技巧，那就是，若数字a和b分别除以数字c，若得到的余数相同，那么(a-b)必定能够整除c。这里就不证明了，博主也不会证明。
+明白了这条定理，那么我们用一个集合set来保存所有出现过的余数，如果当前的累加和除以k得到的余数在set中已经存在了，那么说明之前必定有
+一段子数组和可以整除k。需要注意的是k为0的情况，由于无法取余，我们就把当前累加和放入set中。还有就是题目要求子数组至少需要两个数字，
+那么我们需要一个变量pre来记录之前的和，我们每次存入set中的是pre，而不是当前的累积和，
+需要注意，为了计算从nums［0］开始的sum， 需要加一个额外的（0，0）。 nums［0］对应i＝1
+class Solution {
+    public boolean checkSubarraySum(int[] nums, int k) {
+        int sum = 0;
+        Map<Integer,Integer> mem = new HashMap<>();
+        mem.put(0,0);
+        for (int i=0; i<nums.length; i++) {
+            sum += nums[i];
+            int t = k==0?sum:sum%k;
+            if (mem.containsKey(t)) {
+                int prev = mem.get(t);
+                if (i-prev + 1 > 1) return true;
+            } else {
+                mem.put(t,i+1);
+            }
+        }
+        return false;
+    }
+}
