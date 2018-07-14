@@ -1,0 +1,26 @@
+https://leetcode.com/problems/symmetric-tree/description/
+recursive is easy
+isSymetric(left.left, right.right)
+isSymetric(left.right, right.left)
+
+class Solution {
+    Pair<TreeNode,TreeNode> p;
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) return true;
+        Deque<TreeNode> nodeStack = new LinkedList<>();
+        nodeStack.push(root.right);
+        nodeStack.push(root.left);
+        while (!nodeStack.isEmpty()) {
+            TreeNode left = nodeStack.pop();
+            TreeNode right = nodeStack.pop();
+            if (left == null && right == null) continue;
+            if (left == null || right == null) return false;
+            if (left.val != right.val) return false;
+            nodeStack.push(left.left);
+            nodeStack.push(right.right);
+            nodeStack.push(left.right);
+            nodeStack.push(right.left);
+        }
+        return true;
+    }
+ }
