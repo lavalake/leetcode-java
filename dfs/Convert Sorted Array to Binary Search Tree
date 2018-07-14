@@ -1,1 +1,54 @@
 https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/discuss/35218/Java-Iterative-Solution
+use bfs.
+the recursive is
+cur.val = nums[mid]
+cur.left = helper(nums,l,mid-1);
+cur.right = helper(nums,mid+1,r);
+this is a preorder.
+
+class Solution {
+    public TreeNode sortedArrayToBST(int[] nums) {
+        int len = nums.length;
+        if (len == 0) return null;
+        Deque<Pair> indexStack = new LinkedList<>();
+        Deque<TreeNode> nodeStack = new LinkedList<>();
+        indexStack.push(new Pair(0,len-1));
+        TreeNode cur = new TreeNode(-1);
+        TreeNode root = cur;
+        nodeStack.push(cur);
+        while(!nodeStack.isEmpty()) {
+            cur = nodeStack.pop();
+            Pair range = indexStack.pop();
+            
+            int l = range.left(), r = range.right();
+            int mid = l+(r-l)/2;
+            cur.val = nums[mid];
+            if (l<mid) {
+                cur.left = new TreeNode(-1);
+                nodeStack.push(cur.left);
+                indexStack.push(new Pair(l,mid-1));
+            }
+            if (mid<r) {
+                cur.right = new TreeNode(-1);
+                nodeStack.push(cur.right);
+                indexStack.push(new Pair(mid+1,r));
+            }
+        }
+        return root;
+    }
+    
+    public static class Pair {
+        private int l, r;
+        public Pair(int l, int r) {
+            this.l = l;
+            this.r = r;
+        }
+        public int left() {
+            return l;
+        }
+        public int right() {
+            return r;
+        }
+    }
+    
+}
