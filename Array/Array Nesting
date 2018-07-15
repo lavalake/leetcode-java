@@ -1,0 +1,29 @@
+565. Array Nesting
+A zero-indexed array A of length N contains all integers from 0 to N-1. Find and return the longest length of set S, where S[i] = {A[i], A[A[i]], A[A[A[i]]], ... } subjected to the rule below.
+
+Suppose the first element in S starts with the selection of element A[i] of index = i, the next element in S should be A[A[i]], and then A[A[A[i]]]… By that analogy, we stop adding right before a duplicate element occurs in S.
+*************
+we should consider map because we stop when duplicate accur. And use dfs to follow the array until duplicate.
+we only need to check the element once. If it's already visited, we should skip
+*************
+class Solution {
+    public int arrayNesting(int[] nums) {
+        int maxLen = 0;
+        boolean[] visited = new boolean[nums.length];
+        Set<Integer> runner = new HashSet<>();
+
+        for (int i=0; i<nums.length; i++) {
+            if (visited[i]) continue;
+            runner.clear();
+            runner.add(nums[i]);
+            int j = nums[i];
+            while (!runner.contains(nums[j])) {
+                runner.add(nums[j]);
+                visited[j] = true;
+                j = nums[j];
+            }
+            maxLen = Math.max(maxLen, runner.size());
+        }
+        return maxLen;
+    }
+}
