@@ -55,3 +55,32 @@ for (int i=pos; i<nums.length; i++) {
             factorSet.remove(factorSet.size()-1);
         }
     }
+    
+    216. Combination Sum III
+    return condition:
+    1. target is 0
+    2. list size is k
+    Note the loop is from pos to 9;
+    
+    class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> ret = new ArrayList<List<Integer>>();
+        List<Integer> path = new ArrayList<>();
+        helper(k, n, 1, ret, path);
+        return ret;
+    }
+    private void helper(int k, int n, int pos, List<List<Integer>> ret, List<Integer> p) {
+        if (n < 0) return;
+        if (n == 0 && p.size() == k) {
+            List<Integer> newComb = new ArrayList<>();
+            newComb.addAll(p);
+            ret.add(newComb);
+            return;
+        }
+        for (int i=pos; i<=9; i++) {
+            p.add(i);
+            helper(k, n-i, i+1, ret, p);
+            p.remove(p.size()-1);
+        }
+    }
+}
