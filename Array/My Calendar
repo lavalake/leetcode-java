@@ -17,3 +17,52 @@ class MyCalendar {
         return true;
     }
 }
+
+Solution 2: Keep existing books sorted and only check 2 books start right before & after the new book starts
+Another way to check overlap of 2 intervals is a started with b, or, b started within a.
+
+Keep the intervals sorted,
+if the interval started right before the new interval contains the start, or
+if the interval started right after the new interval started within the new interval.
+
+   floor      ceiling
+... |----| ... |----| ...
+       |---------|
+      s         e
+if s < floor.end or e > ceiling.start, there is an overlap.
+
+Another way to think of it:
+If there is an interval start within the new book (must be the ceilingEntry) at all, or
+books: |----|   |--|
+            s |------| e
+
+books: |----|   |----|
+            s |----| e
+If the new book start within an interval (must be the floorEntry) at all
+books: |-------|   |--|
+       s |---| e
+
+books: |----|   |----|
+        s |----| e
+There is a overlap 
+class MyCalendar {
+    TreeSet<int[]> record;
+    public MyCalendar() {
+        record = new TreeSet<>(new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return a[0] - b[0];
+            }
+            
+        });
+    }
+    
+    public boolean book(int start, int end) {
+        int[] newBook = new int[]{start, end};
+        int[] floor = record.floor(newBook);
+        if (floor != null && floor[1] > start) return false;
+        int[] ceiling = record.ceiling(newBook);
+        if (ceiling != null && ceiling[0] < end) return false;
+        record.add(newBook);
+        return true;
+    }
+}
