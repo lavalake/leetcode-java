@@ -6,3 +6,24 @@ class Solution {
         return ret<0?-ret-1:ret;
     }
 }
+
+/***********************
+note, if there is no target, left is the next index for insersion
+***********************/
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+        int ret = -1;
+        int left = 0, right = nums.length-1;
+        while (left <= right) {
+            int mid = left + (right-left)/2;
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] > target) {
+                right = mid-1;
+            } else {
+                left = mid+1;
+            }
+        }
+        return left;
+    }
+}
