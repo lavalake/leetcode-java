@@ -1,0 +1,35 @@
+15. 3Sum
+still need to use two pointer. but we use the first one as a target.
+target = -nums[i]
+then check i+1 to length-1, whether there is sum to target.
+So if nums[i] > 0, that means all nums are larger than 0. so no need to continue;
+
+public class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        Set<List<Integer>> ret = new HashSet<>();
+        Arrays.sort(nums);
+        int target = 0, left = 0, right = 0;
+        for (int i=0; i<nums.length; i++) {
+            if (nums[i] > 0) break;
+            target = -nums[i];
+            left = i+1;
+            right = nums.length-1;
+            while (left < right) {
+                if (nums[left] + nums[right] == target) {
+                    List<Integer> newList = new ArrayList<>();
+                    newList.add(nums[i]);
+                    newList.add(nums[left]);
+                    newList.add(nums[right]);
+                    ret.add(newList);
+                    left++;
+                    right--;
+                } else if (nums[left] + nums[right] > target) {
+                    right--;
+                } else {
+                    left++;
+                }
+            }
+        }
+        return new ArrayList(ret);
+    }
+}
