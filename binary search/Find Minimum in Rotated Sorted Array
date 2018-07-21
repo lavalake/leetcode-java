@@ -1,0 +1,36 @@
+
+http://www.cnblogs.com/grandyang/p/4032934.html
+／＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+此题重点是判断单调区间。即
+nums[left] < nums[mid] 则左侧为单调区间。
+最小数一定出现在非单调区间内。
+移动left 和 right 坐标时，不需要加1. 因为mid有可能就是最小数。
+推出条件是left＋1 < right, 不是left < right.因为最后两个数可能左侧也可能右侧小。需要返回两者小的。
+3，1，2
+最后返回的坐标为0，1
+
+＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+
+首先要判断这个有序数组是否旋转了，通过比较第一个和最后一个数的大小，如果第一个数小，则没有旋转，直接返回这个数。如果第一个数大，
+就要进一步搜索。我们定义left和right两个指针分别指向开头和结尾，还要找到中间那个数，然后和left指的数比较，如果中间的数大，
+则继续二分查找右半段数组，反之查找左半段。终止条件是当左右两个指针相邻，返回小的那个
+class Solution {
+    public int findMin(int[] nums) {
+        if (nums.length == 0) return 0;
+        
+        int left = 0, right = nums.length-1;
+        while (left+1 < right) {
+            int mid = left + (right-left)/2;
+            //if (nums[mid] < nums[(mid-1+nums.length)/nums.length] && nums[mid] < nums[(mid+1)/nums.length]) return nums[mid];
+            if (nums[left] < nums[right]) {
+                return nums[left];
+            }
+            else if (nums[left] > nums[mid]) {
+                right = mid ;
+            } else {
+                left = mid;
+            }
+        }
+        return Math.min(nums[left],nums[right]);
+    }
+}
