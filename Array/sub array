@@ -64,3 +64,40 @@ class Solution {
         return false;
     }
 }
+
+
+713. Subarray Product Less Than K
+Your are given an array of positive integers nums.
+
+Count and print the number of (contiguous) subarrays where the product of all the elements in the subarray is less than k.
+
+Example 1:
+Input: nums = [10, 5, 2, 6], k = 100
+Output: 8
+Explanation: The 8 subarrays that have product less than 100 are: [10], [5], [2], [6], [10, 5], [5, 2], [2, 6], [5, 2, 6].
+Note that [10, 5, 2] is not included as the product of 100 is not strictly less than k.
+这一题因为nums[i]都是正整数，我们可以用two pointer来做。
+https://leetcode.com/problems/subarray-product-less-than-k/discuss/108861/JavaC++-Clean-Code-with-Explanation
+The idea is always keep an max-product-window less than K;
+Every time shift window by adding a new number on the right(j), if the product is greater than k, then try to reduce numbers on the left(i), until the subarray product fit less than k again, (subarray could be empty);
+Each step introduces x new subarrays, where x is the size of the current window (j + 1 - i);
+example:
+for window (5, 2), when 6 is introduced, it add 3 new subarray: (5, (2, (6)))
+class Solution {
+    public int numSubarrayProductLessThanK(int[] nums, int k) {
+        int prd = 1;
+        int right = 0, left = 0;
+        int ret = 0;
+        while (right < nums.length) {
+            prd *= nums[right];
+            while (prd >= k && left<=right) {
+                prd /= nums[left++];
+            }
+            /*Each step introduces x new subarrays, where x is the size of the current window (j + 1 - i)
+            */
+            ret += right - left + 1;
+            right++;
+        }
+        return ret;
+    }
+}
