@@ -1,3 +1,7 @@
+求subarry sum的问题，一般考虑用pre sum的方法
+即
+sum[i][j] = sum[0][j] - sum[0][i-1]
+
 560. Subarray Sum Equals K
 https://leetcode.com/problems/subarray-sum-equals-k/description/
 https://leetcode.com/problems/subarray-sum-equals-k/discuss/102106/Java-Solution-PreSum-+-HashMap
@@ -26,5 +30,37 @@ class Solution {
             mem.put(sum, mem.getOrDefault(sum, 0)+1);
         }
         return ret;
+    }
+}
+
+523. Continuous Subarray Sum
+Given a list of non-negative numbers and a target integer k, write a function to check if the array has a continuous subarray of size at least 2 that sums up to the multiple of k, that is, sums up to n*k where n is also an integer.
+
+Example 1:
+Input: [23, 2, 4, 6, 7],  k=6
+Output: True
+Explanation: Because [2, 4] is a continuous subarray of size 2 and sums up to 6.
+这道题目于上一道题目的不同是求K的倍数，所以我们要把余数放入map，不是sum
+
+class Solution {
+    public boolean checkSubarraySum(int[] nums, int k) {
+        int sum = 0;
+        Map<Integer,Integer> mem = new HashMap<>();
+        mem.put(0,0);
+        for (int i=0; i<nums.length; i++) {
+            sum += nums[i];
+            int t = k==0?sum:sum%k;
+            if (mem.containsKey(t)) {
+                int prev = mem.get(t);
+                if (i-prev + 1 > 1) return true;
+            } else {
+                /**************
+                here, we cache the remaining of sum, not sum
+                because only the remaining matters
+                **************/
+                mem.put(t,i+1);
+            }
+        }
+        return false;
     }
 }
