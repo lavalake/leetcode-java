@@ -1,0 +1,35 @@
+628. Maximum Product of Three Numbers
+/*
+https://leetcode.com/problems/maximum-product-of-three-numbers/discuss/128740/General-solution-for-any-K
+// if count is odd, we should take the rightmost number. Otherwise, we should take the maximum product by comparing
+        // the product of two leftmost elements and that of two rightmost elements.
+        对于任意K个数，需要考虑k是奇数，则pick最大的数，如果K是偶数，则比较最小的两个数乘积与最大的两个数乘积
+*/
+class Solution {
+    private static final int SEQUENCE_NUM = 3;
+    public int maximumProduct(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        Arrays.sort(nums);
+        int count = SEQUENCE_NUM;
+        int max = 1;
+        int left = 0, right = nums.length - 1;
+        while (count != 0) {
+            if (count % 2 == 1) {
+                max *= nums[right--];
+                count--;
+            } else {
+                int leftValue = nums[left]*nums[left+1];
+                int rightValue = nums[right]*nums[right-1];
+                if (leftValue > rightValue) {
+                    max *= leftValue;
+                    left += 2;
+                } else {
+                    max *= rightValue;
+                    right -= 2;
+                }
+                count -= 2;
+            }
+        }
+        return max;
+    }
+}
