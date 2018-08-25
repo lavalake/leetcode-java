@@ -1,0 +1,26 @@
+605. Can Place Flowers
+https://leetcode.com/problems/can-place-flowers/description/
+Suppose you have a long flowerbed in which some of the plots are planted and some are not. However, flowers cannot be planted in adjacent plots - they would compete for water and both would die.
+
+Given a flowerbed (represented as an array containing 0 and 1, where 0 means empty and 1 means not empty), and a number n, return if n new flowers can be planted in it without violating the no-adjacent-flowers rule.
+
+/*
+note, the condition for the loop should add n!=0
+if n reach 0 means we already placed all the flower and exit
+0,0,1,0,0
+for this sequnce, if not check n==0, n will became -1 and return false
+*/
+class Solution {
+    public boolean canPlaceFlowers(int[] flowerbed, int n) {
+        //check n is 0!!!!!!!!!!!!!!!!!
+        for (int i=0; i<flowerbed.length && n!=0; i++) {
+            if (flowerbed[i] != 1) {
+                if ((i==0 || (flowerbed[i-1]==0)) && ((i==(flowerbed.length-1)) || (flowerbed[i+1] == 0))) {
+                    flowerbed[i] = 1;
+                    n--;
+                }
+            }
+        }
+        return n==0?true:false;
+    }
+}
