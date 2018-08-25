@@ -1,0 +1,23 @@
+724. Find Pivot Index
+/* note this question can not use two pointer. Because the sequence is not sorted
+-1,-1,-1,-1,-1,0 this one can not use two pointer
+
+-1,-1,-1,1,1 for this one, the pivotal is 0
+we should calculate the sum, the compare the leftSum and sum-leftSum
+*/
+class Solution {
+    public int pivotIndex(int[] nums) {
+        if (nums.length < 3) return -1;
+        int sum = 0;
+        for (int n : nums) {
+            sum += n;
+        }
+        int leftSum = 0;
+        for (int i=0; i<nums.length; i++) {
+            if (leftSum == (sum - leftSum - nums[i])) return i;
+            leftSum += nums[i];
+
+        }
+        return -1;
+    }
+}
