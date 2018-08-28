@@ -1,0 +1,15 @@
+Move Zeroes
+move all non zero num forward and then fill all remaining 0
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int end=0;
+        for (int i:nums) {
+            if (i != 0) {
+                nums[end++] = i;
+            }
+        }
+        if (end < nums.length) {
+            Arrays.fill(nums,end,nums.length,0);
+        }
+    }
+}
