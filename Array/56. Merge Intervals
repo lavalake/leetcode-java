@@ -1,0 +1,31 @@
+56. Merge Intervals
+customize comparator
+Collections.sort(list, comparator)
+
+public class Solution {
+    public List<Interval> merge(List<Interval> intervals) {
+        List<Interval> ret = new ArrayList<>();
+        if(intervals.size() == 0) return ret;
+        
+        //intervals.sort((i1, i2) -> Integer.compare(i1.start, i2.start));
+        Collections.sort(intervals, new Comparator<Interval> () {
+            public int compare(Interval v1, Interval v2) {
+                return v1.start - v2.start;
+            }
+        });
+        
+        Interval curr = intervals.get(0);
+        for(int i=1; i<intervals.size(); i++) {
+            if(curr.end < intervals.get(i).start) {
+                ret.add(curr);
+                curr = intervals.get(i);
+            } else {
+                //curr.start = Math.min(curr.start, intervals.get(i).start);
+                curr.end = Math.max(curr.end, intervals.get(i).end);
+            }
+        }
+        
+        ret.add(curr);
+        return ret;
+    }
+}
