@@ -1,0 +1,29 @@
+128. Longest Consecutive Sequence
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> nSet = new HashSet<>();
+        for (int n : nums) {
+            nSet.add(n);
+        }
+        int maxLen = 0;
+        for (int n : nums) {
+            int len = 1;
+            int pre = n - 1;
+            int next = n + 1;
+            if (nSet.contains(n)) {
+                while (nSet.contains(pre)) {
+                    len++;
+                    nSet.remove(pre);
+                    pre--;
+                }
+                while (nSet.contains(next)) {
+                    len++;
+                    nSet.remove(next);
+                    next++;
+                }
+            }
+            maxLen = Math.max(maxLen, len);
+        }
+        return maxLen;
+    }
+}
