@@ -2,32 +2,33 @@
 https://leetcode.com/problems/word-search/description/
 backtracking, starting from every char from the matrix, so the outmost layer is a two level loop. compare the char with 
 the word char one by one. If match, then try to go to four directions. use visited to record the path.
-public boolean exist(char[][] board, String word) {
+推出条件是index == word.length
+class Solution {
+    public boolean exist(char[][] board, String word) {
         boolean[][] visited = new boolean[board.length][board[0].length];
         for (int i=0; i<board.length; i++) {
             for (int j=0; j<board[0].length; j++) {
-                if (dfs(board, i, j, visited, 0, word)) return true;
+                if (dfs(board, word, 0, i, j, visited)) return true;
             }
         }
         return false;
     }
-    private boolean dfs(char[][]board, int i, int j, boolean[][] visited, int index, String word) {
+    private boolean dfs(char[][] board, String word, int index, int r, int c, boolean[][] visited) {
+        if (index == word.length()) return true;
+        if (r < 0 || r >= board.length || c < 0 || c >= board[0].length) return false;
+        if (visited[r][c]) return false;
+        if (board[r][c] != word.charAt(index)) return false;
         
-        if (i < 0 || i>=board.length || j<0 || j>=board[0].length) return false;
-        if (visited[i][j]) return false;
-        if (index >= word.length()) return false;
-        if (board[i][j] == word.charAt(index)) {
-            if (index == word.length()-1) return true;
+        visited[r][c] = true;
+        if (dfs(board,word,index+1,r+1,c,visited)) return true;
+        if (dfs(board,word,index+1,r-1,c,visited)) return true;
+        if (dfs(board,word,index+1,r,c+1,visited)) return true;
+        if (dfs(board,word,index+1,r,c-1,visited)) return true;
+        visited[r][c] = false;
+        return false;
         
-            visited[i][j] = true;
-            if (dfs(board, i+1, j, visited, index+1, word)) return true;
-            if (dfs(board, i- 1, j, visited, index+1, word)) return true;
-            if (dfs(board, i, j+1, visited, index+1, word)) return true;
-            if (dfs(board, i, j-1, visited, index+1, word)) return true;
-            visited[i][j] = false;
-        }
-            return false;
     }
+}
 2. word search II
 This one need to find all words in dictonary. So we should use trie. User the words to build the trie first.
 Then go through the board and search the trie for every char, if it exist and if match a whole word, add to result.
