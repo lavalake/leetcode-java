@@ -1,0 +1,23 @@
+287. Find the Duplicate Number
+note, this question, the number is from 1 to n and there are n+1 numbers
+边界条件
+如果《＝min 的个数大于mid，则证明duplicate在右边。left=mid+1
+else duplicate 在左边。 
+class Solution {
+    public int findDuplicate(int[] nums) {
+        int right = nums.length - 1, left = 0;
+        while (left < right) {
+            int mid = left + (right - left)/2;
+            int count = 0;
+            for (int n : nums) {
+                if (n <= mid) count++;
+            }
+            if (count > mid) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+}
