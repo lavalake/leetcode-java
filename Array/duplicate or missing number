@@ -74,3 +74,50 @@ public class Solution {
         return totalSum - actualSum;
     }
 }
+
+下面两题有相似的条件，数组元素都小于数组的长度
+1《＝a[i] <= n
+对于这一类型的题目，可以考虑数组值对应的下标之间建立联系。将对应下标位置的值取反表示数值存在
+
+448. Find All Numbers Disappeared in an Array
+Given an array of integers where 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
+
+Find all the elements of [1, n] inclusive that do not appear in this array.
+class Solution {
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        List<Integer> ret = new ArrayList<>();
+        for (int i=0; i<nums.length; i++) {
+            int index = nums[i] > 0?nums[i] : -nums[i];
+            if (nums[index-1] > 0) {
+                    nums[index-1] *= -1;
+            } 
+        }
+        for (int i=0; i<nums.length; i++) {
+            if (nums[i] > 0) ret.add(i+1);
+        }
+        return ret;
+    }
+}
+
+
+442. Find All Duplicates in an Array
+Given an array of integers, 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.
+
+Find all the elements that appear twice in this array.
+
+
+Could you do it without extra space and in O(n) runtime?
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> ret = new ArrayList<>();
+        for (int i=0; i<nums.length; i++) {
+            int index = nums[i] > 0?nums[i] : -nums[i];
+            if (nums[index-1] > 0)
+                nums[index-1] *= -1;
+            else
+                ret.add(index);
+        }
+        
+        return ret;
+    }
+}
