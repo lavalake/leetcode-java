@@ -1,4 +1,16 @@
 http://www.cnblogs.com/grandyang/p/8887985.html
-单调递增栈可以找到左起第一个比当前数字小的元素。比如数组 [2 1 4 6 5]，刚开始2入栈，数字1入栈的时候，发现栈顶元素2比较大，将2移出栈，此时1入栈。那么2和1都没左起比自身小的数字。然后数字4入栈的时候，栈顶元素1小于4，于是1就是4左起第一个小的数字。此时栈里有1和4，然后数字6入栈的时候，栈顶元素4小于6，于是4就是6左起第一个小的数字。此时栈里有1，4，6，然后数字5入栈的时候，栈顶元素6大于5，将6移除，此时新的栈顶元素4小于5，那么4就是5左起的第一个小的数字，最终栈内数字为1，4，5。
+单调栈的一大优势就是线性的时间复杂度，所有的元素只会进栈一次，而且一旦出栈后就不会再进来了
+
+单调递增栈可以找到左起第一个比当前数字小的元素。比如数组 [2 1 4 6 5]，刚开始2入栈，数字1入栈的时候，发现栈顶元素2比较大，将2移出栈，此时1入栈。
+那么2和1都没左起比自身小的数字。然后数字4入栈的时候，栈顶元素1小于4，于是1就是4左起第一个小的数字。此时栈里有1和4，然后数字6入栈的时候，栈顶元素4小于6
+，于是4就是6左起第一个小的数字。此时栈里有1，4，6，然后数字5入栈的时候，栈顶元素6大于5，将6移除，此时新的栈顶元素4小于5，那么4就是5左起的第一个小的数字
+，最终栈内数字为1，4，5。
 
 单调递减栈可以找到左起第一个比当前数字大的元素。这里就不举例说明了，同样的道理，大家可以自行验证一下。
+
+For increasing stack, for index i, the stack contains all the numbers smaller then nums[i-1]. So compare with top of stack, you wil
+find the first numser less than nums[i]. If larger than nums[i], then pop untill smaller. So that means all the larger num will
+pop out of the stack.
+
+For decreasing stack, for index i, the stack contains all the numbers larger then nums[i-1]. So you can find the first number larger
+than nums[i]. The stack always keep the larger one.
