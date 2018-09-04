@@ -112,7 +112,29 @@ Sqrt(x)
 Split Array Largest Sum， Guess Number Higher or Lower，Find K Closest Elements，Find K-th Smallest Pair Distance，Kth Smallest Number in Multiplication Table，Maximum Average Subarray II，Minimize Max Distance to Gas Station，Swim in Rising Water
 
  
+第五 查找第一个等于target的数
+对于 nums[mid] == target , we should move right=mid. because this mid could be the left most index. We should not pass it.
 
+ while (left < right) {
+            int mid = left + (right - left)/2;
+            if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+find right most index
+this one need special treatment for mid. Need baised to right. because traditionally, left+right/2 will baised to left
+while (left < right) {
+            //left mid baised to right
+            int mid = (right + left )/2 + 1;
+            if (nums[mid] > target) {
+                right = mid - 1;
+            } else {
+                left = mid;
+            }
+        }
+        
 综上所述，博主大致将二分搜索法的应用场景分成了主要这四类，其中第二类和第三类还有各自的扩展。根据目前博主的经验来看，第二类和第三类的应用场景最多，也是最重要的两类。第一类和第四类较少，其中第一类最简单，第四类最难，遇到这类，博主也没啥好建议，多多练习吧～
 
  
