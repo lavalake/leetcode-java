@@ -1,0 +1,91 @@
+34. Find First and Last Position of Element in Sorted Array
+Given an array of integers nums sorted in ascending order, find the starting and ending position of a given target value.
+
+Your algorithm's runtime complexity must be in the order of O(log n).
+
+If the target is not found in the array, return [-1, -1].
+
+Example 1:
+
+Input: nums = [5,7,7,8,8,10], target = 8
+Output: [3,4]
+Example 2:
+
+Input: nums = [5,7,7,8,8,10], target = 6
+Output: [-1,-1]
+The intuitive solustion is to find the first item equals to target. Then go right one by oen until the item not equals target.
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        
+        int left = 0, right = nums.length - 1;
+        int[] ret = {-1,-1};
+        if (nums.length == 0) return ret;
+        while (left < right) {
+            int mid = left + (right - left)/2;
+            if (nums[mid] >= target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        if (nums[left] == target) {
+            ret[0] = left;
+            while ((right < nums.length) && nums[right] == target) right++;
+            ret[1] = right - 1;
+        }
+        return ret;
+    }
+}
+The worst case for this could be O(n) because the right end is O(n).
+
+We could use two binary search
+first find target index
+then find target+1 index
+此题重点关注边界条件
+1. 只有一个元素
+［1］1
+2. 只有一个元素等于target
+ ［1，5，7，7，8，10］ 8
+3. 数组不包换target
+  ［1，5，7，7，8，10］9
+4. 包含两个或多个target
+    ［1，5，7，7，8，10］7
+5. 数组包含target， 但不包含target＋1
+    ［1，5，7，7，8，10］8
+    第二个binary search 返回10的index. 当target不存在时，binary search 返回的是insert index
+6. 数组包含target，并且最后一个元素等于target
+    ［1，5，7，7，8，10，10］10
+    对于binary search, 如果target大于最后一个元素， 则返回的index是最后一个元素，而不是最有一个元素加1.
+    所以需要判断返回的index对应的值是否等于target。来决定是否对返回的index减一
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        
+        int left = 0, right = nums.length - 1;
+        int[] ret = {-1,-1};
+        if (nums.length == 0) return ret;
+        left = findTargetIndex(nums, target);
+        if (nums[left] != target) {
+            return ret;
+        }
+        right = findTargetIndex(nums, target + 1);
+        ret[0] = left;
+        if (nums[right] == target)
+            ret[1] = right;
+        else
+            ret[1] = right - 1;
+        return ret;
+    }
+    private int findTargetIndex(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int mid = left + (right - left)/2;
+            if (nums[mid] >= target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+}
