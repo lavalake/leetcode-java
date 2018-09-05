@@ -1,0 +1,31 @@
+此题的关键是找到单调区间。只可能有一边是单调的。然后比较mid和单调区间的头，确定target在那一边。
+因为单调区间相对容易处理。排除不在单调区间，则在另外一边。
+//key of this problem is to find the increasing segment. the left and right of min can only one be increasing.
+class Solution {
+    public int search(int[] nums, int target) {
+        if (nums.length == 0) return -1;
+        int left = 0, right = nums.length - 1;
+        while (left+1 < right) {
+            int mid = left + (right - left)/2;
+            if (nums[mid] == target) return mid;
+            if (nums[left] < nums[mid]){ //left is monotonic. then compare left side with target
+                if (nums[mid] > target && nums[left] <= target)
+                    right = mid;
+                else 
+                    left = mid;
+            } else { // right is monotonic.
+                if (nums[mid] < target && nums[right] >= target)
+                    left = mid;
+                else
+                    right = mid;
+            }
+        }
+        if (nums[left] == target) {
+            return left;
+        } else if(nums[right] == target) {
+            return right;
+        } else {
+            return -1;
+        }
+    }
+}
