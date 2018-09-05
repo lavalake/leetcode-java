@@ -1,0 +1,24 @@
+此题关键是边界条件
+1. n == 0
+2. n == 1
+3. n < 0
+仅仅当n为奇数时需要考虑n为负数
+
+
+class Solution {
+    public double myPow(double x, int n) {
+        if(n == 0) return 1d;
+        if(n == 1) return x;
+        
+        double half = myPow(x, n/2);
+        if (n%2 == 0) {
+            return half*half;
+        } else {
+            if (n < 0) {
+                return half*half*1/x;
+            } else {
+                return half * half * x;
+            }
+        }
+    }
+}
