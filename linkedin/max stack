@@ -1,0 +1,49 @@
+https://leetcode.com/problems/max-stack/description/
+
+The difference between maxStack and minStack is minStack does not have popMin method. So we can use another stack as min
+stack and store the min value. When stack pop. compare with top of MinStack. if equal, pop.
+But MaxStack has popMax method. Use Heap to keep the max value on top.
+Everytime pop, we need remove the corresponding item from Heap.
+
+class MaxStack {
+    Deque<Integer> stack;
+    PriorityQueue<Integer> maxStack;
+    
+    /** initialize your data structure here. */
+    public MaxStack() {
+        stack = new LinkedList<>();
+        maxStack = new PriorityQueue<>(Collections.reverseOrder());
+    }
+    
+    public void push(int x) {
+        stack.push(x);
+        maxStack.add(x);
+    }
+    
+    public int pop() {
+        int top = stack.pop();
+        maxStack.remove(top);
+        return top;
+    }
+    
+    public int top() {
+        return stack.peek();
+    }
+    
+    public int peekMax() {
+        return maxStack.peek();
+    }
+    
+    public int popMax() {
+        int max = maxStack.poll();
+        Deque<Integer> temp = new LinkedList<>();
+        while (stack.peek() != max) {
+            temp.push(stack.pop());
+        }
+        stack.pop();
+        while (!temp.isEmpty()) {
+            stack.push(temp.pop());
+        }
+        return max;
+    }
+}
