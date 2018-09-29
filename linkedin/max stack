@@ -47,3 +47,55 @@ class MaxStack {
         return max;
     }
 }
+
+For priority queue, the pop is not O(1) because the remove.
+Use two stack
+
+class MaxStack {
+    Deque<Integer> stack;
+    Deque<Integer> maxStack;
+    
+    /** initialize your data structure here. */
+    public MaxStack() {
+        stack = new LinkedList<>();
+        maxStack = new LinkedList<>();
+    }
+    
+    public void push(int x) {
+        stack.push(x);
+        if (maxStack.isEmpty() || x >= maxStack.peek()) {
+            maxStack.push(x);
+        }
+    }
+    
+    public int pop() {
+        int top = stack.pop();
+        if (top == maxStack.peek()) {
+            maxStack.pop();
+        }
+        return top;
+    }
+    
+    public int top() {
+        return stack.peek();
+    }
+    
+    public int peekMax() {
+        return maxStack.peek();
+    }
+    
+    public int popMax() {
+        int max = maxStack.pop();
+        Deque<Integer> temp = new LinkedList<>();
+        while (stack.peek() != max) {
+            temp.push(stack.pop());
+        }
+        stack.pop();
+        while (!temp.isEmpty()) {
+            //!!!note, here call push not stack.push.
+            //because after we pop the max, the next max may be in temp stack
+            push(temp.pop());
+        }
+        return max;
+    }
+}
