@@ -1,0 +1,47 @@
+https://leetcode.com/problems/insert-delete-getrandom-o1/description/
+because O(1). So we need hash table.
+<val,index>
+Key notes, when remove, we swap the last one in list with the value deleted.
+then we can delete the last one in O(1)
+class RandomizedSet {
+    Map<Integer,Integer> indexMap;
+    List<Integer> member;
+    Random random;
+    /** Initialize your data structure here. */
+    public RandomizedSet() {
+        indexMap = new HashMap<>();
+        member = new ArrayList<>();
+        random = new Random();
+    }
+    
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    public boolean insert(int val) {
+        if (indexMap.containsKey(val)) {
+            return false;
+        }
+        member.add(val);
+        indexMap.put(val, member.size()-1);
+        return true;
+    }
+    
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    public boolean remove(int val) {
+        if (!indexMap.containsKey(val)) {
+            return false;
+        }
+        if (indexMap.get(val) != (member.size()-1)) {
+            member.set(indexMap.get(val), member.get(member.size()-1));
+            indexMap.put(member.get(member.size()-1), indexMap.get(val));
+            
+        }
+        member.remove(member.size()-1);
+        indexMap.remove(val);
+        return true;
+    }
+    
+    /** Get a random element from the set. */
+    public int getRandom() {
+        int index = random.nextInt(member.size());
+        return member.get(index);
+    }
+}
