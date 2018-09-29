@@ -1,0 +1,33 @@
+416. Partition Equal Subset Sum
+https://leetcode.com/problems/partition-equal-subset-sum/description/
+Given a non-empty array containing only positive integers, find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
+This question can be solved using 10 kackpack.
+calculate the average, then this is the target. try all number, see can be reached to target by picking any nums.
+So target is the bag, nums are object.
+i = 0, num.length
+  j = target, nums[j]
+    dp[j] = dp[j]?dp[j]:dp[j-nums[i]]
+this is space optimized. dp[j] -> dp[i-1][j] because the inner loop start from back to front. dp[j] is the previous round
+value, say dp[i-1][j]
+class Solution {
+    public boolean canPartition(int[] nums) {
+        if(nums.length==0) return false;
+        int sum = 0;
+        for (int n : nums) {
+            sum += n;
+        }
+        if (sum%2 != 0) return false;
+        
+        boolean[] dp = new boolean[sum/2+1];
+        dp[0] = true;
+        
+            for (int j=0; j<nums.length; j++) {
+                for (int i=sum/2; i>=nums[j]; i--) {
+                    dp[i] = dp[i]?dp[i]:dp[i-nums[j]];
+                }
+                
+            }
+        
+        return dp[sum/2];
+    }
+}
