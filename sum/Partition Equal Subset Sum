@@ -31,3 +31,38 @@ class Solution {
         return dp[sum/2];
     }
 }
+
+
+698. Partition to K Equal Sum Subsets
+
+https://leetcode.com/problems/partition-to-k-equal-sum-subsets/description/
+For this problem, we can not use DP. 
+we need use DFS to try every combination.
+!!!!!Note, every time we found a subsum, we need start from 0
+and when the count reach to 1, that means we have found all the subsum. because the left 
+nums will sum to the average.
+
+class Solution {
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        int target = 0;
+        int sum = 0;
+        boolean[] visited = new boolean[nums.length];
+        for (int n : nums) {
+            sum += n;
+        }
+        if (sum % k != 0) return false;
+        target = sum / k;
+        return helper(nums, 0, 0, k, target, visited);
+    }
+    private boolean helper(int[] nums, int start, int curSum, int cnt, int target, boolean[] visited) {
+        if (cnt == 1) return true;
+        if (curSum == target) return helper(nums, 0, 0, cnt-1, target, visited);
+        for (int i=start; i<nums.length; i++) {
+            if (visited[i]) continue;
+            visited[i] = true;
+            if (helper(nums, i+1, curSum+nums[i], cnt, target, visited)) return true;
+            visited[i] = false;
+        }
+        return false;
+    }
+}
