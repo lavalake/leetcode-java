@@ -84,6 +84,8 @@ class MaxStack {
         return maxStack.peek();
     }
     
+    //when popMax, need push to both stack and maxStack
+    //for example 5,1,3, at first maxStack[5], after popMax, it should be maxStack[3]
     public int popMax() {
         int max = maxStack.pop();
         Deque<Integer> temp = new LinkedList<>();
