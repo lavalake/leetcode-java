@@ -1,0 +1,46 @@
+https://leetcode.com/problems/graph-valid-tree/description/
+Given n nodes labeled from 0 to n-1 and a list of undirected edges (each edge is a pair of nodes), write a function to check whether these edges make up a valid tree.
+
+Example 1:
+
+Input: n = 5, and edges = [[0,1], [0,2], [0,3], [1,4]]
+Output: true
+Example 2:
+
+Input: n = 5, and edges = [[0,1], [1,2], [2,3], [1,3], [1,4]]
+Output: false
+
+this problem is undirected. valid tree:
+1. no cycle
+2. all connected
+we use adjacent list to store the graph.
+then when we check cycle. we need to compare with parent. If it's parent, skip.
+otherwise if one node is visited twice, there is a cycle.
+
+class Solution {
+    public boolean validTree(int n, int[][] edges) {
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i=0; i<n; i++) {
+            graph.add(new ArrayList<>());
+        }
+        for (int i=0; i<edges.length; i++) {
+            int[] edge = edges[i];
+            graph.get(edge[0]).add(edge[1]);
+            graph.get(edge[1]).add(edge[0]);
+        }
+        boolean[] visited = new boolean[n];
+        if (hasCycle(graph, 0, -1, visited)) return false;
+        for (boolean v : visited) {
+            if (!v) return false;
+        }
+        return true;
+    }
+    private boolean hasCycle(List<List<Integer>> graph, int start, int parent, boolean[] visited) {
+        visited[start]=true;
+        for (int i : graph.get(start)) {
+            if (visited[i] && i==parent) continue;
+            if (visited[i] || hasCycle(graph, i, start, visited)) return true;
+        }
+        return false;
+    }
+}
