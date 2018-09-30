@@ -1,0 +1,35 @@
+tow solution:
+1. union find
+2. dfs for undirected graph
+/*
+this problem is undirected. valid tree:
+1. no cycle
+2. all connected
+we use adjacent list to store the graph.
+then when we check cycle. we need to compare with parent. If it's parent, skip.
+otherwise if one node is visited twice, there is a cycle.
+*/
+class Solution {
+    int[] parent;
+    public boolean validTree(int n, int[][] edges) {
+        parent = new int[n];
+        for (int i=0; i<n; i++) {
+            parent[i] = i;
+        }
+        
+        for (int i=0; i<edges.length; i++) {
+            if (find(edges[i][0]) == find(edges[i][1])) return false;
+            union(edges[i][0], edges[i][1]);
+        }
+        return n == (edges.length+1);
+    }
+    private int find(int m) {
+        if (parent[m] == m) return m;
+        else return find(parent[m]);
+    }
+    
+    private void union(int m, int n) {
+        parent[find(m)] = find(n);
+    }
+    
+}
