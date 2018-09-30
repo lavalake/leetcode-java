@@ -1,6 +1,7 @@
 https://leetcode.com/problems/keys-and-rooms/description/
 this is a graph question. Use bfs. Create a queue and visit array. Remember to check whether it's visited. Otherwise there
 will be dead circle
+this is a directed graph
 This is a special case for graph. becuase this problem require starting from room 0. So we do not need to loop all nodes
 class Solution {
     public boolean canVisitAllRooms(List<List<Integer>> rooms) {
