@@ -1,1 +1,6 @@
 Union-Find Algorithm can be used to check whether an undirected graph contains cycle or not
+
+与常见的树形数据结构不同，并查集的链接关系不是从parent指向child而是从child指向parent，这个链接信息保存在parent数组里。
+
+若parent[x] == x，则x就是x所在树的树根
+若parent[x] != x，则x是parent[x]的子节点
