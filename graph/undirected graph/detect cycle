@@ -1,0 +1,8 @@
+check whether there is a back edge to same node.
+For undirected graph, it's different with directed. For directed, you can only check whehter the node is visited or not
+before.
+But for undirected, for every edge, there are two item in the adjacent list. For example,
+[0,1]
+graph.get(0).add(1)
+graph.get(1).add(0)
+so this should not be considerd for cycle. So we need to pass the parent node to next recersive check.
