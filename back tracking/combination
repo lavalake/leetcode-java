@@ -48,6 +48,8 @@ for (int i=pos; i<nums.length; i++) {
             ret.add(new ArrayList<>(factorSet));
             return;
         }
+        
+        //here, must use n not n/2. because n should be in the set except the input n
         for (int i=factor; i<=n; i++) {
             if (n % i != 0) continue;
             factorSet.add(i);
