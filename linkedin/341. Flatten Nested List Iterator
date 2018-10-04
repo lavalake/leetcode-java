@@ -1,0 +1,33 @@
+Special case
+[[]]
+for this case, we need to check it in hasNext. because the stack is not empty, but the list is empty.
+if we return stack.isEmpty in hasNext, we will get error in next()
+
+public class NestedIterator implements Iterator<Integer> {
+    Deque<NestedInteger> stack;
+
+    public NestedIterator(List<NestedInteger> nestedList) {
+        stack = new LinkedList<>();
+        for (int i=(nestedList.size()-1); i>=0; i--) {
+                stack.push(nestedList.get(i));
+        }
+    }
+
+    @Override
+    public Integer next() {
+        return stack.pop().getInteger();
+    }
+
+    @Override
+    public boolean hasNext() {
+        while (!stack.isEmpty() && !stack.peek().isInteger()) {
+            List<NestedInteger> temp = stack.pop().getList();
+            for (int i=temp.size()-1; i>=0; i--) {
+            stack.push(temp.get(i));
+            }
+            
+        }
+                              
+        return !stack.isEmpty();
+    }
+}
