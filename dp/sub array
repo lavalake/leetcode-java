@@ -73,3 +73,18 @@ class Solution {
         }
     }
 }
+
+class Solution {
+    public int maxProduct(int[] nums) {
+        int max = Integer.MIN_VALUE;
+        int preMin = 1, preMax = 1;
+        for (int n : nums) {
+            int curMax = Math.max(Math.max(preMax*n, preMin*n), n);
+            int curMin = Math.min(Math.min(preMax*n, preMin*n), n);
+            preMax = curMax;
+            preMin = curMin;
+            max = Math.max(curMax, max);
+        }
+        return max;
+    }
+}
