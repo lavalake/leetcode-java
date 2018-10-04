@@ -1,0 +1,22 @@
+Coin Change
+https://leetcode.com/problems/coin-change/description/
+this problem is not an typical backpack problem.
+For backpack problem, we need the maximum value for target space.
+For this, we need minimum number for the target space.
+So we init every sum to MAX at first. if it's not MAX, we set it to the count of coins to reach this sum.
+If it's not MAX, we know we can get this amount. 
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int[] cnt = new int[amount+1];
+        int[] sum = new int[amount+1];
+        for (int i=1; i<=amount; i++)
+            sum[i] = Integer.MAX_VALUE;
+        for (int i=1; i<=amount; i++) {
+            for (int j=0; j<coins.length; j++) {
+                if (i >= coins[j])
+                    sum[i] = sum[i-coins[j]]!=Integer.MAX_VALUE?Math.min(sum[i], sum[i-coins[j]]+1):sum[i];
+            }
+        }
+        return sum[amount]==Integer.MAX_VALUE?-1:sum[amount];
+    }
+}
