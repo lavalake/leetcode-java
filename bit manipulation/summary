@@ -1,0 +1,4 @@
+1. clear right most bit 1
+  x&(x-1)
+2. get right most bit 1
+  x&(-x)
