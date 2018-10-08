@@ -2,3 +2,8 @@
   x&(x-1)
 2. get right most bit 1
   x&(-x)
+3. calculate mask
+  (1<<x)-1
+  for example:
+   x=3, 111
+   
