@@ -1,0 +1,32 @@
+3 steps
+1. find middle
+2. reverse second half
+3. merge first half and second half
+class Solution {
+    public void reorderList(ListNode head) {
+        ListNode fastRunner = head;
+        ListNode slowRunner = head;
+        while (fastRunner != null && fastRunner.next != null) {
+            slowRunner = slowRunner.next;
+            fastRunner = fastRunner.next.next;
+        }
+        ListNode cur = slowRunner;
+        ListNode next = slowRunner.next;
+        
+        while (next != null) {
+            ListNode temp = next.next;
+            next.next = cur;
+            cur = next;
+            next = temp;
+        }
+        ListNode leftPos = head;
+        ListNode rightPos = cur;
+        while (leftPos.next != slowRunner) {
+            ListNode nextLeft = leftPos.next;
+            ListNode nextRight = rightPos.next;
+            leftPos.next = rightPos;
+            rightPos.next = nextLeft;
+            leftPos = nextLeft;
+            rightPos = nextRight;
+        }
+    }
