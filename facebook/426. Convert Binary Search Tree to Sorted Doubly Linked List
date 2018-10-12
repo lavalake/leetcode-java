@@ -1,0 +1,22 @@
+class Solution {
+    public Node treeToDoublyList(Node root) {
+        if (root == null) return null;
+        Node head = new Node();
+        Node pre = head;
+        Deque<Node> stack = new LinkedList<>();
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            pre.right = root;
+            root.left = pre;
+            pre = root;
+            root = root.right;
+        }
+        pre.right = head.right;
+        head.right.left = pre;
+        return head.right;
+    }
+}
