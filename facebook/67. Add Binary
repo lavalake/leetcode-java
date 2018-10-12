@@ -1,0 +1,24 @@
+
+class Solution {
+    public String addBinary(String a, String b) {
+        int carryBit = 0;
+        int lenA = a.length() - 1;
+        int lenB = b.length() - 1;
+        StringBuilder sb = new StringBuilder();
+        //dont forget check carryBit
+        while (lenA >= 0 || lenB >= 0 || carryBit > 0) {
+            int sum = carryBit;
+            if (lenA >= 0 && a.charAt(lenA) == '1') {
+                sum += 1;
+            }
+            if (lenB >= 0 && b.charAt(lenB) == '1') {
+                sum += 1;
+            }
+            lenA = lenA>=0?lenA-1:lenA;
+            lenB = lenB>=0?lenB-1:lenB;
+            carryBit = sum / 2;
+            sb.append(String.valueOf(sum%2));
+        }
+        return sb.reverse().toString();
+    }
+}
