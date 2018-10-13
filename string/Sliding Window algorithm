@@ -1,11 +1,11 @@
 https://leetcode.com/problems/find-all-anagrams-in-a-string/discuss/92007/Sliding-Window-algorithm-template-to-solve-all-the-Leetcode-substring-search-problem.
 The algrithm is :
-1. calculate characters in P, and put into map
-2. go through s one by one, use a char[26] to record the frequency of every character
-3. maintain a window of p.length()
-4. maintain a cnt, when char[c] == map.get(c), that means we found a match for one character, increment cnt
+1. calculate characters in P, and put into frequency array, init count is p.length()
+2. go through s one by one, and minus frequency of every character
+3. if frequency[c] is large of equal 0, that means this is a target character in p. we need minus count which means we found a match character
+
 5. when we move the window, we need update frequency and cnt
-6. when cnt == map.size(), that means we found a match for whole string.
+6. when cnt == 0, that means we found a match for whole string.
 
 438. Find All Anagrams in a String
 /*note, there could be duplicate characters in p. So can not use Set. Must use Map*/
@@ -15,25 +15,28 @@ class Solution {
         List<Integer> ret = new ArrayList<>();
         if (s.length() == 0 || p.length() == 0) return ret;
         if (s.length() < p.length()) return ret;
-        Map<Character, Integer> subMap = new HashMap<>();
-        for (int i=0; i<p.length(); i++) {
-            subMap.put(p.charAt(i), subMap.getOrDefault(p.charAt(i),0)+1);
-        }
-        char[] frequency = new char[26];
-        
+        //note, frequency should be int[] not char[]
+        int[] frequency = new int[26];
         int cnt = 0;
+        for (int i=0; i<p.length(); i++) {
+            frequency[p.charAt(i)-'a']++;
+            cnt++;
+        }
+        
+        
+        
         
         for (int i=0; i<s.length(); i++) {
             char cur = s.charAt(i);
             int index = cur - 'a';
-            frequency[index]++;
+            frequency[index]--;
             
-            if (frequency[index] == subMap.getOrDefault(cur,0)) cnt++;
-            if (cnt == subMap.size()) ret.add(i-p.length()+1);
+            if (frequency[index] >= 0) cnt--;
+            if (cnt == 0) ret.add(i-p.length()+1);
             if (i >= (p.length()-1)) {
                 int start = i - p.length() + 1;
-                if (frequency[s.charAt(start)-'a'] == subMap.getOrDefault(s.charAt(start),0)) cnt--;
-                frequency[s.charAt(start)-'a']--;
+                if (frequency[s.charAt(start)-'a'] >= 0) cnt++;
+                frequency[s.charAt(start)-'a']++;
             }
         }
         return ret;
