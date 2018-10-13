@@ -1,5 +1,14 @@
 https://leetcode.com/problems/find-all-anagrams-in-a-string/discuss/92007/Sliding-Window-algorithm-template-to-solve-all-the-Leetcode-substring-search-problem.
+The algrithm is :
+1. calculate characters in P, and put into map
+2. go through s one by one, use a char[26] to record the frequency of every character
+3. maintain a window of p.length()
+4. maintain a cnt, when char[c] == map.get(c), that means we found a match for one character, increment cnt
+5. when we move the window, we need update frequency and cnt
+6. when cnt == map.size(), that means we found a match for whole string.
+
 438. Find All Anagrams in a String
+/*note, there could be duplicate characters in p. So can not use Set. Must use Map*/
 /*note, there could be duplicate characters in p. So can not use Set. Must use Map*/
 class Solution {
     public List<Integer> findAnagrams(String s, String p) {
@@ -11,19 +20,21 @@ class Solution {
             subMap.put(p.charAt(i), subMap.getOrDefault(p.charAt(i),0)+1);
         }
         char[] frequency = new char[26];
-        for (int i=0; i<p.length()-1; i++) {
-            frequency[s.charAt(i)-'a']++;
-        }
-        for (int i=0; i<=s.length()-p.length(); i++) {
+        
+        int cnt = 0;
+        
+        for (int i=0; i<s.length(); i++) {
+            char cur = s.charAt(i);
+            int index = cur - 'a';
+            frequency[index]++;
             
-            frequency[s.charAt(i+p.length()-1)-'a']++;
-            
-            boolean isMatch = true;
-            for (char c : subMap.keySet()) {
-                if (frequency[c-'a'] != subMap.get(c)) isMatch = false;
+            if (frequency[index] == subMap.getOrDefault(cur,0)) cnt++;
+            if (cnt == subMap.size()) ret.add(i-p.length()+1);
+            if (i >= (p.length()-1)) {
+                int start = i - p.length() + 1;
+                if (frequency[s.charAt(start)-'a'] == subMap.getOrDefault(s.charAt(start),0)) cnt--;
+                frequency[s.charAt(start)-'a']--;
             }
-            if (isMatch) ret.add(i);
-            frequency[s.charAt(i)-'a']--;
         }
         return ret;
     }
