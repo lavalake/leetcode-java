@@ -1,1 +1,31 @@
 https://leetcode.com/problems/find-all-anagrams-in-a-string/discuss/92007/Sliding-Window-algorithm-template-to-solve-all-the-Leetcode-substring-search-problem.
+438. Find All Anagrams in a String
+/*note, there could be duplicate characters in p. So can not use Set. Must use Map*/
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> ret = new ArrayList<>();
+        if (s.length() == 0 || p.length() == 0) return ret;
+        if (s.length() < p.length()) return ret;
+        Map<Character, Integer> subMap = new HashMap<>();
+        for (int i=0; i<p.length(); i++) {
+            subMap.put(p.charAt(i), subMap.getOrDefault(p.charAt(i),0)+1);
+        }
+        char[] frequency = new char[26];
+        for (int i=0; i<p.length()-1; i++) {
+            frequency[s.charAt(i)-'a']++;
+        }
+        for (int i=0; i<=s.length()-p.length(); i++) {
+            
+            frequency[s.charAt(i+p.length()-1)-'a']++;
+            
+            boolean isMatch = true;
+            for (char c : subMap.keySet()) {
+                if (frequency[c-'a'] != subMap.get(c)) isMatch = false;
+            }
+            if (isMatch) ret.add(i);
+            frequency[s.charAt(i)-'a']--;
+        }
+        return ret;
+    }
+}
+
