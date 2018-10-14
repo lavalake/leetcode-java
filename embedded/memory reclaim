@@ -1,0 +1,3 @@
+http://www.embeddedlinux.org.cn/EmbeddedLinuxPrimer/0136130550/ch05lev1sec4.html
+Notice two important things about the initialization routine in Listing 5-7. First, it is defined with the __init macro. As we saw earlier, this macro applies the section attribute to declare that this function gets placed into a section called .init.text in the vmlinux ELF file. Recall that the purpose of placing this function into a special section of the object file is so the memory space that it occupies can be reclaimed when it is no longer needed.
+
