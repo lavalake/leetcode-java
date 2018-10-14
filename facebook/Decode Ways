@@ -1,0 +1,108 @@
+
+91. Decode Ways
+https://leetcode.com/problems/decode-ways/description/
+to case:
+1. current number 1-9, means we reach current number from dp[i-1]
+2. current plus previous number 10 - 26, means we can reach current number from dp[i-2]
+
+class Solution {
+    public int numDecodings(String s) {
+        if (s.length() == 0 || s.charAt(0) == '0') return 0;
+        int[] dp = new int[s.length()+1];
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i=2; i<=s.length(); i++) {
+            int first = Integer.valueOf(s.substring(i-1,i));
+            int second = Integer.valueOf(s.substring(i-2,i));
+            if (first > 0 && first < 10) {
+                dp[i] += dp[i-1];
+            }
+            if (second >=10 && second <= 26) {
+                dp[i] += dp[i-2];
+            }
+        }
+        return dp[s.length()];
+    }
+}
+
+
+639. Decode Ways II
+Note 2 point
+1. dp should be long[]
+2. remember to dp[i] % 1000000007
+
+Process:
+1. init condition
+  dp[0] = 1
+  dp[1] = s[1]=='*'?9:1;
+2. process
+  1. for one bit
+    a. cur is '*'
+        dp[i] = dp[i-1]*9
+    b. cur is not 0
+        dp[i] = dp[i-1]
+        
+   2. for two bit
+      a. cur is *
+        I. pre is *
+          dp[i] += dp[i-2] * 15  (1* has 9, 2* has 6. so totally 15)
+        II. pre is 1
+            dp[i] += dp[i-2]*9
+         III. pre is 2 
+            dp[i] += dp[i-2]*6
+       b. cur is not 0
+          I. if pre is 1 or *
+            dp[i] += dp[i-2]
+          II. if pre is 2 or * and cur is < 7
+            dp[i] += dp[i-2]
+            
+        c. cur is 0
+            if (pre is *)
+              dp[i] += 2*dp[i-2]
+            if (pre is 1 or 2)
+               dp[i] += dp[i-2]
+class Solution {
+    public int numDecodings(String s) {
+        if (s.length() == 0) return 0;
+        if (s.charAt(0) == '0') return 0;
+        long[] dp = new long[s.length()+1];
+        dp[0] = 1;
+        dp[1] = s.charAt(0) == '*'?9:1;
+        for (int i=2; i<=s.length(); i++) {
+            char preDigit = s.charAt(i-2);
+            char curChar = s.charAt(i-1);
+            
+            
+            if (curChar == '*') {
+                dp[i] += dp[i-1] * 9;
+                
+                if (preDigit == '1' || preDigit == '*') {
+                    dp[i] += dp[i-2] * 9;
+                } 
+                if (preDigit == '2' || preDigit == '*') {
+                    dp[i] += dp[i-2] * 6;
+                }
+            } else if (curChar != '0'){
+                dp[i] += dp[i-1];
+                if (preDigit == '1' || preDigit == '*') {
+                    dp[i] += dp[i-2];
+                }
+                if ((preDigit == '2' || preDigit == '*') && (curChar < '7')) {
+                    dp[i] += dp[i-2];
+                }
+                
+            } else {
+                if (preDigit == '1' || preDigit == '2') {
+                    dp[i] = dp[i-2];
+                }
+                if (preDigit == '*') {
+                    dp[i] = 2*dp[i-2];
+                }
+            }
+            
+                        dp[i] %= 1000000007;
+
+        }
+        return (int)dp[s.length()];
+    }
+}
