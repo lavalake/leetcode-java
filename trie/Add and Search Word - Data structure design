@@ -2,51 +2,65 @@ https://leetcode.com/problems/add-and-search-word-data-structure-design/descript
 This one use Tire and recercive
 if contains '.', then we need check every children for this level. So for loop and if any return true. then return true.
 class WordDictionary {
-    TrieNode root;
+    Node root;
     /** Initialize your data structure here. */
     public WordDictionary() {
-        root = new TrieNode();
+        root = new Node();
     }
     
     /** Adds a word into the data structure. */
     public void addWord(String word) {
-        TrieNode temp = root;
+        Node temp = root;
         for (char c : word.toCharArray()) {
-            if (temp.children[c-'a'] == null) {
-                temp.children[c-'a'] = new TrieNode();
+            if (temp.child[c-'a'] == null) {
+                temp.child[c-'a'] = new Node();
             }
-            temp = temp.children[c-'a'];
+            temp = temp.child[c-'a'];
         }
         temp.isLeaf = true;
+        
     }
     
     /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
     public boolean search(String word) {
-        return helper(root, word);
+        return searchTrie(word, 0, root);
     }
-    private boolean helper(TrieNode root, String word) {
-        TrieNode temp = root;
-        for (int i=0; i<word.length(); i++) {
-            char c = word.charAt(i);
-            if (c != '.' && temp.children[c-'a'] == null) return false;
-            /*****************/
-            if (c == '.') {
-                for (TrieNode n : temp.children) {
-                    if (n != null && helper(n, word.substring(i+1))) return true;
+    public boolean searchTrie(String word, int start, Node node) {
+        Node temp = node;
+        char[] arr = word.toCharArray();
+        for (int i=start; i<arr.length; i++) {
+            if (arr[i] == '.') {
+                for (Node n : temp.child) {
+                    if (n != null && searchTrie(word, i+1, n)) return true;
+                    
                 }
                 return false;
+            } else {
+                if (temp.child[arr[i]-'a'] == null) {
+                    return false;
+                } else {
+                    temp = temp.child[arr[i]-'a'];
+                }
             }
-            /************************************/
-            temp = temp.children[c-'a'];
         }
         return temp.isLeaf;
     }
-    public static class TrieNode {
-        TrieNode[] children;
-        boolean isLeaf;
-        public TrieNode() {
-            children = new TrieNode[26];
+    public static class Node {
+        public Node[] child;
+        public boolean isLeaf;
+        public Node() {
+            child = new Node[26];
             isLeaf = false;
         }
     }
+    /*
+    public static class Trie {
+        Node root;
+        public Trie() {
+            root = new Node();
+        }
+        public addWord(String word) {
+            
+        }
+    }*/
 }
