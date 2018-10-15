@@ -43,8 +43,60 @@ class Solution {
     }
 }
 
+76. Minimum Window Substring
+1. calculate freq of t
+2. pass s, minus one for every character in freq
+3. if freq[c] >= 0, means we found one matching character, count--
+4. if count == 0, means we found a whole matching substring
+
+5. //remember to move the start pointer to first character in t.
+//the first freq[c] == 0 means we found the start
+//because all the character not in t, the freq[c] < 0
+//all the character in t but accure more then freq in t will < 0. We need igore this
 
 https://leetcode.com/problems/minimum-window-substring/
+class Solution {
+    public static final char BASE = 'A';
+    public String minWindow(String s, String t) {
+        if (s.length() < t.length() || s.length() == 0 || t.length() == 0) return "";
+        int count = t.length();
+        int start = 0, end = 0;
+        int left = 0, right = 0;
+        int minLen = Integer.MAX_VALUE;
+        int[] freq = new int[256];
+        for (char c : t.toCharArray()) {
+            freq[c-BASE]++;
+        }
+        while (end < s.length()) {
+            char cur = s.charAt(end);
+            freq[cur-BASE]--;
+            if (freq[cur-BASE] >= 0) count--;
+            if (count == 0) {
+               //remember to move the start pointer to first character in t.
+                //the first freq[c] == 0 means we found the start
+                //because all the character not in t, the freq[c] < 0
+                //all the character in t but accure more then freq in t will < 0. We need igore this
+                while (freq[s.charAt(start)-BASE] < 0) {
+                    
+                    freq[s.charAt(start++)-BASE]++;
+                }
+                
+                if (minLen > (end - start + 1)) {
+                    minLen = (end - start + 1);
+                    left = start;
+                    right = end;
+                }
+                
+                count++;
+                freq[s.charAt(start++)-BASE]++;
+                
+            }
+            end++;
+            
+        }
+        return minLen == Integer.MAX_VALUE?"":s.substring(left, right+1);
+    }
+}
 https://leetcode.com/problems/longest-substring-without-repeating-characters/
 https://leetcode.com/problems/substring-with-concatenation-of-all-words/
 https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/
