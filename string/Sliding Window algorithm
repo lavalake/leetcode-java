@@ -97,7 +97,31 @@ class Solution {
         return minLen == Integer.MAX_VALUE?"":s.substring(left, right+1);
     }
 }
+
+3. Longest Substring Without Repeating Characters
+
 https://leetcode.com/problems/longest-substring-without-repeating-characters/
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s.length() == 0) return 0;
+        Map<Character, Integer> indexMap = new HashMap<>();
+        int maxLen = 1, start = 0;
+        
+        for (int i=0; i<s.length(); i++) {
+            char cur = s.charAt(i);
+            if (indexMap.containsKey(cur) && indexMap.get(cur) >= start) {
+                maxLen = Math.max(maxLen, i - start);
+                start = indexMap.get(cur) + 1;
+            }
+            indexMap.put(cur, i);
+            
+        }
+        maxLen = Math.max(maxLen, s.length() - start);
+        return maxLen;
+    }
+}
+
+
 https://leetcode.com/problems/substring-with-concatenation-of-all-words/
 https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/
 https://leetcode.com/problems/find-all-anagrams-in-a-string/
