@@ -41,24 +41,39 @@ Input: [23, 2, 4, 6, 7],  k=6
 Output: True
 Explanation: Because [2, 4] is a continuous subarray of size 2 and sums up to 6.
 这道题目于上一道题目的不同是求K的倍数，所以我们要把余数放入map，不是sum
+https://leetcode.com/problems/continuous-subarray-sum/discuss/99503/Need-to-pay-attention-to-a-lot-of-corner-cases...
+Some special corner casee
+[0], 0 -> false;
+[5, 2, 4], 5 -> false;
+[0, 0], 100 -> true;
+[1,5], -6 -> true;
+
+we need check k == 0 case first, then we do not need to consider k == 0. 
+that will make our job easier
 
 class Solution {
     public boolean checkSubarraySum(int[] nums, int k) {
+        if (nums.length == 0) return false;
+        // if k is 0, we need two consecutive 0. otherwise return false 
+        if (k == 0) {
+            for (int i=0; i<nums.length-1; i++)
+            {
+                if (nums[i] == 0 && nums[i+1] == 0) return true;
+            }
+            return false;
+        }
+        Map<Integer,Integer> remainingMap = new HashMap<>();
         int sum = 0;
-        Map<Integer,Integer> mem = new HashMap<>();
-        mem.put(0,0);
+        remainingMap.put(0,0);
         for (int i=0; i<nums.length; i++) {
             sum += nums[i];
-            int t = k==0?sum:sum%k;
-            if (mem.containsKey(t)) {
-                int prev = mem.get(t);
-                if (i-prev + 1 > 1) return true;
+            int remaining = sum % k;
+            if (remainingMap.containsKey(remaining)) {
+                int start = remainingMap.get(remaining);
+                    if ((i - start + 1) > 1)
+                    return true;
             } else {
-                /**************
-                here, we cache the remaining of sum, not sum
-                because only the remaining matters
-                **************/
-                mem.put(t,i+1);
+                remainingMap.put(remaining, i+1);
             }
         }
         return false;
