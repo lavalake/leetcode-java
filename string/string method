@@ -1,0 +1,6 @@
+Character.isLetter
+Character.isDigit
+Charater.toLowerCase
+length()
+begineWith()
+substring()
