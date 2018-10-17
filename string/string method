@@ -4,3 +4,7 @@ Charater.toLowerCase
 length()
 begineWith()
 substring()
+
+stringbuilder.append
+stringBUilder.setLength
+StringBUilder.length
