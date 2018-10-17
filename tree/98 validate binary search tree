@@ -1,0 +1,18 @@
+Key point
+1. all the node in left branch less than root.val, not only left node. So need to pass the root.val as min downward to 
+    left.
+2.  be careful for Integer overflow. Because the node.val is int and could be Intger.MIN_VALUE. so we could not use it
+as init value. We should use Long.MIN_VALUE
+
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) return true;
+        
+        return helper(root.left, root.val, Long.MIN_VALUE) && helper(root.right, Long.MAX_VALUE, root.val);
+    }
+    private boolean helper(TreeNode node, long max, long min) {
+        if (node == null) return true;
+        if (node.val >= max || node.val <= min) return false;
+        return helper(node.left, node.val, min) && helper(node.right, max, node.val);
+    }   
+}
