@@ -1,0 +1,19 @@
+https://leetcode.com/problems/find-the-celebrity/
+Two iteration:
+1. find the candidate
+  starting from 0, if candidate knows i, then current can not be celebrity. assign i as candidate
+2. verify candidate
+  if candidate knows any one or any one does not know candidate, then there is no celebrity
+public class Solution extends Relation {
+    public int findCelebrity(int n) {
+        int candidate = 0;
+        for (int i=1; i<n; i++) {
+            if (knows(candidate, i)) candidate = i;
+        }
+        
+        for (int i=0; i<n; i++) {
+            if (i != candidate && knows(candidate, i) || !knows(i, candidate)) return -1;
+        }
+        return candidate;
+    }
+}
