@@ -1,0 +1,24 @@
+key point:
+DFS
+need condieration of cycles
+when find a cycle, that means the node we already cloned.
+So we use a Map to keep the (node,clone). when we found cycle, just return clone.
+
+public class Solution {
+    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+        Map<UndirectedGraphNode,UndirectedGraphNode> visited = new HashMap<>();
+        return helper(node, visited);
+    }
+    private UndirectedGraphNode helper(UndirectedGraphNode node, Map<UndirectedGraphNode,UndirectedGraphNode> visited) {
+        UndirectedGraphNode root = null;
+        if (node == null) return root;
+        if (visited.containsKey(node)) return visited.get(node);
+        root = new UndirectedGraphNode(node.label);
+        
+        visited.put(node, root);
+        for (UndirectedGraphNode n : node.neighbors) {
+            root.neighbors.add(helper(n, visited));
+        }
+        return root;
+    }
+}
