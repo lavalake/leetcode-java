@@ -133,6 +133,7 @@ Explanation: The subarray [1, -1, 5, -2] sums to 3 and is the longest.
 class Solution {
     public int maxSubArrayLen(int[] nums, int k) {
         Map<Integer,Integer> mem = new HashMap<>();
+        //should init the map with (0,-1) for subarray from 0
         mem.put(0,-1);
         int sum = 0, ret = 0;
         for (int i=0; i<nums.length; i++) {
@@ -140,8 +141,9 @@ class Solution {
             if (mem.containsKey(sum - k)) {
                 ret = Math.max(ret, i - mem.get(sum - k));
             }
-                if (!mem.containsKey(sum))
-                    mem.put(sum, i);
+            //here use two if, they are independent
+            if (!mem.containsKey(sum))
+                mem.put(sum, i);
         }
         return ret;
     }
