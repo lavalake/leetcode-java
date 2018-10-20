@@ -1,0 +1,55 @@
+1. The key task here is to connect those emails, and this is a perfect use case for union find.
+2. to group these emails, each group need to have a representative, or parent.
+3. At the beginning, set each email as its own representative.
+4. Emails in each account naturally belong to a same group, and should be joined by assigning to the same parent (let's use the parent of first email in that list);
+[Jonh, a, b, c]
+[Alice, d,e,f]
+[Jonh, h,i,a]
+first, set every email as it's own parent
+a->a, b->b, c->c
+d->d, e->e, f->f
+h->h, i->i, b->b
+Then for every person's email, set the 
+a->a, b->a, c->a
+h->h, i->h, b->a a->h
+
+class Solution {
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        Map<String, String> parents = new HashMap<>();
+        Map<String, String> owner = new HashMap<>();
+        Map<String, TreeSet<String>> union = new HashMap<>();
+        List<List<String>> ret = new ArrayList<>();
+        for (List<String> act : accounts) {
+            for (int i=1; i<act.size(); i++) {
+                parents.put(act.get(i), act.get(i));
+                owner.put(act.get(i), act.get(0));
+            }
+        }
+        for (List<String> act : accounts) {
+            String parent = find(act.get(1), parents);
+            for (int i=2; i<act.size(); i++) {
+                parents.put(find(act.get(i), parents), parent);
+            }
+        }
+        for (String act : parents.keySet()) {
+            if (!union.containsKey(find(act, parents))) {
+                union.put(find(act, parents), new TreeSet<String>());
+            }
+            union.get(find(act, parents)).add(act);
+        }
+        for (String act : union.keySet()) {
+            List<String> newAct = new ArrayList<>();
+            newAct.add(owner.get(act));
+            newAct.addAll(union.get(act));
+            ret.add(newAct);
+        }
+        return ret;
+    }
+    private String find(String act, Map<String, String> parents) {
+        if (parents.get(act).equals(act)) {
+            return act;
+        } else {
+            return find(parents.get(act), parents);
+        }
+    }
+}
