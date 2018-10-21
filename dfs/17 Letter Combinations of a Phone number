@@ -1,0 +1,29 @@
+
+//special case
+//""
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        String[] map = new String[]{"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        
+        List<String> ret = new ArrayList<>();
+        if (digits.length() == 0) return ret;
+        StringBuilder letters = new StringBuilder();
+        dfs(digits, 0, ret, letters, map);
+        return ret;
+    }
+    private void dfs(String digits, int start, List<String> ret, StringBuilder letters, String[] map) {
+        if (letters.length() == digits.length()) {
+            ret.add(letters.toString());
+            return;
+        }
+        for (int i=start; i<digits.length(); i++) {
+            int index = digits.charAt(i) - '2';
+            for (int j=0; j<map[index].length(); j++) {
+                letters.append(map[index].charAt(j));
+                dfs(digits, i+1, ret, letters, map);
+                letters.deleteCharAt(letters.length()-1);
+            }
+            
+        }
+    }
+}
