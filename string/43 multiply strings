@@ -1,13 +1,14 @@
 1. need to reverse two strings
 2. we need a int[str1.length+str2.length] array to store the result
- 23
- 34
- 12
- 8
- 9
-6
+3. just mimic the process when we multiply to nums as below
+ 2 3
+ 3 4
+ 1 2  3*4
+ 8    20*4
+ 9    3*3
+6     20*30
 every calculate
-result[i+j] += str1[i] + str2[j]
+result[i+j] += str1[i] * str2[j]
 
 Special case:
 "0" * "0"
@@ -34,6 +35,7 @@ class Solution {
             //if ((i==num.length-1 ) && (cur == 0)) continue;
             sum.append(cur);
         }
+        //need to remove the preceeding 0
         while (sum.length() > 1 && sum.charAt(sum.length()-1) == '0') {
             sum.deleteCharAt(sum.length()-1);
         }
