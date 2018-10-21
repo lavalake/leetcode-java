@@ -1,4 +1,4 @@
-227 basic calculator
+227 basic calculatorII
 calculate all * and / operation first and push back to stack
 then stack only have add operation. because for '-' operation, we can push -num
 
@@ -57,5 +57,67 @@ class Solution {
             index++;
         }
         return index;
+    }
+}
+
+
+
+224 Basic Calculator
+1. we calculate the sum until we meat a (
+2. push the sign of current () and current sum to stack
+3. reset sign and sum
+4. calculate until reach a ), that means we finish calculation of a ()
+5. sum*sign then pop the sum stack and the sign stack. to restore the calculation before (
+Special case
+(1-(1+2))+(2-3)
+1+(5)
+
+class Solution {
+    public int calculate(String s) {
+        int sign = 1, curSign = 1;
+        int ret = 0, sum = 0;
+        Deque<Integer> stack = new LinkedList<>();
+        Deque<Integer> factorStack = new LinkedList<>();
+        int index = 0;
+        while (index < s.length()) {
+            char cur = s.charAt(index);
+            switch (cur) {
+                case '(' :
+                    //whenever meet (, reset sum and sign and curSign
+                    stack.push(sum);
+                    factorStack.push(sign);
+                    sign = curSign;
+                    sum = 0;
+                    curSign = 1;
+                    break;
+                case ')' :
+                sum *= sign;
+                sum += stack.pop();
+                sign = factorStack.pop();
+                    break;
+                case '+' :
+                    curSign = 1;
+                    break;
+                case '-' :
+                    curSign = -1;
+                    break;
+                case ' ':
+                    break;
+                default :
+                    int endIndex = findNum(s, index);
+                    sum += curSign * Integer.valueOf(s.substring(index, endIndex));
+                    index = endIndex - 1;
+                    break;
+            }
+            index++;
+            
+        }
+        return sum;
+    }
+    private int findNum(String s, int i) {
+        while (i < s.length() && Character.isDigit(s.charAt(i))) {
+            i++;
+        }
+        return i;
     }
 }
