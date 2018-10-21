@@ -1,0 +1,61 @@
+227 basic calculator
+calculate all * and / operation first and push back to stack
+then stack only have add operation. because for '-' operation, we can push -num
+
+1. push the numbers to stack
+2. if meet operator, remember it. because we need to use it for the next number
+3. if previous is '*' or '/', then pop the top number, calculate the result and push back
+4. if previous is '-', push -num to stack
+5. after the iteration, the stack only have '+' operation. then sum all numbers in stack
+6. be careful for the space
+
+class Solution {
+    public int calculate(String s) {
+        Integer ret = 0;
+        //if (s.length() < 3) return ret;
+        Deque<Integer> operandStack = new LinkedList<>();
+        int i = 0;
+        char preOperator = '+';
+        while (i < s.length()) {
+            char cur = s.charAt(i);
+            int curNum = -1;
+            if (cur == ' ') {
+                i++;
+                continue;
+            }
+            if (Character.isDigit(cur)) {
+                int endIndex = findOperator(s, i);
+                curNum = Integer.valueOf(s.substring(i,endIndex));
+                
+                i = endIndex;
+                
+                if (preOperator == '*' || preOperator == '/') {
+                    int op1 = operandStack.pop();
+                    if (preOperator == '*') curNum = op1*curNum;
+                    else curNum = op1/curNum;
+                } else if (preOperator == '-') {
+                    curNum = (-curNum);
+                } 
+                operandStack.push(curNum);
+            } else {
+                
+                preOperator = cur;
+                i++;
+            }
+            
+        }
+        //now only '+' operation left. so sum all numbers in stack
+        Iterator<Integer> itr = operandStack.iterator();
+        while (itr.hasNext()) {
+            ret += itr.next();
+        }
+        return ret;
+    }
+    private int findOperator(String s, int index) {
+        while (index < s.length()) {
+            if (!Character.isDigit(s.charAt(index))) return index;
+            index++;
+        }
+        return index;
+    }
+}
