@@ -1,3 +1,7 @@
+O(n) average O(n2) worst
+https://github.com/lavalake/leetcode-java/blob/master/sort/215.%20Kth%20Largest%20Element%20in%20an%20Array
+
+
 Several solution
 https://leetcode.com/problems/kth-largest-element-in-an-array/discuss/60294/Solution-explained
 O(NlogK) O(K)
@@ -17,3 +21,7 @@ class Solution {
         return pq.poll();
     }
 }
+
+
+https://github.com/lavalake/leetcode-java/blob/master/sort/215.%20Kth%20Largest%20Element%20in%20an%20Array
+https://leetcode.com/problems/kth-largest-element-in-an-array/discuss/60294/Solution-explained
