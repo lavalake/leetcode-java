@@ -1,3 +1,6 @@
+This is a combination problem
+so use the template. but slight difference
+in side the loop, we need another loop,because every number could map to several letters
 
 //special case
 //""
