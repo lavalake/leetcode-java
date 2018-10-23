@@ -95,39 +95,38 @@ class Solution {
 解法2
 使用二分法，先找到等于target的左index，再找到等于target的右index
 
+/*
+special case
+[2,2] 3
+3 is not in array and larger then all. Then the exit 
+condition is left = nums.length. need to check this after first while exit
+
+*/
 class Solution {
     public int[] searchRange(int[] nums, int target) {
-        
         int left = 0, right = nums.length - 1;
-        int[] ret = {-1,-1};
+        int[] ret = new int[]{-1,-1};
         if (nums.length == 0) return ret;
-        while (left < right) {
-            int mid = left + (right - left)/2;
-            if (nums[mid] < target) {
-                left = mid + 1;
-            } else {
-                right = mid;
-            }
-        }
-        if (nums[left] != target) {
-            return ret;
-        }
-        
-        ret[0] = left;
-        //find right index
-        right = nums.length - 1;
-        while (left < right) {
-            //left mid baised to right
-            int mid = (right + left )/2 + 1;
-            //only when mid > target, change right. other wise, update left
-            if (nums[mid] > target) {
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] >= target) {
                 right = mid - 1;
             } else {
-                left = mid;
+                left = mid + 1;
+            }
+        }
+        if (left == nums.length || nums[left] != target) return ret;
+        ret[0] = left;
+        right = nums.length - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] <= target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
             }
         }
         ret[1] = right;
-        
-        
         return ret;
     }
+}
