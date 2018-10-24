@@ -1,0 +1,31 @@
+491. Increasing Subsequences
+similar with combination but with special requirments
+the element must larger then pre. so can not just add in the loop.
+
+class Solution {
+    public List<List<Integer>> findSubsequences(int[] nums) {
+        Set<List<Integer>> ret = new HashSet<>();
+        List<Integer> path = new ArrayList<>();
+        
+            dfs(nums, 0, ret, path);
+            
+        List<List<Integer>> retList = new ArrayList<>();
+        retList.addAll(ret);
+        return retList;
+    }
+    private void dfs(int[] nums, int start, Set<List<Integer>> ret, List<Integer> path) {
+        if (path.size() > 1)
+            ret.add(new ArrayList<Integer>(path));
+        if (start >= nums.length) return;
+        for (int i=start; i<nums.length; i++) {
+            //need to compare before add.
+            if (path.size() == 0 || path.get(path.size() -1) <= nums[i] ) {
+                if (i > (start) && nums[i] == nums[i-1]) continue;
+                path.add(nums[i]);
+                dfs(nums, i+1, ret, path);
+                path.remove(path.size()-1);
+            }
+            
+        }
+    }
+}
