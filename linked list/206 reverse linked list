@@ -16,6 +16,7 @@ class Solution {
 }
 
 92. Reverse Linked List II
+if head may change, we need a dummy node to point to the head and return that node
 
 class Solution {
     public ListNode reverseBetween(ListNode head, int m, int n) {
