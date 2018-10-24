@@ -6,6 +6,9 @@ begineWith()
 substring()
 split()
   note this method will return at least one array. For example "".split(",") will return String[1] with ""
+  "1".split(",") will return 1
+  "1,".split(",") will return 1
+  "1,2".split(",") will return 2
 
 stringbuilder.append
 stringBUilder.setLength
