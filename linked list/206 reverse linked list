@@ -14,3 +14,33 @@ class Solution {
         return pre;
     }
 }
+
+92. Reverse Linked List II
+
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        ListNode cur = head;
+        ListNode dummy = new ListNode(-1);
+        ListNode pre = dummy;
+        pre.next = head;
+        int i = 1;
+        while (i < m && cur != null) {
+            pre = cur;
+            cur = cur.next;
+            i++;
+        }
+        ListNode reversePre = cur;
+        if (cur != null)
+            cur = cur.next;
+        while (i < n && cur != null) {
+            ListNode next = cur.next;
+            cur.next = reversePre;
+            reversePre = cur;
+            cur = next;
+            i++;
+        }
+        pre.next.next = cur;
+        pre.next = reversePre;
+        return dummy.next;
+    }
+}
