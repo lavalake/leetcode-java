@@ -1,0 +1,53 @@
+
+449. Serialize and Deserialize BST
+Use BFS, level order
+
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        //if(root == null) return null;
+        StringBuilder sb = new StringBuilder();
+        Queue<TreeNode> nodeQueue = new LinkedList<>();
+        if (root != null) nodeQueue.offer(root);
+        while (!nodeQueue.isEmpty()) {
+            TreeNode temp = nodeQueue.poll();
+            if (temp != null) {
+                sb.append(temp.val);
+                nodeQueue.offer(temp.left);
+                nodeQueue.offer(temp.right);
+            } else {
+                sb.append("NULL");
+            }
+            if (!nodeQueue.isEmpty()) sb.append(",");
+        }
+        return sb.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        
+        //if (data == null) return null;
+        String[] nodes = data.split(",");
+        if (nodes.length == 0) return null;
+        TreeNode root = new TreeNode(Integer.valueOf(nodes[0])); 
+        Queue<TreeNode> nodeQueue = new LinkedList<>();
+        nodeQueue.offer(root);
+        int i = 1;
+        while (!nodeQueue.isEmpty() && i<nodes.length) {
+            TreeNode temp = nodeQueue.poll();
+            if (!nodes[i].equals("NULL")) {
+                temp.left = new TreeNode(Integer.valueOf(nodes[i]));
+                nodeQueue.offer(temp.left);
+                
+            }
+            i++;
+            if (!nodes[i].equals("NULL")) {
+                temp.right = new TreeNode(Integer.valueOf(nodes[i]));
+                nodeQueue.offer(temp.right);
+            }
+            i++;
+        }
+        return root;
+    }
+}
