@@ -4,7 +4,10 @@ Charater.toLowerCase
 length()
 begineWith()
 substring()
+split()
+  note this method will return at least one array. For example "".split(",") will return String[1] with ""
 
 stringbuilder.append
 stringBUilder.setLength
 StringBUilder.length
+
