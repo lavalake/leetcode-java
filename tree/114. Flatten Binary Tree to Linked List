@@ -1,0 +1,44 @@
+https://leetcode.com/problems/flatten-binary-tree-to-linked-list/description/
+it is DFS so u need a stack. Dont forget to set the left child to null, or u'll get TLE. (tricky!)
+class Solution {
+    public void flatten(TreeNode root) {
+        Deque<TreeNode> stack = new LinkedList<>();
+        if (root != null) stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode temp = stack.pop();
+            if (temp.right != null) stack.push(temp.right);
+            if (temp.left != null){
+                stack.push(temp.left);
+                //remember to set left to null
+                temp.left = null;
+                
+            }
+            //connect the new right node with the stack top node
+            temp.right = stack.peek();
+        }
+        return;
+    }
+    
+}
+
+//for recursive solution, create a helper, call helper with root.left and root.right.
+//helper will return the right most node after flattern. then connect the root.left.righMost with root.right
+//root.right with root.left
+
+class Solution {
+    public void flatten(TreeNode root) {
+        flattenHelper(root);
+    }
+    private TreeNode flattenHelper(TreeNode root) {
+        if (root == null || (root.left == null && root.right == null)) return root;
+        TreeNode leftEnd = flattenHelper(root.left);
+        TreeNode rightEnd = flattenHelper(root.right);
+        if (leftEnd != null) {
+            leftEnd.right = root.right;
+            root.right = root.left;
+            root.left = null;
+        }
+        //if rightEnd is null, then return leftEnd    
+        return rightEnd==null?leftEnd:rightEnd;
+    }
+}
