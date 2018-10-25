@@ -1,0 +1,28 @@
+https://leetcode.com/problems/valid-parenthesis-string/discuss/107566/Java-12-lines-solution-backtracking
+How to check valid parenthesis w/ only ( and )? Easy. Count each char from left to right. When we see (, count++; when we see ) count--; if count < 0, it is invalid () is more than (); At last, count should == 0.
+This problem added *. The easiest way is to try 3 possible ways when we see it. Return true if one of them is valid.
+/*
+special case
+")("
+*/
+class Solution {
+    public boolean checkValidString(String s) {
+        int count = 0;
+        return checkParenthesis(s, 0, 0);
+    }
+    private boolean checkParenthesis(String s, int start, int count) {
+        if (start == s.length() && count == 0) return true;
+        for (int i=start; i<s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                count++;
+            } else if (s.charAt(i) == ')') {
+                count--;
+                if(count < 0) return false;
+            } else {
+                //do not use count++/count-- here. use count+1
+                return checkParenthesis(s, i+1, count+1) || checkParenthesis(s, i+1, count-1) || checkParenthesis(s, i+1, count);
+            }
+        }
+        return count == 0;
+    }
+}
