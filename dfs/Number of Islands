@@ -1,0 +1,42 @@
+694. Number of Distinct Islands
+https://leetcode.com/problems/number-of-distinct-islands/description/
+https://leetcode.com/problems/number-of-distinct-islands/discuss/108475/Java-very-Elegant-and-concise-DFS-Solution(Beats-100)
+we could use a set to store the pattern of every island
+the pattern is the move direction from the starting point.
+Starting point "o"
+append dir to it
+then append b (back) for every back tracking
+
+class Solution {
+    public int numDistinctIslands(int[][] grid) {
+        Set<String> set = new HashSet<>();
+        boolean[][] v = new boolean[grid.length][grid[0].length];
+        int count = 0;
+        for (int i=0; i<grid.length; i++) {
+            for (int j=0; j<grid[0].length; j++) {
+                if (grid[i][j] == 1&& v[i][j] == false) {
+                    StringBuilder sb = new StringBuilder();
+                    dfs(grid, i, j,"o", v, sb);
+                    
+                        set.add(sb.toString());
+                        
+                }
+            }
+        }
+        return set.size();
+    }
+    private void dfs(int[][] grid, int i, int j, String dir, boolean[][] v, StringBuilder sb) {
+        if (i<0 || i>=grid.length || j<0 || j>=grid[0].length) return ;
+        if (v[i][j] || grid[i][j] == 0) return ;
+
+        v[i][j] = true;
+        sb.append(dir);
+        dfs(grid, i-1, j, "u", v, sb);
+        dfs(grid, i+1, j, "d", v, sb);
+        dfs(grid, i, j-1, "l", v, sb);
+        dfs(grid, i, j+1, "r", v, sb);
+        sb.append("b");
+        return ;
+        
+    }
+}
