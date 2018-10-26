@@ -1,0 +1,31 @@
+463. Island Perimeter
+Note, the perimeter, is water cell around the island. So we could count the water cell number around the island cell.
+So rather than count the '1', this algorithm is counting'0's around the island. Really clever!
+
+class Solution {
+    public int islandPerimeter(int[][] grid) {
+        if (grid.length == 0 || grid[0].length == 0) return 0;
+        boolean[][] v = new boolean[grid.length][grid[0].length];
+        for (int i=0; i<grid.length; i++) {
+            for (int j=0; j<grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    return dfs(grid, i, j, v);
+                }
+            }
+        }
+        return 0;
+    }
+    private int dfs(int[][] grid, int i, int j, boolean[][] v) {
+        if (i<0 || j<0 || i>=grid.length || j>=grid[0].length) return 1;
+        if (grid[i][j] == 0) return 1;
+        if (v[i][j]) return 0;
+        v[i][j] = true;
+        
+        int count = 0;
+        count += dfs(grid, i-1, j, v);
+        count += dfs(grid, i+1, j, v);
+        count += dfs(grid, i, j-1, v);
+        count += dfs(grid, i, j+1, v);
+        return count;
+    }
+}
