@@ -1,0 +1,38 @@
+https://leetcode.com/problems/course-schedule/description/
+this is a problem to detet cycle in directed graph
+
+first solution, use recersion.
+note for directed graph to cycle, we need to flag array
+1 for globle flag which vertex we have visited
+2 for local flag for one recersion. whether we have visited in this round of recersion. 
+for every vetex, we will have one round recursion. only visited twice in one round counted as a cycle.
+
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> matrix = new ArrayList<>();
+        for (int i=0; i<numCourses; i++) {
+            matrix.add(new ArrayList<Integer>());
+        }
+        boolean[] v = new boolean[numCourses];
+        boolean[] rec = new boolean[numCourses];
+        for (int[] e : prerequisites) {
+            matrix.get(e[0]).add(e[1]);
+        }
+        for (int n=0; n<numCourses; n++) {
+            if(isCyclic(matrix, n, v, rec)) return false;
+        }
+        
+        return true;
+    }
+    private boolean isCyclic(List<List<Integer>> matrix, int i, boolean[] v, boolean[] rec) {
+        if (rec[i]) return true;
+        if (v[i]) return false;
+        v[i] = true;
+        rec[i] = true;
+        for (int m : matrix.get(i)) {
+            if (isCyclic(matrix, m, v, rec)) return true;
+        }
+        rec[i] = false;
+        return false;
+    }
+}
