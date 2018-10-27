@@ -1,0 +1,2 @@
+How to detect cycle in directed graph?
+Only one visited flag is not enough. for following example
