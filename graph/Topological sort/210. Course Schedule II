@@ -1,0 +1,60 @@
+
+/*
+special case, cycle
+[1,0]
+[0,1]
+we need detect his. So hte topolagicalSort need to detect cycle and return boolean value.
+*/
+class Solution {
+    public enum COLOR {
+        WHITE,
+        GREY,
+        BLACK
+    }
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> matrix = new ArrayList<>();
+        COLOR [] visited = new COLOR[numCourses];
+        for (int i=0; i<numCourses; i++) {
+            matrix.add(new ArrayList<Integer>());
+            visited[i] = COLOR.WHITE;
+        }
+        for (int[] n : prerequisites) {
+            matrix.get(n[1]).add(n[0]);
+        }
+        Deque<Integer> stack = new LinkedList<>();
+        
+        for (int i=0; i<numCourses; i++) {
+            if (topologicalSort(i, matrix, stack, visited) == false) return new int[0];
+        }
+        int[] ret = new int[numCourses];
+        int i = 0;
+        /*
+        Iterator itr = stack.iterator();
+        
+        while (itr.hasNext()) {
+            ret[i++] = itr.next(); 
+        }
+        return ret;
+        */
+        while (!stack.isEmpty()) {
+            ret[i++] = stack.pop();
+        }
+        return ret;
+    }
+    private boolean topologicalSort(int n, List<List<Integer>> matrix, Deque<Integer> stack, COLOR[] visited) {
+        if (visited[n] == COLOR.GREY) {
+            //cycle
+            return false;
+        } else if(visited[n] == COLOR.BLACK) {
+            //already visited
+            return true;
+        }
+        visited[n] = COLOR.GREY;
+        for (int preRequisite : matrix.get(n)) {
+            if (topologicalSort(preRequisite, matrix, stack, visited) == false) return false;
+        }
+        visited[n] = COLOR.BLACK;
+        stack.push(n);
+        return true;
+    }
+}
