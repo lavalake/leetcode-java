@@ -1,0 +1,64 @@
+
+490. The Maze
+https://leetcode.com/problems/the-maze/description/
+https://leetcode.com/problems/the-maze/discuss/97071/Easy-understanding-Java-bfs-solution.
+/*
+special case
+0 0 1 0 0
+0 0 0 0 0 
+0 0 0 1 0
+1 1 0 1 1
+[0,4]
+[1,2]
+
+do not set true for intermidieate node. For exampl, from [0,4] to [3,4], do not set [1,4] [2,4] to visited.
+we only set visited to ture for the node as starting point. [0,4] [3,4]. other wise ,for following case,
+will return false be cuase dest is [2,4] which will pass by first run.
+0 0 1 0 0
+0 0 0 0 0 
+0 0 0 1 0
+1 1 0 1 1
+[0,4]
+[1,4]
+
+No need to set visited to false. becuase we will not revisit 
+*/
+class Solution {
+    
+    public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        //DIR[] direction = {DIR.UP, DIR.DOWN, DIR.LEFT, DIR.RIGHT};
+        int[] direction = {0,1,2,3};
+        int[][] step = new int[][]{{-1,0}, {1,0}, {0,-1}, {0,1}};
+        visited[start[0]][start[1]] = true;
+        for (int i=0; i<4; i++) {
+            if (dfs(maze, start[0]+step[i][0], start[1]+step[i][1], destination, visited, direction[i], step) == true) return true;
+        }
+        return false;
+    }
+    private boolean dfs(int[][] maze, int i, int j, int[] dest, boolean[][] v, int dir, int[][] step) {
+        //if (i<0 || i>maze.length || j<0 || j>maze[0].length || v[i][j] == true) reuturn -1;
+        if (i<0 || i>=maze.length || j<0 || j>=maze[0].length || v[i][j] == true) return false;
+        if (maze[i][j] == 1) return false;
+        
+         
+        //v[i][j] = true;
+        while (i>=0 && i<maze.length && j>=0 && j<maze[0].length && maze[i][j] == 0) {
+            
+            i += step[dir][0];
+            j += step[dir][1];
+        }
+        i -= step[dir][0];
+        j -= step[dir][1];
+        if (v[i][j]) return false;
+        v[i][j] = true;
+        if (dest[0] == i && dest[1] == j) return true;
+            for (int d=0; d<4; d++) {
+                if (dfs(maze, i+step[d][0], j+step[d][1], dest, v, d, step)) return true;
+                
+            }
+        //v[nextI][nextJ] = false;
+        //v[i][j] = false;
+        return false;
+    }
+}
