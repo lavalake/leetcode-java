@@ -1,0 +1,24 @@
+270. Closest Binary Search Tree Value
+https://leetcode.com/problems/closest-binary-search-tree-value/discuss/70392/Simple-iterative-Java-solution-with-explaination
+public int closestValue(TreeNode root, double target) {
+        int closestVal = root.val; 
+        while(root != null){ 
+            //update closestVal if the current value is closer to target
+            closestVal = (Math.abs(target - root.val) < Math.abs(target - closestVal))? root.val : closestVal;
+            if(closestVal == target){   //already find the best result
+                return closestVal;
+            }
+            root = (root.val > target)? root.left: root.right;   //binary search
+        }
+        return closestVal;
+  }
+  
+  class Solution {
+    public int closestValue(TreeNode root, double target) {
+        if (root.val == target) return root.val;
+        TreeNode next = root.val > target? root.left:root.right;
+        if (next == null) return root.val;
+        int nextVal = closestValue(next, target);
+        return Math.abs(root.val - target) <= Math.abs(nextVal - target)?root.val:nextVal;
+    }
+}
