@@ -1,0 +1,45 @@
+658. Find K Closest Elements
+The idea is to find the  number which is equal to or less than x in arr. 
+Then, we determine the indices of the start and the end of a subarray in arr, where the subarray is our result. 
+The time complexity is O(logn + k).
+
+In the following code, arr[index] is the first number which is euqal to or less than x (if all numbers are less than 
+x, index is arr.size()), and the result is arr[i+1, i+2, ... j].
+class Solution {
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        int left = 0, right = arr.length - 1, mid = 0;
+        while (left <= right) {
+            mid = left + (right - left)/2;
+            if (arr[mid] == x) break;
+            else if (arr[mid] < x) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        left = mid;
+        right = mid + 1;
+        int i = 0;
+        List<Integer> ret = new ArrayList<>();
+        int start = mid;
+        int count = k;
+        while (count>0) {
+            if (left < 0) {
+                break;
+            } else if (right >= arr.length) {
+                left--;
+                
+            }else if ((x - arr[left]) <= (arr[right] - x)) {
+                left--;
+            } else {
+                right++;
+            }
+            count--;
+        }
+        for (i=0; i<k; i++) {
+            ret.add(arr[i+left+1]);
+        }
+        return ret;
+    }
+    
+}
