@@ -1,0 +1,75 @@
+https://leetcode.com/problems/lru-cache/description/
+/*we need a map to recored the <key,value>
+we need to move the key to front when insert or get a key. So can not use array. A double linked list is a good choice.
+We use a double linked list to keep the key in time order. every time a new key inserted or visited, we move the node 
+to list front.
+The map use <key,Node> to store the node not the value. So we can use the key to find the node in the list and remove it.*/
+class LRUCache {
+    //use head to point to double linked list head
+    Node head;
+    Map<Integer,Node> map;
+    int capacity;
+    public LRUCache(int capacity) {
+        head = null;
+        map = new HashMap<Integer, Node>();
+        this.capacity = capacity;
+    }
+    
+    public int get(int key) {
+        if (map.containsKey(key)) {
+            Node keyNode = map.get(key);
+            removeNode(keyNode);
+            setHead(keyNode);
+            return keyNode.value;
+        }
+        return -1;
+    }
+    
+    public void put(int key, int value) {
+        Node keyNode;
+        if (map.containsKey(key)) {
+            keyNode = map.get(key);
+            removeNode(keyNode);
+            keyNode.value = value;
+        } else {
+            if (map.size() >= capacity) {
+                map.remove(head.pre.key);
+                removeNode(head.pre);
+                
+            }
+            keyNode = new Node(key, value);
+            map.put(key, keyNode);
+        }
+        setHead(keyNode);
+    }
+    public static class Node {
+        Node pre;
+        Node next;
+        int key;
+        int value;
+        public Node(int key, int value) {
+            //the node should point to itself for pre and next.
+            //that is if there is only one node in double linked list, it point to itself;
+            pre = this;
+            next = this;
+            this.key = key;
+            this.value = value;
+        }
+    }
+    private void removeNode(Node node) {
+        node.pre.next = node.next;
+        node.next.pre = node.pre;
+        if (head == node) head = node.next;
+    }
+    private void setHead(Node node) {
+        if (head == null) head = node;
+        else {
+            node.pre = head.pre;
+            head.pre = node;
+            node.next = head;
+            node.pre.next = node;
+            head = node;
+        }
+        
+    }
+}
