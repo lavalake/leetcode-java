@@ -1,6 +1,19 @@
 518. Coin Change 2
 https://leetcode.com/problems/coin-change-2/description/
 https://leetcode.com/problems/coin-change-2/discuss/99212/Knapsack-problem-Java-solution-with-thinking-process-O(nm)-Time-and-O(m)-Space
+this is knacksack problem.
+because coins sequence does not matter
+1112 and 2111 are same. 
+So amount loop should be inner loop
+1. can not reuse
+    for coins 0 - num
+        for amount v - 0
+2. can reuse but sequence does not matter
+    for coins 0 - num
+        for amount 0 - v
+3. can resue and sequence matters
+    for amount 0 - v
+        for coins 0 - num
 class Solution {
     public int change(int amount, int[] coins) {
         int[] dp = new int[amount+1];
