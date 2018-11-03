@@ -1,0 +1,36 @@
+430. Flatten a Multilevel Doubly Linked List
+
+
+corner case
+next is null, child is not null
+
+flatten child recursively, return tail node
+connect next with child node, set child to null
+connect tail with next, 
+do not forget connect prev
+*/
+class Solution {
+    public Node flatten(Node head) {
+        flattenHelper(head);
+        return head;
+    }
+    public Node flattenHelper(Node head) {
+        if (head == null ) return head;
+                    Node pre = head;
+
+        while (head != null) {
+            pre = head;
+            if (head.child != null) {
+                Node next = head.next;
+                Node tail = flattenHelper(head.child);
+                head.next = head.child;
+                head.child = null;
+                head.next.prev = head;
+                tail.next = next;
+                if (next != null) next.prev = tail;
+            }
+            head = head.next;
+        }
+        return pre;
+    }
+}
