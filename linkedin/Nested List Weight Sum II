@@ -83,3 +83,46 @@ class Solution {
         return ret;
     }
 }
+
+
+341. Flatten Nested List Iterator
+https://leetcode.com/problems/flatten-nested-list-iterator/description/
+
+/*special case
+[[]]
+
+for empty list, we need check it in hasNext() and guarantee the top of stack is integer.
+*/
+public class NestedIterator implements Iterator<Integer> {
+    Deque<NestedInteger> stack;
+    public NestedIterator(List<NestedInteger> nestedList) {
+        stack = new LinkedList<>();
+        pushNodes(stack, nestedList);
+    }
+
+    @Override
+    public Integer next() {
+        
+        return stack.pop().getInteger();
+            
+    }
+
+    @Override
+    public boolean hasNext() {
+        while (!stack.isEmpty() && !stack.peek().isInteger()) {
+            
+                NestedInteger node = stack.pop();
+                pushNodes(stack, node.getList());
+            
+        }
+        return !stack.isEmpty();
+    }
+    private void pushNodes(Deque<NestedInteger> stack, List<NestedInteger> root) {
+        for (int i=root.size()-1; i>=0; i--) {
+            NestedInteger node = root.get(i);
+            
+                stack.push(node);
+        }
+        
+    }
+}
