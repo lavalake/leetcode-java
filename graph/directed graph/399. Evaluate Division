@@ -1,0 +1,60 @@
+399. Evaluate Division
+https://leetcode.com/problems/evaluate-division/description/
+directed graph
+1. for every equations, there are two vertex, create two edge in graph.
+2. use a node to record the string and value in graph.
+
+class Solution {
+    public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
+        Map<String, List<Node>> graph = new HashMap<>();
+        Map<String, Boolean> visited = new HashMap<>();
+        for (int i=0; i<equations.length; i++) {
+            String[] e = equations[i];
+            if (!graph.containsKey(e[0])) {
+                graph.put(e[0], new ArrayList<Node>());
+            }
+            List<Node> nodes = graph.get(e[0]);
+            nodes.add(new Node(e[1], values[i]));
+            visited.put(e[0],false);
+            if (!graph.containsKey(e[1])) {
+                graph.put(e[1], new ArrayList<Node>());
+            }
+            nodes = graph.get(e[1]);
+            nodes.add(new Node(e[0], 1/values[i]));
+            visited.put(e[1],false);
+        }
+        double[] ret = new double[queries.length];
+        Arrays.fill(ret, -1.0);
+        
+        for (int i=0; i<queries.length; i++) {
+            if (!graph.containsKey(queries[i][0]) || !graph.containsKey(queries[i][1])) continue;
+            findValue(graph, queries[i][0], queries[i][1], i, ret, visited, 1.0);
+        }
+        return ret;
+    }
+    private boolean findValue(Map<String, List<Node>> graph, String s, String e, int i, double[] ret, Map<String, Boolean> visited, double value) {
+        boolean result = false;
+        if (visited.get(s) == true) return result;
+        if (s.equals(e)) {
+            ret[i] = value;
+            return true;
+        }
+        visited.put(s,true);
+        for (Node n : graph.get(s)) {
+            if (findValue(graph, n.div, e, i, ret, visited, value * n.factor)){
+                result = true;
+                break;
+            } 
+        }
+        visited.put(s, false);
+        return result;
+    }
+    public class Node {
+        double factor;
+        String div;
+        public Node(String div, double factor) {
+            this.factor = factor;
+            this.div = div;
+        }
+    }
+}
