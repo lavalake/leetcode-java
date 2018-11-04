@@ -1,0 +1,4 @@
+https://en.wikipedia.org/wiki/Quicksort#Repeated_elements
+https://en.wikipedia.org/wiki/Dutch_national_flag_problem
+variants of the quicksort algorithm that must be robust to repeated elements may use a three-way partitioning function 
+that groups items less than a given key (red), equal to the key (white) and greater than the key (blue)
