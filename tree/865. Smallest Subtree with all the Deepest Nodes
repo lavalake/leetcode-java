@@ -1,0 +1,33 @@
+to have the deepest subtree, the subtree must have equals depth of left and right tree.
+so we can compare from root, the left depth and right depth. if equals, then we find it. if not, then we go to the deeper
+subtree.
+class Solution {
+    Map<TreeNode, Integer> mem = new HashMap<>();
+    public TreeNode subtreeWithAllDeepest(TreeNode root) {
+        if (root == null) return null;
+        
+        int ret = 0;
+        int left = 0, right = 0;
+        if (mem.containsKey(root.left)) left = mem.get(root.left);
+        else{
+            left = depth(root.left);
+            mem.put(root.left, left);
+        }
+            
+        if (mem.containsKey(root.right)) right = mem.get(root.right);
+        else {
+            right = depth(root.right);
+            mem.put(root.right, right);
+        }
+            
+        if (left == right) return root;
+        if (left > right) return subtreeWithAllDeepest(root.left);
+        else return subtreeWithAllDeepest(root.right);
+    }
+    private int depth(TreeNode root) {
+        if (root == null) return 0;
+        int left = depth(root.left);
+        int right = depth(root.right);
+        return Math.max(left,right) + 1;
+    }
+}
