@@ -1,0 +1,53 @@
+
+https://leetcode.com/problems/range-sum-query-mutable/description/
+class NumArray {
+    Node root;
+    public class Node {
+        int left, right;
+        Node leftNode, rightNode;
+        int sum;
+        public Node(int left, int right) {
+            this.left = left;
+            this.right = right;
+        }
+    }
+    private Node buildTree(int[] nums, int left, int right) {
+        Node newNode = new Node(left, right);
+        if (left > right) return null;
+        if (left == right) {
+            newNode.sum = nums[left];
+            return newNode;
+        }
+        newNode.leftNode = buildTree(nums, left, left+(right-left)/2);
+        newNode.rightNode = buildTree(nums, left+(right-left)/2+1, right);
+        newNode.sum = newNode.leftNode.sum + newNode.rightNode.sum;
+        return newNode;
+    }
+    public NumArray(int[] nums) {
+        root = buildTree(nums, 0, nums.length-1);
+    }
+    
+    public void update(int i, int val) {
+        updateTree(root, i, val);
+    }
+    private void updateTree(Node node, int i, int val) {
+        if (node.left == i && node.right == i){
+            node.sum = val;
+            return;
+        } 
+        int mid = node.left + (node.right - node.left)/2;
+        if (i > mid) updateTree(node.rightNode, i, val);
+        else updateTree(node.leftNode, i, val);
+        node.sum = node.leftNode.sum + node.rightNode.sum;
+    }
+    public int sumRange(int i, int j) {
+        return calSum(root, i, j);
+    }
+    private int calSum(Node node, int i, int j) {
+        if (node.left == i && node.right == j) return node.sum;
+        int mid = node.left + (node.right - node.left)/2;
+        if (i > mid) return calSum(node.rightNode, i, j);
+        if (j <= mid) return calSum(node.leftNode, i, j);
+        return calSum(node.leftNode, i, mid) + calSum(node.rightNode, mid+1, j);
+    }
+}
