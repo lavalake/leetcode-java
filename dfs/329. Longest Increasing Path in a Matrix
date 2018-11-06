@@ -1,0 +1,66 @@
+Given an integer matrix, find the length of the longest increasing path.
+
+From each cell, you can either move to four directions: left, right, up or down. You may NOT move diagonally or move outside of the boundary (i.e. wrap-around is not allowed).
+
+Example 1:
+
+Input: nums = 
+[
+  [9,9,4],
+  [6,6,8],
+  [2,1,1]
+] 
+Output: 4 
+Explanation: The longest increasing path is [1, 2, 6, 9].
+
+use dfs and memorization
+use a cache to memoryze all the node we have already calculated.
+
+class Solution {
+    int maxLen = 0;
+    Map<Integer, Integer> cache = new HashMap<>();
+    public int longestIncreasingPath(int[][] matrix) {
+        if (matrix.length == 0 || matrix[0].length == 0) return maxLen;
+        
+        boolean[][] visited = new boolean[matrix.length][matrix[0].length];
+        for (int i=0; i<matrix.length; i++) {
+            for (int j=0; j<matrix[0].length; j++) {
+                 
+                int len = dfs(matrix, visited, i, j);
+                maxLen = Math.max(maxLen, len);
+                cache.put(i*matrix[0].length+j, len);
+            }
+        }
+        return maxLen;
+    }
+    private int dfs(int[][] matrix, boolean[][] visited, int i, int j) {
+        int subMax = 0;
+        if (i < 0 || i == matrix.length || j<0 || j==matrix[0].length) return subMax;
+        if (cache.containsKey(i*matrix[0].length+j)) return cache.get(i*matrix[0].length+j);
+        visited[i][j] = true;
+        
+        if (i>0 && matrix[i][j] < matrix[i-1][j]){
+            int n = dfs(matrix, visited, i-1, j);
+            
+            subMax = Math.max(subMax, n);
+        } 
+        if ((i<matrix.length-1) && matrix[i][j] < matrix[i+1][j]){
+            int n = dfs(matrix, visited, i+1, j);
+            //cache.put((i+1)*matrix[0].length+j, n);
+            subMax = Math.max(subMax, n);
+        }
+        if (j>0 && matrix[i][j] < matrix[i][j-1]) {
+            int n = dfs(matrix, visited, i, j-1);
+            //cache.put((i)*matrix[0].length+j-1, n);
+            subMax = Math.max(subMax, n);
+        }
+        if ((j<matrix[0].length-1) && matrix[i][j] < matrix[i][j+1]) {
+            int n = dfs(matrix, visited, i, j+1);
+            //cache.put((i)*matrix[0].length+j+1, n);
+            subMax = Math.max(subMax, n);
+        }
+        visited[i][j] = false;
+        cache.put((i)*matrix[0].length+j, subMax+1);
+        return subMax+1;
+    }
+}
