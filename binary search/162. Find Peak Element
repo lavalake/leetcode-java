@@ -1,11 +1,29 @@
 162. Find Peak Element
 A peak element is an element that is greater than its neighbors.
 https://leetcode.com/problems/find-peak-element/discuss/50239/Java-solution-and-explanation-using-invariants
-此题的关键是始终维持一个区间
+/*此题的关键是始终维持一个区间
 
 nums[left] > nums[left-1] && nums[right] > nums[right+1]
-最终left + 1 =  right
-这nums[left] 和 nums[right] 大的即使结果
+最终left  =  right
+这nums[left] 即使结果*/
+class Solution {
+    public int findPeakElement(int[] nums) {
+        int left = 0, right = nums.length-1;
+        //need compare mid and mid+1, so here can not left==right. it could be overflow mid+1
+        while (left  < right) {
+            int mid = left + (right - left)/2;
+            //note, here compare mid and mid+1. so need to check mid
+            //if ((mid != nums.length - 1) && nums[mid] < nums[mid+1]) {
+            if (nums[mid] < nums[mid+1]) {
+                left = mid + 1;
+            } else {
+                //right can not be mid-1. because mid is the higher one
+                right = mid;
+            }
+        }
+        return left;
+    }
+}
 
 I find it useful to reason about binary search problems using invariants. While there are many solutions posted here, neither of them provide (in my opinion) a good explanation about why they work. I just spent some time thinking about this and I thought it might be a good idea to share my thoughts.
 
