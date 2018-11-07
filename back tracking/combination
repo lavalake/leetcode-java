@@ -14,8 +14,9 @@ https://leetcode.com/problems/combination-sum/description/
 for this question. It's a little different with combination. The number can be resued. So we need start from i untill the
 sum is equals the target. or large than target.
 from start to num
+    i = start, n
     list.add(start)
-    helper(i+1)
+    helper(i)
     list.remove(list.size()-1)
     
 3. Combination Sum II
