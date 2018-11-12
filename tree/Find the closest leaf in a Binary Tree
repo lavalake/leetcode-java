@@ -1,0 +1,7 @@
+Find the closest leaf in a Binary Tree
+https://www.geeksforgeeks.org/find-closest-leaf-binary-tree/
+1. find the node of k
+2. remember all the ancestors when tracking down to k
+3. compute the depth of node k
+4. compute all the depth of its ancestors
+5. return min
