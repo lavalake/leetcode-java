@@ -1,18 +1,21 @@
 https://leetcode.com/problems/diameter-of-binary-tree/description/
 /*Pay attention that we define "The diameter of a binary tree is the length of the longest path between any 
-two nodes in a tree" in the problem, that is why we update with "max = Math.max(max, left + right);" 
-instead of "max = Math.max(max, left + right + 1);".*/
+two nodes in a tree" in the problem, The length of path between two nodes is represented by the number of edges between them
+that is why we update with "max = Math.max(max, left + right);" 
+instead of "max = Math.max(max, left + right + 1);".
+pay attention this prolem need number of edge, not depth
+*/
 class Solution {
     int max = 0;
     public int diameterOfBinaryTree(TreeNode root) {
-        helper(root);
+        depth(root);
         return max;
     }
-    private int helper(TreeNode root) {
+    private int depth(TreeNode root) {
         if (root == null) return 0;
-        int left = helper(root.left);
-        int right = helper(root.right);
+        int left = depth(root.left);
+        int right = depth(root.right);
         max = Math.max(max, left + right);
-        return Math.max(left+1, right+1);
+        return Math.max(left, right)+1;
     }
 }
