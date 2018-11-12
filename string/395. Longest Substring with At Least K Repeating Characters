@@ -1,0 +1,32 @@
+395. Longest Substring with At Least K Repeating Characters
+recursive
+
+/*
+test case
+ababbc
+*/
+public class Solution {
+    int longestSubstring(String s, int k) {
+        if (s.length() < k) return 0;
+        int[] freq = new int[26];
+        int maxLen = 0;
+        for (char c : s.toCharArray()) {
+            freq[c-'a']++;
+        }
+        int start = 0;
+        for (int i=0; i<s.length(); i++) {
+            if (freq[s.charAt(i)-'a'] < k) {
+                //if (start+k <= i)   
+                    maxLen = Math.max(maxLen, longestSubstring(s.substring(start, i), k));
+                //need move start to next i here. keep start always be the first char that have
+                //k repeat
+                start = i+1;
+            }
+        }
+        //if start does not move, that means whole string match
+        if (start == 0) return s.length();
+        //if the last part match. aabbbb 4, then when we reach here, start is 2, we need check
+        //the left part (2,5)
+        return Math.max(maxLen, longestSubstring(s.substring(start, s.length()), k));
+    }
+};
