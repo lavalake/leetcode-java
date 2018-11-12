@@ -1,5 +1,23 @@
 
 449. Serialize and Deserialize BST
+①  与Serialize and Deserialize Binary Tree相似，但是一般的树变成了BST，而且要求是as compact as possible。还是可以用preorder，
+还是需要分隔符，但是null就不需要保存了。deserialize部分要变得复杂，left的值总是小于root的值，right的值总是大于root的值，
+根据这个每次recursion的时候把左边的值都放到另一个queue里面，剩下的就是右边的值。
+preorder, recursive solution
+Serialize
+1. sb.append(root.value)
+2. serialize(root.left, sb)
+3. serialize(root.right, sb)
+
+Deserialize
+1. sb.split(",")
+2. add to queue
+3. root = helper(queue)
+4. create a root node, root.val = queue.poll();
+5. for all values less the root.val, move to another queue called leftQ
+6. root.left = helper(leftQ)
+7. rest nodes in queue is root.right = helper(queue)
+
 Use BFS, level order
 
 public class Codec {
