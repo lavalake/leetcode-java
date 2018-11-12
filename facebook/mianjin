@@ -1,0 +1,5 @@
+LC282
+494
+https://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=436568
+给两个字符串 a and b，return positive 1 if a > b, return 0 if a == b, return -1 if a < b。字符串里可包含字符和数字。 如果是数字和字母比较的话， 数字在字母前面。 数字的话就比较大小。  可以用 Integer.compare(num1, num2). 
+比如“ab11b”, “ab11b1”的话return -1。
