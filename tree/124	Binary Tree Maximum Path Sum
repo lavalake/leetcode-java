@@ -1,0 +1,5 @@
+https://www.geeksforgeeks.org/find-maximum-path-sum-in-a-binary-tree/
+1. Node only
+2. Max path through Left Child + Node
+3. Max path through Right Child + Node
+4. Max path through Left Child + Node + Max path through Right Child
