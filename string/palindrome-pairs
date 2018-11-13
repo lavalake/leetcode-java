@@ -1,1 +1,41 @@
 http://fisherlei.blogspot.com/2017/07/leetcode-palindrome-pairs-solution.html
+所以对于任意一个词，我们总是可以在其中任意一个位置K把它一切为二
+那么对于可能的candidate只有情况：
+
+left 是 palindrome，那么可能的组合是 candidate | left | right，candidate就是right的翻转
+right 是palindrome， 那么可能的组合是 left | right | candidate, 而这里candidate是left的翻转
+vector<vector<int>> palindromePairs(vector<string>& words) {  
+2:      unordered_map<string, int> dict;  
+3:      set<vector<int>> result;  
+4:      for(int i =0; i< words.size(); i++) {  
+5:        string word = words[i];  
+6:        reverse(word.begin(), word.end());  
+7:        dict[word] = i;  
+8:      }  
+9:      for(int i =0; i< words.size(); i++) {  
+10:        string word = words[i];  
+11:        // 切字符串三种情况，最左边切，中间切，和最右边切。   
+12:        //注意，这里j<= word.size()为了cover最右边切这种情况  
+13:        for(int j = 0; j<=word.size(); j++) {  
+14:          string left = word.substr(0, j);  
+15:          string right = word.substr(j, word.size() - j);  
+16:          // candi | left | right  
+17:          if(isPalindro(left) && dict.find(right) != dict.end() && dict[right] != i) {  
+18:            result.insert({dict[right], i});  
+19:          }  
+20:          // left | right | candi  
+21:          if(isPalindro(right) && dict.find(left) != dict.end() && dict[left] != i) {  
+22:            result.insert({i, dict[left]});  
+23:          }  
+24:        }   
+25:      }  
+26:      std::vector<vector<int>> output(result.begin(), result.end());   
+27:      return output;  
+28:    }  
+29:    bool isPalindro(string& str) {  
+30:      int left = 0, right = str.size() -1;  
+31:      while(left < right) {  
+32:        if(str[left++] != str[right--]) return false;  
+33:      }  
+34:      return true;  
+35:    }  
