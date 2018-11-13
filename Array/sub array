@@ -175,3 +175,9 @@ class Solution {
         return ret == Integer.MAX_VALUE?0:ret;
     }
 }
+
+find-subarray-with-given-sum
+this solution use sliding window or two pointer. which is more general. because this solution could used to solve
+prolem with sum equals to target or less/large than target. presum map solution only fit for equals
+https://www.geeksforgeeks.org/find-subarray-with-given-sum/
+but if there are negative numbers in the array, this sliding window does not work. We should use presum map.
