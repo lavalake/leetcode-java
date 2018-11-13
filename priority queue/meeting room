@@ -1,0 +1,23 @@
+1. sort according start time
+2. add end time to priority queue
+3. if new start time larger equals to the earliest end time, poll and add new one
+4. the size of priority queue is the concurrent meetings and rooms
+
+class Solution {
+    public int minMeetingRooms(Interval[] intervals) {
+        Arrays.sort(intervals, (a,b)->(a.start-b.start));
+        
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        int ret = 0;
+        for(Interval interval : intervals) {
+            if(!pq.isEmpty() && pq.peek() <= interval.start) {
+                pq.poll();
+            }
+            
+            pq.offer(interval.end);
+            ret = Math.max(ret, pq.size());
+        }
+        
+        return ret;
+    }
+}
