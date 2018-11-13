@@ -1,0 +1,62 @@
+https://leetcode.com/problems/remove-invalid-parentheses/
+
+/*
+test case
+()())()
+((())
+)()()
+(a)(()))
+
+Observation:
+if(found) continue; => This might add a shorter length string (max_len-1 to be precise) to the queue, but those will necessary be not valid so wont get added to the result. Reason: strlen needs to be even to be valid. strlen-1 will be odd and so never valid.
+
+The case to visualize : Lets say string length is 7, so you can have 7 substrings of length 6 at level 1.
+Let's say first 4 were invalid, so they will be further chopped to length 5 and put on queue at level 2. 
+Now you drain the queue once you find the valid case which is string 5 with len=6. None of those len=5 
+strings on queue can be valid as they are odd length.
+*/
+class Solution {
+    public List<String> removeInvalidParentheses(String s) {
+        List<String> ret = new ArrayList<>();
+        Set<String> visited = new HashSet<>();
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(s);
+        visited.add(s);
+        //should define here, whenever we found a valid substring, we will stop the bfs
+        //no longer add substring to queue
+        boolean found = false;
+        int targetLen = 0;
+        while (!queue.isEmpty()) {
+            String str = queue.poll();
+            if (isValid(str)) {
+                ret.add(str);
+                found = true;
+            }
+            //this is used to stop the bfs. if we found a valid one. then we should stop
+            //go further into the substring. This problem requrie to delete minimum character
+            if (found) continue;
+            //here we may add some lower level substring before we found the valid substring
+            //but it will be removed because they should be invalid. Because the valid has even length
+            //the lower level has odd length and which can not be valid.
+            for (int i=0; i<str.length(); i++) {
+                if (str.charAt(i) != '(' && str.charAt(i) != ')') continue;
+                String t = str.substring(0, i) + str.substring(i+1);
+                if (!visited.contains(t)) {
+                    queue.offer(t);
+                    visited.add(t);
+                }
+                    
+            }
+        }
+        return ret;
+    }
+    private boolean isValid(String s) {
+        int count = 0;
+        for (char c : s.toCharArray()) {
+            if (c == '(') count++;
+            else if (c == ')') count--;
+            if (count < 0) return false;
+        }
+        return count==0;
+    }
+}
