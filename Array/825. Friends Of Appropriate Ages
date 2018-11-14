@@ -1,0 +1,30 @@
+
+https://leetcode.com/problems/friends-of-appropriate-ages/description/
+Some people will make friend requests. The list of their ages is given and ages[i] is the age of the ith person. 
+
+Person A will NOT friend request person B (B != A) if any of the following conditions are true:
+
+age[B] <= 0.5 * age[A] + 7
+age[B] > age[A]
+age[B] > 100 && age[A] < 100
+Otherwise, A will friend request B.
+https://leetcode.com/problems/friends-of-appropriate-ages/discuss/127341/10ms-concise-Java-solution-O(n)-time-and-O(1)-space
+class Solution {
+    public int numFriendRequests(int[] ages) {
+        int[] ageNum = new int[121];
+        int[] ageSum = new int[121];
+        int ret = 0;
+        for (int i : ages) {
+            ageNum[i]++;
+        }
+        for (int i=1; i<121; i++) {
+            ageSum[i] = ageSum[i-1] + ageNum[i];
+        }
+        for (int i=15; i<121; i++) {
+            if (ageNum[i] == 0) continue;
+            int count = ageSum[i] - ageSum[i/2 + 7];
+            ret += count*ageNum[i] - ageNum[i];
+        }
+        return ret;
+    }
+}
