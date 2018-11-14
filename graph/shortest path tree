@@ -1,3 +1,6 @@
+This Java program,to Implement Dijkstra’s algorithm using Priority Queue.Dijkstra’s algorithm is a graph search algorithm 
+that solves the single-source shortest path problem for a graph with non-negative edge path costs, 
+producing a shortest path tree.
 https://www.baeldung.com/java-dijkstra
 https://www.cs.usfca.edu/~galles/visualization/Dijkstra.html
 https://www.geeksforgeeks.org/dijkstras-algorithm-for-adjacency-list-representation-greedy-algo-8/
