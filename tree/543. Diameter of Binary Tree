@@ -4,6 +4,9 @@ two nodes in a tree" in the problem, The length of path between two nodes is rep
 that is why we update with "max = Math.max(max, left + right);" 
 instead of "max = Math.max(max, left + right + 1);".
 pay attention this prolem need number of edge, not depth
+difference between this one with 124	Binary Tree Maximum Path Sum
+this one, must start from a leaf and end at a leaf
+124 does not need to start or stop at a leaf
 */
 class Solution {
     int max = 0;
