@@ -108,3 +108,22 @@ Combining the above two formulas, we obtain the recursive formula for G(n). i.e.
 
 G(n) = G(0) * G(n-1) + G(1) * G(n-2) + … + G(n-1) * G(0) 
 In terms of calculation, we need to start with the lower number, since the value of G(n) depends on the values of G(0) … G(n-1).
+
+https://leetcode.com/articles/unique-binary-search-trees/
+Complexity Analysis
+
+Time complexity : the main computation of the algorithm is done at the statement with G[i]. So the time complexity is 
+essentially the number of iterations for the statement, which is \sum_{i=2}^{n} i = \frac{(2+n)(n-1)}{2}∑ 
+i=2
+n
+​	
+ i= 
+2
+(2+n)(n−1)
+​	
+ , to be exact, therefore the time complexity is O(N^2)O(N 
+2
+ )
+
+Space complexity : The space complexity of the above algorithm is mainly the storage to keep all the intermediate solutions, 
+therefore O(N)O(N).
