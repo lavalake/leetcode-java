@@ -30,3 +30,57 @@ class Solution {
         return sum[amount]==Integer.MAX_VALUE?-1:sum[amount];
     }
 }
+
+518. Coin Change 2
+You are given coins of different denominations and a total amount of money. Write a function to compute the number of 
+combinations that make up that amount. You may assume that you have infinite number of each kind of coin.
+
+Note: You can assume that
+
+0 <= amount <= 5000
+1 <= coin <= 5000
+the number of coins is less than 500
+the answer is guaranteed to fit into signed 32-bit integer
+ 
+
+Example 1:
+
+Input: amount = 5, coins = [1, 2, 5]
+Output: 4
+Explanation: there are four ways to make up the amount:
+5=5
+5=2+2+1
+5=2+1+1+1
+5=1+1+1+1+1
+/*
+this is knacksack problem.
+because coins sequence does not matter
+1112 and 2111 are same. 
+So amount loop should be inner loop
+1. can not reuse
+    for coins 0 - num
+        for amount v - 0
+2. can reuse but sequence does not matter
+    for coins 0 - num
+        for amount 0 - v
+3. can resue and sequence matters
+    for amount 0 - v
+        for coins 0 - num
+*/
+class Solution {
+    public int change(int amount, int[] coins) {
+        int[] dp = new int[amount+1];
+        dp[0] = 1;
+        for (int i = 0; i< coins.length; i++) {
+            for (int j=coins[i]; j<=amount; j++) {
+                
+                    dp[j] += dp[j-coins[i]];
+            }
+        }
+        return dp[amount];
+    }
+}
+
+if sequence matters
+1,2 and 2,1
+then amount should put in outer loop
