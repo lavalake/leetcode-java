@@ -1,0 +1,45 @@
+https://leetcode.com/problems/divide-two-integers/description/
+Given two integers dividend and divisor, divide two integers without using multiplication, division and mod operator.
+
+Return the quotient after dividing dividend by divisor.
+
+The integer division should truncate toward zero.
+
+Example 1:
+
+Input: dividend = 10, divisor = 3
+Output: 3
+
+/*
+special case
+MIN_VALUE, -1 return MAX_VALUE
+100, 0
+100, -1
+*/
+class Solution {
+    public int divide(int dividend, int divisor) {
+        int sign = 1;
+        if ((dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0)) sign = -1;
+        if (dividend == Integer.MIN_VALUE && divisor == -1) return Integer.MAX_VALUE;
+        long ldividend = Math.abs((long) dividend);
+        long ldivisor = Math.abs((long) divisor);
+        if (ldividend < ldivisor) return 0;
+        if (divisor == 0) return Integer.MAX_VALUE;
+        int ret = 0;
+        while (ldividend >= ldivisor) {
+            long temp = ldivisor, factor = 1;
+            while (ldividend >= (temp<<1)) {
+                temp = temp << 1;
+                factor = factor << 1;
+            }
+            ret += factor;
+            ldividend -= temp;
+
+        }
+        if (ret > Integer.MAX_VALUE) {
+            if (sign == 1) return Integer.MAX_VALUE;
+            else return Integer.MIN_VALUE;
+        }
+        return ret*sign;
+    }
+}
