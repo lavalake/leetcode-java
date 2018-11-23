@@ -1,0 +1,33 @@
+1.preorder postorder. 1point3acres
+2.伪代码
+3.猜数据结构
+4.dfs复杂度
+
+5.Username system
+  给用户起名，如果有两个用户名字一样，就给重复的名字加数字编号。比如出现两个“alex" 应该返回的是“alex” “alex1"。 简单的hashmap就做出来了
+6.Build sequence
+https://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=438841&extra=page%3D3%26filter%3Dsortid%26sortid%3D311%26searchoption%5B3046%5D%5Bvalue%5D%3D40%26searchoption%5B3046%5D%5Btype%5D%3Dradio%26sortid%3D311%26orderby%3Ddateline
+
+7.Even subarray
+https://www.1point3acres.com/bbs/thread-438109-1-1.html
+https://www.geeksforgeeks.org/number-subarrays-m-odd-numbers/
+even subarray 这个直接暴力，i，j两个loop，然后存到set<vector<int>>, 最后直接return size就好了
+
+给一个循环链表，要实现queue，O(1)入队出队，问需不需要额外指针 answer 0
+给求最大公约数算法写结果，gcd(a,b)
+给一个palindrome，更改其中一个字母，使其变为非palindrome。
+给一个数组，对其中一些数字进行加或者减，最后让数组非严格单调递增或者递减，求最小cost（每对一个数字+1或者-1，cost++）。dp就行了。
+perfect team
+Build the subsequence 纯dfs
+Shifting string 这个要注意，注意left shift right shift 会大于string size，%解决
+
+Climb the hill  按这个来，就是它这个代码有bug只能实现非单调递减，我是直接把sort那一步reverse跑第二遍，可以。http://www.hankcs.com/program/cpp/poj-3666-making-the-grade.html
+总体思路是DP，假设原来是a，排序后是b（其实是离散化）。已知如果修改一个数字一定是改成原来数组里有的另一个数字。
+dp[j]表示a前i个元素满足条件并且最大不超过bj的最小cost。
+转移条件dp[j] = min(dp[j-1], dp[i-1][j] + |ai - bj|)
+初始化要注意一下. From 1point 3acres bbs
+以及升序降序其实一样，做升序然后reverse之后在做一遍就行了
+
+Team formatiom2 给你一个队员的skills值list，然后组队。组队的要求是：1.每个成员的skill值在一个给定范围里 2.要求大于等于k个人  这个就是算数学公式 算出阶乘数组 就好解决啦
+如果符合条件的人数有n个， 组队最少k个人， 下面的公式对吗？
+n! * (1/(k! *(n - k)!) + 1/((k + 1)! *(n - k -1)!) + .....  + 1/(n!) )
