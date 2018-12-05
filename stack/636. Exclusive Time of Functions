@@ -1,18 +1,33 @@
 636. Exclusive Time of Functions
 https://leetcode.com/problems/exclusive-time-of-functions/discuss/105062/Java-Stack-Solution-O(n)-Time-O(n)-Space
-public int[] exclusiveTime(int n, List<String> logs) {
-    int[] res = new int[n];
-    Stack<Integer> stack = new Stack<>();
-    int prevTime = 0;
-    for (String log : logs) {
-        String[] parts = log.split(":");
-        if (!stack.isEmpty()) res[stack.peek()] +=  Integer.parseInt(parts[2]) - prevTime; 
-        prevTime = Integer.parseInt(parts[2]);
-        if (parts[1].equals("start")) stack.push(Integer.parseInt(parts[0]));
-        else {
-            res[stack.pop()]++;
-            prevTime++;
+/*notes
+1. the curTime is different for start and end.
+start time means begining of this seconds
+end time means ending of this seconds
+2. use stack. every time update the duration of the stack top
+*/
+class Solution {
+    public int[] exclusiveTime(int n, List<String> logs) {
+        Deque<Integer> stack = new LinkedList<>();
+        int[] result = new int[n];
+        int preTime = 0;
+        for (String str : logs) {
+            String[] sub = str.split(":");
+            int curTime = Integer.valueOf(sub[2]);
+            if (!stack.isEmpty()) {
+                result[stack.peek()] += curTime - preTime;
+            }
+            //!!!!!!!use equals, not "==" to compare string
+            if (sub[1].equals("start")){
+                stack.push(Integer.valueOf(sub[0]));
+                
+            } else {
+                result[stack.pop()]++;
+                curTime++;
+                
+            }
+            preTime = curTime;
         }
+    return result;
     }
-    return res;
 }
