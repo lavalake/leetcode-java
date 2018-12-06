@@ -1,4 +1,12 @@
-
+/*
+three cases:
+1. no overlap
+    a. cur interval end < newInterval.start. just add cur interval to result
+    b. cur interval start > newInterval.end if we did not add newInterval yet, add it first, then add cur interval to result
+       if we already add newIterval, just add cur interval
+2. overlap
+    update newInterval.start and end
+*/
 class Solution {
     public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
         List<Interval> result = new ArrayList<>();
