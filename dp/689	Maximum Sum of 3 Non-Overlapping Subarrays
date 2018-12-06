@@ -1,3 +1,63 @@
+/*
+special case
+k=1
+2. 1,2,1,2,6,7,5,1 k=2
+the output should be 0 3, 5 not 1 3 5
+even 1 3 5 is a valid result. we need choose the left most valid one
+Alg
+when we fix the starting index i of the mid subarray, we need to know following
+the starting index of the max sub array ending of i-1
+the starting index of the max sub array starting of i+k
+so can preprocessing the sum of the array to calculate the following to arrays
+left[i] means the starting index for max subarray ending by i
+right[j] means the starting index for max subarray starting from j
+*/
+class Solution {
+    public int[] maxSumOfThreeSubarrays(int[] nums, int k) {
+        int[] preSum = new int[nums.length+1];
+        int[] result = new int[3];
+        int maxSum = Integer.MIN_VALUE;
+        int i = 0;
+        for (i=1; i<=nums.length; i++) {
+            preSum[i] = preSum[i-1] + nums[i-1];
+        }
+        int tot = preSum[k] - preSum[0];
+        int[] left = new int[nums.length];
+        int[] right = new int[nums.length];
+        for (i=k; i<=nums.length-k; i++) {
+            //here need update the index only when sum large than currun sum
+            if (preSum[i]-preSum[i-k] > tot) {
+                tot = preSum[i] - preSum[i-k];
+                left[i-1] = i-k;
+            } else {
+                //when k=1, left[i-2] could be -1. here need to check the overflow
+                left[i-1] = i-1>0?left[i-2]:0;
+            }
+        }
+        
+        tot = preSum[nums.length] - preSum[nums.length-k];
+        for (i=nums.length; i>k; i--) {
+            if (preSum[i] - preSum[i-k] >= tot) {
+                tot = preSum[i] - preSum[i-k];
+                right[i-k] = i-k;
+            } else {
+                right[i-k] = right[i-k+1];
+            }
+        }
+        for (i=k; i<=nums.length-2*k; i++) {
+            int leftMax = preSum[left[i-1]+k] - preSum[left[i-1]];
+            int rightMax = preSum[right[i+k]+k] - preSum[right[i+k]];
+            int mid = preSum[i+k] - preSum[i];
+            if (leftMax+rightMax+mid > maxSum) {
+                maxSum = leftMax+rightMax+mid;
+                result[0] = left[i-1];
+                result[1] = i;
+                result[2] = right[i+k];
+            }
+        }
+        return result;
+    }
+}
 http://www.cnblogs.com/grandyang/p/8453386.html
 这道题给了我们一个只包含正数的数组，让我们找三个长度为k的不重叠的子数组，使得所有子数组的数字之和最大。首先我们应该明确的是，暴力搜索在这道题上基本不太可能，因为遍历一个子数组的复杂度是平方级，遍历三个还不得六次方啊，看OJ不削你～那么我们只能另辟蹊径，对于这种求子数组和有关的题目时，一般都需要建立累加和数组，为啥呢，因为累加和数组可以快速的求出任意长度的子数组之和，当然也能快速的求出长度为k的子数组之和。因为这道题只让我们找出三个子数组，那么我们可以先确定中间那个子数组的位置，这样左右两边的子数组的位置范围就缩小了，中间子数组的起点不能是从开头到结尾整个区间，必须要在首尾各留出k个位置给其他两个数组。一旦中间子数组的起始位置确定了，那么其和就能通过累加和数组快速确定。那么现在就要在左右两边的区间内分别找出和最大的子数组，遍历所有的子数组显然不是很高效，如何快速求出呢，这里我们需要使用动态规划Dynamic Programming的思想来维护两个DP数组left和right，其中:
 
