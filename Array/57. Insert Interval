@@ -1,0 +1,25 @@
+
+class Solution {
+    public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+        List<Interval> result = new ArrayList<>();
+        boolean found = false;
+        for (int i=0; i<intervals.size(); i++) {
+            if (intervals.get(i).start > newInterval.end) {
+                if (!found){
+                    result.add(newInterval);
+                    found = true;
+                }
+                //here no need else. because we always need to add this interval
+                result.add(intervals.get(i));
+                
+            } else if (intervals.get(i).end < newInterval.start){
+                result.add(intervals.get(i));
+            } else {
+                newInterval.start = Math.min(newInterval.start, intervals.get(i).start);
+                newInterval.end = Math.max(newInterval.end, intervals.get(i).end);
+            }
+        }
+        if (!found) result.add(newInterval);
+        return result;
+    }
+}
