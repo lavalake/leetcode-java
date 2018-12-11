@@ -3,6 +3,11 @@ https://leetcode.com/problems/alien-dictionary/discuss/199954/My-2ms-Java-Soluti
 /*
 topologycal sort
 bfs or dfs
+dfs:
+1. use color to detect circle
+    1: init
+    2: visiting neighbor
+    3: visited
 https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/
 1. need to consider circle
 2. all remaining char which does not have any dependency
@@ -30,12 +35,10 @@ wert
 class Solution {
     public String alienOrder(String[] words) {
         Map<Character, Set<Character>> graph = new HashMap<>();
-        Set<Character> vertex = new HashSet<>();
-        Set<Character> toVertex = new HashSet<>();
-        Set<Character> visited = new HashSet<>();
+        int[] color = new int[26];
         for (String word : words) {
             for (char c : word.toCharArray()) {
-                visited.add(c);
+                color[c-'a'] = 1;
             }
         }
         for (int i=1; i<words.length; i++) {
@@ -44,51 +47,47 @@ class Solution {
                     int from = i-1, to = i;
                     if (!graph.containsKey(words[from].charAt(j))) {
                         graph.put(words[from].charAt(j), new HashSet<Character>());
-                        vertex.add(words[from].charAt(j));
                     }
                     graph.get(words[from].charAt(j)).add(words[to].charAt(j));
-                    vertex.remove(words[to].charAt(j));
-                    toVertex.add(words[to].charAt(j));
+                    //remeber to break if we found the edge
                     break;
                 }
             }
         }
         Deque<Character> stack = new LinkedList<>();
         StringBuilder result = new StringBuilder();
-        for (char c : vertex) {
-                    int[] color = new int[26];
-
-            if (dfs(graph, c, stack, visited, color)) return "";
+        for (int i=0; i<26; i++) {
+            
+            if (color[i] == 1) {
+                if (dfs(graph, (char)(i+'a'), stack, color)) return "";
+            }
+            
         }
-        for (char c : visited) {
-            stack.push(c);
-        }
+        
         while (!stack.isEmpty()) {
             result.append(stack.pop());
         }
         
         return result.toString();
     }
-    private boolean dfs(Map<Character, Set<Character>> graph, char index, Deque<Character> stack, Set<Character> visited, int[] color) {
+    private boolean dfs(Map<Character, Set<Character>> graph, char index, Deque<Character> stack, int[] color) {
         
-        if (!visited.contains(index)) return false;
-        if (color[index-'a'] == 1) {
+        if (color[index-'a'] == 3) return false;
+        if (color[index-'a'] == 2) {
             return true;
         }
-        color[index-'a'] = 1;
         if (graph.get(index) == null){
             stack.push(index);
-                            visited.remove(index);
-
+            color[index-'a'] = 3;
             return false;
         } 
+        color[index-'a'] = 2;
+        
         for (char c : graph.get(index)) {
-            if (dfs(graph, c, stack, visited, color)) return true;
+            if (dfs(graph, c, stack, color)) return true;
         }
-                visited.remove(index);
-
         stack.push(index);
-        color[index-'a'] = 0;
+        color[index-'a'] = 3;
         return false;
     }
 }
