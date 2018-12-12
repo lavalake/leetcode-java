@@ -1,0 +1,29 @@
+/*
+special case
+Input:
+[4,2,0,3,2,5]
+Output:
+7
+Expected:
+9
+
+*/
+class Solution {
+    public int trap(int[] height) {
+        int amount = 0;
+        int leftHeight = 0;
+        int rightHeight = 0;
+        int left = 0, right = height.length-1;
+        while (left < right) {
+            leftHeight = height[left] > leftHeight?height[left]:leftHeight;
+            rightHeight = height[right] > rightHeight?height[right]:rightHeight;
+            
+            if (leftHeight < rightHeight) {
+                amount += leftHeight - height[left++];
+            } else {
+                amount += rightHeight - height[right--];
+            }
+        }
+        return amount;
+    }
+}
