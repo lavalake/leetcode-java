@@ -1,0 +1,49 @@
+brutal force
+starting from every index, calculate the longest valid len
+use a count to calculate valid. If count == 0 we found one, if count == -1, break
+public int longestValidParentheses(String s) {
+        int longestLen = 0;
+        for (int i=0; i<s.length(); i++) {
+            int validLen = 0;
+            int count = 0;
+            for (int j=i; j<s.length(); j++) {
+                if (s.charAt(j) == '(') {
+                    count++;
+                } else {
+                    count--;
+                    if (count < 0) break;
+                    if (count == 0) validLen = j - i + 1;
+                }
+            }
+            longestLen = Math.max(longestLen, validLen);
+        }
+        return longestLen;
+    }
+
+DP
+use a stack to record the '('
+whenever meet a ) we update dp[]
+public int longestValidParentheses(String s) {
+        int longestLen = 0;
+        int[] dp = new int[s.length()];
+        Deque<Integer> stack = new LinkedList<>();
+        
+        for (int i=0; i<s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                stack.push(i);
+            } else {
+                if (!stack.isEmpty()) {
+                    dp[stack.pop()] = i;
+                }
+            }
+        }
+        for (int i=0; i<dp.length; i++) {
+            int len = 0;
+            while(i<dp.length && dp[i] != 0) {
+                len += dp[i] - i + 1;
+                i = dp[i] + 1;
+            }
+            longestLen = Math.max(longestLen, len);
+        }
+        return longestLen;
+    }
