@@ -1,0 +1,94 @@
+brutal force, try every land and calculate the distance.
+
+public int shortestDistance(int[][] grid) {
+        int result = Integer.MAX_VALUE;
+        int count = 0;
+        for (int i=0; i<grid.length; i++) {
+            for (int j=0; j<grid[0].length; j++) {
+                if (grid[i][j] == 1) count++;
+            }
+        }
+        for (int i=0; i<grid.length; i++) {
+            for (int j=0; j<grid[0].length; j++) {
+                if (grid[i][j] == 0) {
+                    int path = bfs(grid, i, j, count);
+                    if (path != 0)
+                    result = Math.min(result, path);
+                }
+            }
+        }
+        return result==Integer.MAX_VALUE?-1:result;
+    }
+    private int bfs(int[][] grid, int i, int j, int count) {
+        int len = 0;
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
+        Queue<Pair> queue = new LinkedList<>();
+        visited[i][j] = true;
+        int num = 0;
+        queue.offer(new Pair(i,j));
+        int height = 1;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int k=0; k<size; k++) {
+                Pair next = queue.poll();
+                int nextI = next.i;
+                int nextJ = next.j;
+                if (nextI > 0) {
+                    if (grid[nextI-1][nextJ] == 1 && !visited[nextI-1][nextJ]) {
+                        len += height;
+                                                num++;
+
+                    } else if (grid[nextI-1][nextJ] == 0 && !visited[nextI-1][nextJ]) {
+                        queue.offer(new Pair(nextI-1,nextJ));
+                        
+                    }
+                    visited[nextI-1][nextJ] = true;
+                }
+                if (nextI < grid.length-1) {
+                    if (grid[nextI+1][nextJ] == 1 && !visited[nextI+1][nextJ]) {
+                        len += height;
+                                                num++;
+
+                    } else if (grid[nextI+1][nextJ] == 0 && !visited[nextI+1][nextJ]) {
+                        queue.offer(new Pair(nextI+1,nextJ));
+                        
+                    }
+                    visited[nextI+1][nextJ] = true;
+                }
+                if (nextJ > 0) {
+                    if (grid[nextI][nextJ-1] == 1 && !visited[nextI][nextJ-1]) {
+                        len += height;
+                                                num++;
+
+                    } else if (grid[nextI][nextJ-1] == 0 && !visited[nextI][nextJ-1]) {
+                        queue.offer(new Pair(nextI,nextJ-1));
+                        
+                    }
+                    visited[nextI][nextJ-1] = true;
+                }
+                if (nextJ < grid[0].length-1) {
+                    if (grid[nextI][nextJ+1] == 1 && !visited[nextI][nextJ+1]) {
+                        len += height;
+                                                num++;
+
+                    } else if (grid[nextI][nextJ+1] == 0 && !visited[nextI][nextJ+1]) {
+                        queue.offer(new Pair(nextI,nextJ+1));
+                        
+                    }
+                    visited[nextI][nextJ+1] = true;
+                }
+            }
+                            height++;
+
+        }
+        
+        return count==num?len:0;
+    }
+    public class Pair {
+        public int i;
+        public int j;
+        public Pair(int i, int j) {
+            this.i = i;
+            this.j = j;
+        }
+    }
