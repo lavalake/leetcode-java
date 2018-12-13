@@ -1,6 +1,7 @@
 brutal force, try every land and calculate the distance.
 
-public int shortestDistance(int[][] grid) {
+class Solution {
+    public int shortestDistance(int[][] grid) {
         int result = Integer.MAX_VALUE;
         int count = 0;
         for (int i=0; i<grid.length; i++) {
@@ -21,6 +22,7 @@ public int shortestDistance(int[][] grid) {
     }
     private int bfs(int[][] grid, int i, int j, int count) {
         int len = 0;
+        int[][] dir = {{-1,0}, {1,0}, {0,-1}, {0,1}};
         boolean[][] visited = new boolean[grid.length][grid[0].length];
         Queue<Pair> queue = new LinkedList<>();
         visited[i][j] = true;
@@ -31,54 +33,24 @@ public int shortestDistance(int[][] grid) {
             int size = queue.size();
             for (int k=0; k<size; k++) {
                 Pair next = queue.poll();
-                int nextI = next.i;
-                int nextJ = next.j;
-                if (nextI > 0) {
-                    if (grid[nextI-1][nextJ] == 1 && !visited[nextI-1][nextJ]) {
-                        len += height;
-                                                num++;
-
-                    } else if (grid[nextI-1][nextJ] == 0 && !visited[nextI-1][nextJ]) {
-                        queue.offer(new Pair(nextI-1,nextJ));
-                        
+                
+                for (int d=0; d<dir.length; d++) {
+                    int nextI = next.i+dir[d][0];
+                    int nextJ = next.j+dir[d][1];
+                    if (nextI>=0 && (nextI<grid.length) && nextJ >=0 && (nextJ < grid[0].length)
+                       && !visited[nextI][nextJ]) {
+                        if (grid[nextI][nextJ] == 1) {
+                            len += height;
+                            num++;
+                        } else if (grid[nextI][nextJ] == 0) {
+                            queue.offer(new Pair(nextI,nextJ));
+                        }
+                        visited[nextI][nextJ] = true;
                     }
-                    visited[nextI-1][nextJ] = true;
-                }
-                if (nextI < grid.length-1) {
-                    if (grid[nextI+1][nextJ] == 1 && !visited[nextI+1][nextJ]) {
-                        len += height;
-                                                num++;
-
-                    } else if (grid[nextI+1][nextJ] == 0 && !visited[nextI+1][nextJ]) {
-                        queue.offer(new Pair(nextI+1,nextJ));
-                        
-                    }
-                    visited[nextI+1][nextJ] = true;
-                }
-                if (nextJ > 0) {
-                    if (grid[nextI][nextJ-1] == 1 && !visited[nextI][nextJ-1]) {
-                        len += height;
-                                                num++;
-
-                    } else if (grid[nextI][nextJ-1] == 0 && !visited[nextI][nextJ-1]) {
-                        queue.offer(new Pair(nextI,nextJ-1));
-                        
-                    }
-                    visited[nextI][nextJ-1] = true;
-                }
-                if (nextJ < grid[0].length-1) {
-                    if (grid[nextI][nextJ+1] == 1 && !visited[nextI][nextJ+1]) {
-                        len += height;
-                                                num++;
-
-                    } else if (grid[nextI][nextJ+1] == 0 && !visited[nextI][nextJ+1]) {
-                        queue.offer(new Pair(nextI,nextJ+1));
-                        
-                    }
-                    visited[nextI][nextJ+1] = true;
+                    
                 }
             }
-                            height++;
+            height++;
 
         }
         
@@ -92,3 +64,4 @@ public int shortestDistance(int[][] grid) {
             this.j = j;
         }
     }
+}
