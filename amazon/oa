@@ -1,0 +1,5 @@
+1. top K nearest points
+  我用的min heap 注意allLocations参数的类型是List<List<Integer>>
+2. Given a grid in a 2-d array representation consist of 3 values: 1, 0, 9. Where 1 = road,  0 = obstacle, 9 = destination.
+A robot starts at top left [0,0], find the number of steps required to find the destination.   输入也是List<List<Integer>> 还有 int numOfColumns 和int numOfRows
+3. 一片区域内有一对warehouse，input给一个list of connection。connection的定义是a, b, cost。比如说[a, b, 3], 意思就是warehouse a 到warehouse b的距离是3（题目里说的是cost，我按距离来理解的）要求返回一个list of connection，里面是cost总和最小的能把所有warehouse连接起来的connection，如果没有办法把所有warehouse全部连起来就返回空list。应该是least spnning tree的思想。
