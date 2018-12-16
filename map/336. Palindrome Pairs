@@ -1,0 +1,63 @@
+/*
+special case
+"abcd" "dcba" whole string match
+
+"abcd" "s" single character case
+
+
+"a" "" emtpy character
+time complexity
+n*k*2
+*/
+class Solution {
+    public List<List<Integer>> palindromePairs(String[] words) {
+        Map<String, Integer> map = new HashMap<>();
+        List<List<Integer>> result = new ArrayList<>();
+        boolean[] isPal = new boolean[words.length];
+
+        for (int i=0; i<words.length; i++) {
+            //add the reversed string to map, then we do not need to reverse every time
+            // remember to check whether it's itself
+            map.put(new StringBuilder(words[i]).reverse().toString(), i);
+            if (isPa(words[i])) isPal[i] = true;
+        }
+         
+        for (int i=0; i<words.length; i++) {
+            if (words[i].length() == 0) {
+                for (int j=0; j<words.length; j++) {
+                    if (isPal[j] && j!= i) result.add(Arrays.asList(i, j));
+                }
+                continue;
+            }
+            //should start from 0 because we need to consider the whole string case "abcd" "dcba"
+            //should be j<words[i].length() not <=, otherwise, for "abcd" "dcba" there will be duplicate pairs
+            for (int j=0; j<words[i].length(); j++) {
+                if (isPa(words[i].substring(0,j))) {
+                    String match = words[i].substring(j);
+                    if (map.containsKey(match)) {
+                        //we need to check whether it's itself
+                        if (map.get(match) != i)
+                            result.add(Arrays.asList(map.get(match),i));
+                    }
+                }
+                if (isPa(words[i].substring(j))) {
+                    String match = words[i].substring(0,j);
+                    if (map.containsKey(match)) {
+                        if (map.get(match) != i)
+                            result.add(Arrays.asList(i,map.get(match)));
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    private boolean isPa(String str) {
+        int left = 0, right = str.length()-1;
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) return false;
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
