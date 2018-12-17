@@ -38,6 +38,8 @@ class Solution {
         }
     }
     private boolean isValid(int[] pos, int row, int col) {
+    
+    //here i stop at row. no need to check further
         for (int i=0; i<row; i++) {
             if (col == pos[i] || (Math.abs(col-pos[i]) == Math.abs(row-i))) return false;
         }
