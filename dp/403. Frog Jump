@@ -1,0 +1,89 @@
+brutal force
+class Solution {
+    boolean canReach = false;
+    public boolean canCross(int[] stones) {
+        Map<Integer,Integer> map = new HashMap<>();
+        for (int i=0; i<stones.length; i++) {
+            map.put(stones[i],i);
+        }
+        return helper(stones, map, 0, 0);
+    }
+    private boolean helper(int[] stones, Map<Integer, Integer> map, int index, int steps) {
+        if (map.get(index) == stones.length-1){
+            return true;
+        }
+        if (steps > 1 && map.containsKey(index+steps-1)) {
+            if (helper(stones, map, index+steps-1, steps-1)) return true;
+        }
+        if (steps > 0 && map.containsKey(index+steps)) {
+            if (helper(stones, map, index+steps, steps)) return true;
+        }
+        if (map.containsKey(index+steps+1)) {
+            if (helper(stones, map, index+steps+1, steps+1)) return true;
+        }
+        return false;
+    }
+}
+memorization
+class Solution {
+    boolean canReach = false;
+    public boolean canCross(int[] stones) {
+        Map<Integer,Integer> map = new HashMap<>();
+        Map<Integer, Set<Integer>> cache = new HashMap<>();
+        for (int i=0; i<stones.length; i++) {
+            map.put(stones[i],i);
+        }
+        return helper(stones, map,cache, 0, 0);
+    }
+    private boolean helper(int[] stones, Map<Integer, Integer> map, Map<Integer, Set<Integer>> cache, int index, int steps) {
+        if (map.get(index) == stones.length-1){
+            return true;
+        }
+        if(cache.containsKey(index+steps) && cache.get(index+steps).contains(steps)) return false;
+        if (steps > 1 && map.containsKey(index+steps-1)) {
+            
+            if (helper(stones, map, cache, index+steps-1, steps-1)) return true;
+           
+        }
+        if (steps > 0 && map.containsKey(index+steps)) {
+            int value = index+steps;
+            
+            if (helper(stones, map, cache, value, steps)) return true;
+            
+        }
+        if (map.containsKey(index+steps+1)) {
+            int value = index+steps+1;
+            
+            if (helper(stones, map, cache, value, steps+1)) return true;
+            
+        }
+        
+                if (!cache.containsKey(index+steps)) {
+                    cache.put(index+steps, new HashSet<Integer>());
+                }
+                cache.get(index+steps).add(steps);
+        return false;
+    }
+}
+
+DP
+https://leetcode.com/problems/frog-jump/discuss/197564/Readable-And-Short-Java-DP-Solution
+class Solution {
+    public boolean canCross(int[] stones) {
+        if(stones == null || stones.length == 0) return false;
+        Map<Integer, Integer> map = new HashMap<>();
+        boolean[][] dp = new boolean[stones.length][stones.length];
+        for(int i = 0; i < stones.length; i++) map.put(stones[i], i);
+        dp[0][0] = true;
+        for(int j = 1; j < dp[0].length; j++) {
+            for(int i = 1; i < dp.length; i++) {
+                if(map.containsKey(stones[j] - i)) {
+                    dp[i][j] = dp[i - 1][map.get(stones[j] - i)] || dp[i][map.get(stones[j] - i)];
+                    if(i + 1 < dp.length) dp[i][j] |= dp[i + 1][map.get(stones[j] - i)];
+                }
+            }
+        }
+        for(int i = 0; i < dp.length; i++) if(dp[i][dp[0].length - 1]) return true;
+        return false;
+    }
+}
