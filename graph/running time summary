@@ -1,0 +1,9 @@
+1. kruskals 
+  Sort(E) ElgE
+  for each E union-find(V) lg v
+  total ElgE + ElgV
+2. Prim’s Minimum Spanning Tree (MST) 
+  a. adjacent matrix
+    V^2
+  b. adjacent list
+    ElgV
