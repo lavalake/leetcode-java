@@ -1,0 +1,13 @@
+1. cut
+https://en.wikipedia.org/wiki/Cut_%28graph_theory%29
+2. bridge
+https://en.wikipedia.org/wiki/Bridge_(graph_theory)
+  In graph theory, a bridge, isthmus, cut-edge, or cut arc is an edge of a graph whose deletion increases its number of connected
+components.[1] Equivalently, an edge is a bridge if and only if it is not contained in any cycle. 
+  A graph is said to be bridgeless or isthmus-free if it contains no bridges
+Trees and forests[edit]
+  Tree means fully connected and no cycle.
+  Forest not necessary fully connected and no cycle
+  A graph with n nodes can contain at most n-1 bridges, since adding additional edges must create a cycle. 
+  The graphs with exactly n-1 bridges are exactly the trees, 
+  and the graphs in which every edge is a bridge are exactly the forests.
