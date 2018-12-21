@@ -1,0 +1,21 @@
+nlgn priorityQueue
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums.length == 0) return new int[]{};
+        PriorityQueue<Integer> queue = new PriorityQueue<>(Collections.reverseOrder());
+        int i = 0;
+        while (i < k) {
+            queue.offer(nums[i++]);
+        }
+        int[] max = new int[nums.length-k+1];
+        int start = 0;
+        while (i < nums.length) {
+            max[start] = queue.peek();
+            queue.remove(nums[start++]);
+            queue.offer(nums[i++]);
+        }
+        max[start] = queue.peek();
+        return max;
+    }
+}
+
