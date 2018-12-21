@@ -19,3 +19,55 @@ class Solution {
     }
 }
 
+https://leetcode.com/problems/sliding-window-maximum/discuss/65885/This-is-a-typical-monotonic-queue-problem
+Sliding window minimum/maximum = monotonic queue. I smelled the solution just when I read the title.
+This is essentially same idea as others' deque solution, but this is much more standardized and modulized. If you ever need to use it in your real product, this code is definitely more preferable.
+
+What does Monoqueue do here:
+
+It has three basic options:
+
+push: push an element into the queue; O (1) (amortized)
+
+pop: pop an element out of the queue; O(1) (pop = remove, it can't report this element)
+
+max: report the max element in queue;O(1)
+
+It takes only O(n) time to process a N-size sliding window minimum/maximum problem.
+
+Note: different from a priority queue (which takes O(nlogk) to solve this problem), it doesn't pop the max element: It pops the first element (in original order) in queue.
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums.length == 0) return new int[]{};
+        int[] max = new int[nums.length-k+1];
+        MonotonicQueue<Integer> queue = new MonotonicQueue<>();
+        int idx = 0;
+        for (int i=0; i<nums.length; i++) {
+            if (i < k-1) queue.push(nums[i]);
+            else {
+                    queue.push(nums[i]);
+                                max[idx++] = queue.getMax();
+
+                    queue.pop(nums[i-k+1]);
+                
+            }
+        }
+        return max;
+    }
+    static public class MonotonicQueue <T extends Comparable<T>>{
+        Deque<T> queue;
+        public MonotonicQueue() {
+            queue = new ArrayDeque<T>();
+        }
+        public void push(T n) {
+            while (!queue.isEmpty() && queue.peekLast().compareTo(n) < 0) queue.pollLast();
+            queue.offerLast(n);
+        }
+        public void pop(T n) {
+            if (queue.peekFirst().equals(n))  queue.pollFirst();
+        }
+        public T getMax() {
+           return queue.peekFirst();
+        }
+    }
+}
