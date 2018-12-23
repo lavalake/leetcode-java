@@ -1,0 +1,114 @@
+FOr All O(1) we should consider double linked list and hashmap
+map<string, node> to record the list node
+add remove node has O(1)
+
+class AllOne {
+    Map<String, Node> map;
+    Node head, tail, cur;
+    /** Initialize your data structure here. */
+    public AllOne() {
+        map = new HashMap<>();
+        head = new Node();
+        tail = new Node();
+        head.next = tail;
+        tail.pre = head;
+        cur = null;
+    }
+    
+    /** Inserts a new key <Key> with value 1. Or increments an existing key by 1. */
+    public void inc(String key) {
+        Node temp;
+        if (!map.containsKey(key)) {
+            temp = new Node();
+        } else {
+            temp = map.get(key);
+        }
+        
+        if (head.next == tail) {//empty list
+            
+            temp.next = tail;
+            tail.pre = temp;
+            head.next = temp;
+            temp.pre = head;
+            
+            temp.keys.add(key);
+            map.put(key, temp);
+        } else {// not empty list
+            temp.keys.remove(key);
+            if (temp.pre == head || temp.value+1 == temp.pre.value) {// has pre
+                temp.pre.keys.add(key);
+                map.put(key, temp.pre);
+            } else if (temp.value+1 != temp.pre.value) {
+                Node newNode = new Node();
+                newNode.value = temp.value+1;
+                newNode.pre = temp.pre;
+                newNode.next = temp;
+                temp.pre = newNode;
+                newNode.keys.add(key);
+                map.put(key,newNode);
+                
+            }
+            if (temp.keys.isEmpty()) {
+                
+                temp.pre.next = temp.next;
+                temp.next.pre = temp.pre;
+            }
+        }
+    }
+    
+    /** Decrements an existing key by 1. If Key's value is 1, remove it from the data structure. */
+    public void dec(String key) {
+        Node temp;
+        if (!map.containsKey(key)) return;
+        temp = map.get(key);
+        if (temp.value == 1) {
+            temp.keys.remove(key);
+        }else if (temp.next == tail || temp.value-1 == temp.next.value) {
+            temp.next.keys.add(key);
+            temp.keys.remove(key);
+        } else if (temp.value-1 != temp.next.value) {
+            Node newNode = new Node();
+            newNode.value = temp.value-1;
+            newNode.pre = temp.pre;
+            newNode.next = temp;
+            temp.pre = newNode;
+            newNode.keys.add(key);
+            temp.keys.remove(key);
+            
+        }
+        if (temp.keys.isEmpty()) {
+            
+            temp.pre.next = temp.next;
+            temp.next.pre = temp.pre;
+        }
+    }
+    
+    /** Returns one of the keys with maximal value. */
+    public String getMaxKey() {
+        if (head.next != tail) {
+            Iterator<String> itr = head.next.keys.iterator();
+            return itr.next();
+        }
+        return "";
+    }
+    
+    /** Returns one of the keys with Minimal value. */
+    public String getMinKey() {
+        if (tail.pre != head) {
+            Iterator<String> itr = tail.pre.keys.iterator();
+            return itr.next();
+        }
+        return "";
+    }
+    static public class Node {
+        Node pre, next;
+        int value;
+        Set<String> keys;
+        public Node() {
+            keys = new HashSet<>();
+            pre = null;
+            next = null;
+            value = 1;
+        }
+    }
+}
