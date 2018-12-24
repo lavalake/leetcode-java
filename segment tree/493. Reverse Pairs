@@ -1,0 +1,24 @@
+brutal force
+class Solution {
+    public int reversePairs(int[] nums) {
+        long max = Integer.MIN_VALUE;
+        int cnt = 0;
+        for (int i=0; i<nums.length; i++) {
+            max = Math.max(max, nums[i]);
+            long n = nums[i];
+            if (max > 2*n) {
+                cnt += findPairs(nums, i);
+            }
+        }
+        return cnt;
+    }
+    private int findPairs(int[] nums, int index) {
+        int cnt = 0;
+        for (int i=0; i<index; i++) {
+            long n = nums[i];
+            long m = nums[index];
+            if (n > 2*m) cnt++;
+        }
+        return cnt;
+    }
+}
