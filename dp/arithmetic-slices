@@ -24,6 +24,23 @@ class Solution {
     }
 }
 we can use a count to replcae the dp[] because we do not need store all count. Only current count is needed
+/*
+for example, for num i, we form n sequence, when add a new number to sequence, we can form n+1 new sequence
+add A[i+1] to every sequence of n seuqnce and A[i+1]A[i]A[i-1] will form a new squence
+
+1 2 3 4
+
+first 1 2 3
+when add 4
+we add new sequence 2 3 4 and 1 2 3 4
+
+1 2 3 4 5
+123
+
+234 1234
+
+345 2345 12345
+*/
 class Solution {
     public int numberOfArithmeticSlices(int[] A) {
         if (A.length < 3) return 0;
