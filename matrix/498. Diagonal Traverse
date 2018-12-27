@@ -1,0 +1,45 @@
+//remember need to check max value overflow befor 0.
+            //becouse when overflow max, we will update both row and col
+            //then if row or col < 0, it will be updated. then the following check will by passed
+            //for example, see example, we go up to 3, next row is -1 , col is 3
+            //after update, row is 1, col is 2
+//note, we row or col over length, the other value need add 2 when change direction
+class Solution {
+    public int[] findDiagonalOrder(int[][] matrix) {
+        if (matrix.length == 0 || matrix[0].length == 0) return new int[0];
+        int[][] dir = new int[][] {{-1, 1}, {1, -1}};
+        int d = 0;
+        int[] res = new int[matrix.length*matrix[0].length];
+        int row = 0, col = 0;
+        for (int i=0; i<res.length; i++) {
+            res[i] = matrix[row][col];
+            row += dir[d][0];
+            col += dir[d][1];
+            //remember need to check max value overflow befor 0.
+            //becouse when overflow max, we will update both row and col
+            //then if row or col < 0, it will be updated. then the following check will by passed
+            //for example, see example, we go up to 3, next row is -1 , col is 3
+            //after update, row is 1, col is 2
+            if (row >= matrix.length) {
+                row = matrix.length - 1;
+                col += 2;
+                d = 1 - d;
+            }
+            if (col >= matrix[0].length) {
+                row += 2;
+                col = matrix[0].length - 1;
+                d = 1 - d;
+            }
+            if (row < 0) {
+                row = 0;
+                d = 1 - d;
+            }
+            if (col < 0) {
+                col = 0;
+                d = 1 - d;
+            }
+            
+        }
+        return res;
+    }
+}
