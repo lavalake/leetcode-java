@@ -27,3 +27,64 @@ FIND operation is proportional to the depth of the tree. If N is the number of p
 Remember that one island could have different roots[node] value for each node. Because roots[node] is the parent of the node, not the highest root of the island. To find the actually root, we have to climb up the tree by calling findIsland function.
 
 Here I've attached my solution. There can be at least two improvements: union by rank & path compression. However I suggest first finish the basis, then discuss the improvements.
+
+class Solution {
+    int[] parent;
+    int m, n;
+    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+        parent = new int[m*n];
+        this.m = m;
+        this.n = n;
+        Arrays.fill(parent,-1);
+        List<Integer> res = new ArrayList<>();
+
+        for (int[] i : positions) {
+            formIsland(i, res);
+        }
+        return res;
+    }
+    private void formIsland(int[] i, List<Integer> res) {
+        int row = i[0], col = i[1];
+        int len = n;
+        parent[row*len+col] = row*len+col;
+        int cnt = 1;
+        if (row > 0 && (parent[(row-1)*len+col] != -1)) {
+            cnt--;
+            union(row*len+col, (row-1)*len+col);
+        } 
+        if (col > 0 && (parent[(row)*len + col-1] != -1)) {
+            if (find(row*len+col-1) != find(row*len+col)) {
+                cnt--;
+                union(row*len+col, row*len+col-1);
+            }
+            
+        } 
+        if (row < m-1 && (parent[(row+1)*len+col] != -1)) {
+            if (find((row+1)*len+col) != find(row*len+col)) {
+                cnt--;
+                union(row*len+col, (row+1)*len+col);
+            }
+        } 
+        if (col < n-1 && (parent[(row)*len+col+1] != -1)) {
+            if (find(row*len+ col+1) != find(row*len+col)) {
+                cnt--;
+                union(row*len+col, row*len+col+1);
+            }
+        } 
+        if (!res.isEmpty()) {
+            cnt +=res.get(res.size()-1);
+        }
+        res.add(cnt);
+    }
+    private int find(int i) {
+        int len = n;
+        if (parent[i] != i){
+            return find(parent[i]);
+        } else {
+            return i;
+        }
+    }
+    private void union(int i1, int i2) {
+        parent[find(i1)] = find(i2);
+    }
+}
