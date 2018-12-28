@@ -1,6 +1,6 @@
 1. storage/preference retreival
 2. design email app or galary app
-  attachement: content provider
+  attachement: content provider/file provider
 3. okhttp
 4. retrofit
 5. architecture componets
