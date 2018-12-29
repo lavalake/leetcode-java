@@ -1,0 +1,113 @@
+/*
+because O(1). So we need hash table.
+<val,index>
+Key notes, when remove, we swap the last one in list with the value deleted.
+then we can delete the last one in O(1)
+*/
+class RandomizedSet {
+    Map<Integer,Integer> indexMap;
+    List<Integer> member;
+    Random random;
+    /** Initialize your data structure here. */
+    public RandomizedSet() {
+        indexMap = new HashMap<>();
+        member = new ArrayList<>();
+        random = new Random();
+    }
+    
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    public boolean insert(int val) {
+        if (indexMap.containsKey(val)) {
+            return false;
+        }
+        member.add(val);
+        indexMap.put(val, member.size()-1);
+        return true;
+    }
+    
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    public boolean remove(int val) {
+        if (!indexMap.containsKey(val)) {
+            return false;
+        }
+        if (indexMap.get(val) != (member.size()-1)) {
+            member.set(indexMap.get(val), member.get(member.size()-1));
+            indexMap.put(member.get(member.size()-1), indexMap.get(val));
+            
+        }
+        member.remove(member.size()-1);
+        indexMap.remove(val);
+        return true;
+    }
+    
+    /** Get a random element from the set. */
+    public int getRandom() {
+        int index = random.nextInt(member.size());
+        return member.get(index);
+    }
+}
+
+
+
+
+/*
+special case
+insert 1 remove 1 insert 1
+when remove ,the index is last index
+
+insert 1 remove 1 getRandom
+getRandom will get a empty list. need to check
+
+*/
+class RandomizedCollection {
+    Map<Integer, Set<Integer>> map;
+    List<Integer> list;
+    Random rnd;
+    /** Initialize your data structure here. */
+    public RandomizedCollection() {
+        map = new HashMap<>();
+        list = new ArrayList<>();
+        rnd = new Random();
+    }
+    
+    /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
+    public boolean insert(int val) {
+        boolean ret = true;
+        if (map.containsKey(val)) {
+            ret = false;
+        } else {
+            map.put(val, new HashSet<Integer>());
+        }
+        list.add(val);
+        map.get(val).add(list.size()-1);
+        return ret;
+    }
+    
+    /** Removes a value from the collection. Returns true if the collection contained the specified element. */
+    public boolean remove(int val) {
+        if (!map.containsKey(val)) return false;
+        int index = map.get(val).iterator().next();
+        map.get(val).remove(index);
+        //!!!!check whehter it's last index. If it is last index, no need to swap. just remove it
+        //otherwise will result in error
+        if (index != list.size() -1 ) {
+            int lastValue = list.get(list.size()-1);
+            list.set(index, lastValue);
+            map.get(lastValue).remove(list.size()-1);
+            map.get(lastValue).add(index);
+        }
+        
+        if (map.get(val).size() == 0) map.remove(val);
+
+        list.remove(list.size()-1);
+        return true;
+    }
+    
+    /** Get a random element from the collection. */
+    public int getRandom() {
+        //check whehter list is empty
+        if (list.size() == 0) return -1;
+        int index = rnd.nextInt(list.size());
+        return list.get(index);
+    }
+}
