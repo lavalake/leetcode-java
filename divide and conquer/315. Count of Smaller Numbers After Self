@@ -1,0 +1,59 @@
+/*
+The basic idea is to do merge sort to nums[]. To record the result, we need to keep the index of each number in the original array. So instead of sort the number in nums, we sort the indexes of each number.
+Example: nums = [5,2,6,1], indexes = [0,1,2,3]
+After sort: indexes = [3,1,0,2]
+
+While doing the merge part, say that we are merging left[] and right[], left[] and right[] are already sorted.
+
+We keep a rightcount to record how many numbers from right[] we have added and keep an array count[] to record the result.
+
+When we move a number from right[] into the new sorted array, we increase rightcount by 1.
+
+When we move a number from left[] into the new sorted array, we increase count[ index of the number ] by rightcount.
+
+This variable denotes the number of elements in the right sorted part that are smaller than the next element from the left sorted part
+*/
+class Solution {
+    public List<Integer> countSmaller(int[] nums) {
+        int[] count = new int[nums.length];
+        int[] indexArr = new int[nums.length];
+        for (int i=0; i<nums.length; i++) {
+            indexArr[i] = i;
+        }
+        mergeSort(nums, indexArr, count, 0, nums.length-1);
+        List<Integer> res = new ArrayList<>();
+        for (int n : count) {
+            res.add(n);
+        }
+        return res;
+    }
+    private void mergeSort(int[] nums, int[] indexArr, int[] count, int start, int end) {
+        if (start >= end) return;
+        int mid = start + (end - start)/2;
+        mergeSort(nums, indexArr, count, start, mid);
+        mergeSort(nums, indexArr, count, mid+1, end);
+        int rightCnt = 0;
+        int m1 = start, m2 = mid+1;
+        int[] newIndex = new int[end-start+1];
+        int sortedIndex = 0;
+        while (m1 <= mid && m2 <= end) {
+            if (nums[indexArr[m1]] > nums[indexArr[m2]]) {
+                newIndex[sortedIndex++] = indexArr[m2++];
+                rightCnt++;
+            } else {
+                count[indexArr[m1]] += rightCnt;
+                newIndex[sortedIndex++] = indexArr[m1++];
+            }
+        }
+        while (m1 <= mid) {
+            count[indexArr[m1]] += rightCnt;
+            newIndex[sortedIndex++] = indexArr[m1++];
+        }
+        while (m2 <= end) {
+            newIndex[sortedIndex++] = indexArr[m2++];
+        }
+        for (int i=0; i<newIndex.length; i++) {
+            indexArr[start+i] = newIndex[i];
+        }
+    }
+}
