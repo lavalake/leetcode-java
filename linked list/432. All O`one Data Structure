@@ -20,6 +20,7 @@ class AllOne {
         Node temp;
         if (!map.containsKey(key)) {
             temp = new Node();
+            temp.keys.add(key);
         } else {
             temp = map.get(key);
         }
@@ -34,6 +35,17 @@ class AllOne {
             temp.keys.add(key);
             map.put(key, temp);
         } else {// not empty list
+            if (temp.pre == null) {// new node
+                if (head.next.value == 1) {
+                    head.next.keys.add(key);
+                } else {
+                    temp.next = head.next;
+                    temp.next.pre = temp;
+                    temp.pre = head;
+                    head.next = temp;
+                }
+                return;
+            }
             temp.keys.remove(key);
             if (temp.pre == head || temp.value+1 == temp.pre.value) {// has pre
                 temp.pre.keys.add(key);
