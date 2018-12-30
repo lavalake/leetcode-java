@@ -4,68 +4,37 @@
 还是需要分隔符，但是null就不需要保存了。deserialize部分要变得复杂，left的值总是小于root的值，right的值总是大于root的值，
 根据这个每次recursion的时候把左边的值都放到另一个queue里面，剩下的就是右边的值。
 preorder, recursive solution
-Serialize
-1. sb.append(root.value)
-2. serialize(root.left, sb)
-3. serialize(root.right, sb)
-
-Deserialize
-1. sb.split(",")
-2. add to queue
-3. root = helper(queue)
-4. create a root node, root.val = queue.poll();
-5. for all values less the root.val, move to another queue called leftQ
-6. root.left = helper(leftQ)
-7. rest nodes in queue is root.right = helper(queue)
-
-Use BFS, level order
-
 public class Codec {
-
+    public static final String SPLITER = ",";
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-        //if(root == null) return null;
         StringBuilder sb = new StringBuilder();
-        Queue<TreeNode> nodeQueue = new LinkedList<>();
-        if (root != null) nodeQueue.offer(root);
-        while (!nodeQueue.isEmpty()) {
-            TreeNode temp = nodeQueue.poll();
-            if (temp != null) {
-                sb.append(temp.val);
-                nodeQueue.offer(temp.left);
-                nodeQueue.offer(temp.right);
-            } else {
-                sb.append("NULL");
-            }
-            if (!nodeQueue.isEmpty()) sb.append(",");
-        }
+        serializeHelper(root, sb);
+        if (sb.length() !=0) sb.deleteCharAt(sb.length()-1);
         return sb.toString();
+    }
+    private void serializeHelper(TreeNode root, StringBuilder sb) {
+        if (root == null) return;
+        sb.append(String.valueOf(root.val)+SPLITER);
+        serializeHelper(root.left, sb);
+        serializeHelper(root.right, sb);
     }
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
+        if (data.length() == 0) return null;
+        Queue<String> full = new LinkedList<>();
+        full.addAll(Arrays.asList(data.split(SPLITER)));
+        return deserializeHelper(full);
+    }
+    private TreeNode deserializeHelper(Queue<String> full) {
+        if (full.size() == 0) return null;
         
-        //if (data == null) return null;
-        String[] nodes = data.split(",");
-        if (nodes.length == 0) return null;
-        TreeNode root = new TreeNode(Integer.valueOf(nodes[0])); 
-        Queue<TreeNode> nodeQueue = new LinkedList<>();
-        nodeQueue.offer(root);
-        int i = 1;
-        while (!nodeQueue.isEmpty() && i<nodes.length) {
-            TreeNode temp = nodeQueue.poll();
-            if (!nodes[i].equals("NULL")) {
-                temp.left = new TreeNode(Integer.valueOf(nodes[i]));
-                nodeQueue.offer(temp.left);
-                
-            }
-            i++;
-            if (!nodes[i].equals("NULL")) {
-                temp.right = new TreeNode(Integer.valueOf(nodes[i]));
-                nodeQueue.offer(temp.right);
-            }
-            i++;
-        }
+        TreeNode root = new TreeNode(Integer.valueOf(full.poll()));
+        Queue<String> left = new LinkedList<>();
+        while (!full.isEmpty() && root.val > Integer.valueOf(full.peek())) left.offer(full.poll());
+        root.left = deserializeHelper(left);
+        root.right = deserializeHelper(full);
         return root;
     }
 }
