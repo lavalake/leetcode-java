@@ -1,0 +1,28 @@
+/*
+in order to find the median, we only need to know the left largest and right smallest
+for example, 10 nums, divide into two parts
+we only need to know the largest of first 5 and smallest of last 5. It's perfect for priority queue
+but the trick is , we always add the num into left priority queue first which will output the largest one.
+then add the largest to right priority queue which give the smallest one
+*/
+class MedianFinder {
+    PriorityQueue<Double> minQ;
+    PriorityQueue<Double> maxQ;
+    /** initialize your data structure here. */
+    public MedianFinder() {
+        minQ = new PriorityQueue<>();
+        maxQ = new PriorityQueue<>(Collections.reverseOrder());
+    }
+    
+    public void addNum(int num) {
+        double n = (double) num;
+        maxQ.offer(n);
+        minQ.offer(maxQ.poll());
+        if (maxQ.size() < minQ.size()) maxQ.offer(minQ.poll());
+    }
+    
+    public double findMedian() {
+        if (maxQ.size() == minQ.size()) return (maxQ.peek()+minQ.peek())/2;
+        else return maxQ.peek();
+    }
+}
