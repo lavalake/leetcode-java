@@ -1,6 +1,7 @@
 FOr All O(1) we should consider double linked list and hashmap
 map<string, node> to record the list node
 add remove node has O(1)
+the node in double linked list is ordered by frequency. A set to record all the keys with same freq
 
 class AllOne {
     Map<String, Node> map;
