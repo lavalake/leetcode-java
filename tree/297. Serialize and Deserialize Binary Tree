@@ -1,0 +1,40 @@
+user pre-order travasal to serialize the tree, use X as marker for null
+when deserialize, reverse order recursively
+
+public class Codec {
+    public static final String SPLITER = ",";
+    public static final String END = "X";
+    
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        serializeHelper(root, sb);
+        return sb.deleteCharAt(sb.length()-1).toString();
+    }
+
+    private void serializeHelper(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            sb.append(END+SPLITER);
+        } else {
+            sb.append(String.valueOf(root.val)+SPLITER);
+            serializeHelper(root.left, sb);
+            serializeHelper(root.right, sb);
+        }
+    }
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        Queue<String> queue = new LinkedList<>();
+        queue.addAll(Arrays.asList(data.split(SPLITER)));
+        return deserializeHelper(queue);
+    }
+    
+    private TreeNode deserializeHelper(Queue<String> q) {
+        if (q.isEmpty()) return null;
+        String n = q.poll();
+        if (n.equals(END)) return null;
+        TreeNode node = new TreeNode(Integer.valueOf(n));
+        node.left = deserializeHelper(q);
+        node.right = deserializeHelper(q);
+        return node;
+    }
+}
