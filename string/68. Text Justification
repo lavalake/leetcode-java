@@ -1,0 +1,66 @@
+/*
+special case
+left==right. this could be intermitent or last
+["What","must","be","acknowledgment","shall","be", "bb"]
+16
+["What   must   be","acknowledgment  ","shall be bb     "]
+the second string is single word, so left==right. pay attention for this case. 
+*/
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        int left = 0;
+        List<String> res = new ArrayList<>();
+        while (left < words.length) {
+            int right = findRight(words, left, maxWidth);
+            justify(words, left, right, maxWidth, res);
+            left = right + 1;
+        }
+        return res;
+    }
+    private int findRight(String[] words, int left, int max) {
+        int cnt = words[left].length()+1;
+        while (left+1 < words.length) {
+            if (cnt + words[left+1].length() <= max) {
+                left++;
+                cnt += words[left].length() + 1;
+            }else break;
+        }
+        return left;
+    }
+    private void justify(String[] words, int left, int right, int max, List<String> res) {
+        
+        StringBuilder sb = new StringBuilder();
+        //need to check whether col is 0
+        int col = right - left;
+        boolean isLastLine = (right == (words.length-1))?true:false;
+        int totalSpaces = max - wordLength(words, left, right);
+        int spacesPerCol = col==0?0:totalSpaces / col;
+        int remainingSpaces = col==0?0:totalSpaces % col;
+        
+        
+        StringBuilder paddingSb = new StringBuilder();
+        for (int i=0; i<spacesPerCol; i++) {
+            paddingSb.append(" ");
+        } 
+        String padding = isLastLine?" ":paddingSb.toString();
+        sb.append(words[left]);
+        for (int i=left+1; i<=right; i++) {
+            sb.append(padding);
+            if (!isLastLine && remainingSpaces> 0) {
+                sb.append(" ");
+                remainingSpaces--;
+            }
+            sb.append(words[i]);
+        }
+        while ((isLastLine || col==0) && (sb.length() < max)) sb.append(" ");
+        res.add(sb.toString());
+        return;
+    }
+    private int wordLength(String[] words, int left, int right) {
+        int cnt = 0;
+        while (left <= right) {
+            cnt += words[left++].length();
+        }
+        return cnt;
+    }
+}
