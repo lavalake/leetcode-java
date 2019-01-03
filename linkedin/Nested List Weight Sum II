@@ -54,33 +54,28 @@ https://leetcode.com/problems/nested-list-weight-sum-ii/description/
  */
 class Solution {
     public int depthSumInverse(List<NestedInteger> nestedList) {
-        int ret = 0;
-        Queue<List<NestedInteger>> nestedListQueue = new LinkedList<>();
-        List<Integer> valueList = new LinkedList<>();
-        nestedListQueue.add(nestedList);
-        while (!nestedListQueue.isEmpty()) {
-            int size = nestedListQueue.size();
+        Queue<NestedInteger> queue = new LinkedList<>();
+        List<Integer> valueList = new ArrayList<>();
+        queue.addAll(nestedList);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
             int levelValue = 0;
-            for (int n=0; n<size; n++) {
-            List<NestedInteger> cur = nestedListQueue.poll();
-            
-            for (NestedInteger i : cur) {
-                if (i.isInteger()) {
-                    levelValue += i.getInteger();
+            for (int i=0; i<size; i++) {
+                
+                NestedInteger temp = queue.poll();
+                if (temp.isInteger()) {
+                    levelValue += temp.getInteger();
+                } else {
+                    queue.addAll(temp.getList());
                 }
-                else {
-                    nestedListQueue.add(i.getList());
-                }
-            }
             }
             valueList.add(levelValue);
         }
-        int level = valueList.size();
+        int sum = 0;
         for (int i=0; i<valueList.size(); i++) {
-            ret += valueList.get(i) * level;
-            level--;
+            sum += valueList.get(i)*(valueList.size()-i);
         }
-        return ret;
+        return sum;
     }
 }
 
