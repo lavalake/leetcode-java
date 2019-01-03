@@ -1,0 +1,23 @@
+class Solution {
+    public TreeNode sortedListToBST(ListNode head) {
+        return helper(head, null);
+    }
+    //this API, rear is exclusive. so head should not equal rear
+    private TreeNode helper(ListNode head, ListNode rear) {
+        //this will cover the null case, if input is null, then head and rear is null
+        //if last level head==mid, that means mid already in the tree, so return null
+        if (head == rear) return null;
+        ListNode mid = head, end = head, pre = head;
+        //make sure end has room to move two steps. otherwise stop. Then mid stop at the mid node
+        while (end != rear && end.next != rear) {
+            pre = mid;
+            mid = mid.next;
+            end = end.next.next;
+            
+        }
+        TreeNode root = new TreeNode(mid.val);
+        root.left = helper(head, mid);
+        root.right = helper(mid.next, rear);
+        return root;
+    }
+}
