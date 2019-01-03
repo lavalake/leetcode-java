@@ -1,0 +1,43 @@
+
+class WordDistance {
+    private Map<String, List<Integer>> map;
+    public WordDistance(String[] words) {
+        map = new HashMap<>();
+        for(int i=0; i<words.length; i++) {
+            if(map.containsKey(words[i])) {
+                map.get(words[i]).add(i);
+            } else {
+                List<Integer> list = new ArrayList<>();
+                list.add(i);
+                map.put(words[i], list);
+            }
+        }
+    }
+    
+    public int shortest(String word1, String word2) {
+        List<Integer> l1 = map.get(word1);
+        List<Integer> l2 = map.get(word2);
+        int r1=0, r2=0;
+        int v1 = -1, v2 = -1;
+        int res = Integer.MAX_VALUE;
+        //Note, use && because if any one end, the min distance has get
+        //Note, use && because if any one end, the min distance has get
+        //when compare two sorted list and find the minmum difference between the numbers in two list
+        //use two pointer
+        while (r1<l1.size() && r2<l2.size()) {
+            
+                v1 = l1.get(r1);
+            
+                v2 = l2.get(r2);
+            if (v1<v2) {
+                res = Math.min(res, (v2-v1));
+                r1++;
+            } else {
+                res = Math.min(res, (v1-v2));
+                r2++;
+            }
+            
+        }
+        return res;
+    }
+}
