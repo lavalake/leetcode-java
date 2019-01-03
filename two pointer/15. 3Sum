@@ -1,0 +1,39 @@
+/*
+special case
+-2 0 0 2 2
+should check duplicates
+when we found -2 0 2
+when we move left, need to check whehter next is equals with current
+when we move right, need to check whether left one is equals with current
+*/
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i=0; i<nums.length; i++) {
+            //check duplicates
+            if (i!=0 && nums[i]==nums[i-1]) continue;
+            int target = -nums[i];
+            int left = i+1, right = nums.length-1;
+            while (left < right) {
+                if (nums[left] + nums[right] == target) {
+                    List<Integer> newFind = new ArrayList<>();
+                    newFind.add(nums[i]);
+                    newFind.add(nums[left]);
+                    newFind.add(nums[right]);
+                    res.add(newFind);
+                    //check duplicates
+                    while (left < nums.length-1 && nums[left+1] == nums[left]) left++;
+                    while (right > 0 && nums[right] == nums[right-1]) right--;
+                    left++;
+                    right--;
+                } else if (nums[left] + nums[right] > target) {
+                    right--;
+                } else {
+                    left++;
+                }
+            }
+        }
+        return res;
+    }
+}
