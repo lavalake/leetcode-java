@@ -1,0 +1,53 @@
+/*
+special case
+push 1 2 3 8 5
+popMax
+//should call push() instead of stack.push. becuase we need update the maxStack meanwhile
+            //1 2 3 8 5, now 8 is top of maxStack
+            //popMax, 8 will pop out, 5 should push to maxStack
+*/
+class MaxStack {
+    Deque<Integer> stack;
+    Deque<Integer> maxStack;
+    /** initialize your data structure here. */
+    public MaxStack() {
+        stack = new LinkedList<>();
+        maxStack = new LinkedList<>();
+    }
+    
+    public void push(int x) {
+        stack.push(x);
+        if (maxStack.isEmpty() || maxStack.peek() <= x) maxStack.push(x);
+    }
+    
+    public int pop() {
+        int x = stack.pop();
+        if (x == maxStack.peek()) maxStack.pop();
+        return x;
+    }
+    
+    public int top() {
+        return stack.peek();
+    }
+    
+    public int peekMax() {
+        return maxStack.peek();
+    }
+    
+    public int popMax() {
+        Deque<Integer> temp = new LinkedList<>();
+        int max = maxStack.pop();
+        while (stack.peek() != max) {
+            //
+            temp.push(stack.pop());
+        }
+        stack.pop();
+        while (!temp.isEmpty()) {
+            //should call push() instead of stack.push. becuase we need update the maxStack meanwhile
+            //1 2 3 8 5, now 8 is top of maxStack
+            //popMax, 8 will pop out, 5 should push to maxStack
+            push(temp.pop());
+        }
+        return max;
+    }
+}
