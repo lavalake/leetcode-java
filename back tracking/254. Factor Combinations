@@ -1,0 +1,30 @@
+/*
+factor should be >1 and <n
+so factors should be size>1
+
+*/
+class Solution {
+    public List<List<Integer>> getFactors(int n) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> factors = new ArrayList<>();
+        helper(n, 2, res, factors);
+        return res;
+    }
+    private void helper(int n, int factor, List<List<Integer>> res, List<Integer> factors) {
+        if ((n == 1) ) {
+            //exlude n itsel case
+            if (factors.size() > 1) {
+                List<Integer> newFactors = new ArrayList<Integer>();
+                newFactors.addAll(factors);
+                res.add(newFactors);
+            }
+            return;
+        }
+        for (int i=factor; i<=n; i++) {
+            if (n%i != 0) continue;
+            factors.add(i);
+            helper(n/i, i, res, factors);
+            factors.remove(factors.size()-1);
+        }
+    }
+}
