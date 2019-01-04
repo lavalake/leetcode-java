@@ -1,0 +1,18 @@
+class Solution {
+    public List<List<Integer>> findLeaves(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        findHeight(root, res);
+        return res;
+    }
+    private int findHeight(TreeNode root, List<List<Integer>> res) {
+        if (root == null) return 0;
+        int left = findHeight(root.left, res);
+        int right = findHeight(root.right, res);
+        int height = Math.max(left, right) + 1;
+        if (res.size() < height) {
+            res.add(new ArrayList<Integer>());
+        }
+        res.get(height-1).add(root.val);
+        return height;
+    }
+}
