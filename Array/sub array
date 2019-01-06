@@ -17,19 +17,25 @@ Solution 2. From solution 1, we know the key to solve this problem is SUM[i, j].
 SUM[0, j], then we can easily get SUM[i, j]. To achieve this, we just need to go through the array, calculate the 
 current sum and save number of all seen PreSum to a HashMap. Time complexity O(n), Space complexity O(n).
 
+/*
+if we want to count the subarray starting from 0, we need to put a 0 to the map for init
+special case
+1 1 1
+1
+then [1 1] is a valid case
+*/
 class Solution {
     public int subarraySum(int[] nums, int k) {
-        int sum = 0, ret = 0;
-        Map<Integer,Integer> mem = new HashMap<>();
-        mem.put(0,1);
-        for (int i : nums) {
-            sum += i;
-            if (mem.containsKey(sum - k)) {
-                ret += mem.get(sum - k);
-            }
-            mem.put(sum, mem.getOrDefault(sum, 0)+1);
+        Map<Integer, Integer> map = new HashMap<>();
+        int sum = 0, count = 0;
+        //dont forget to put 0 to the map for init
+        map.put(0, 1);
+        for (int n : nums) {
+            sum += n;
+            if (map.containsKey(sum - k)) count += map.get(sum - k);
+            map.put(sum, map.getOrDefault(sum, 0)+1);
         }
-        return ret;
+        return count;
     }
 }
 
