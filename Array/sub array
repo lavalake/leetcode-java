@@ -1,6 +1,8 @@
 求subarry sum的问题，一般考虑用pre sum的方法
 即
 sum[i][j] = sum[0][j] - sum[0][i-1]
+注意， 初始条件 ［0，0］。 从第一个开始的sub array
+
 如果都是正整数，则可以考虑使用two pointer
 560. Subarray Sum Equals K
 https://leetcode.com/problems/subarray-sum-equals-k/description/
