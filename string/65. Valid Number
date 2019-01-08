@@ -1,0 +1,46 @@
+/*
+special case
+6e+1
+6e1+1
+
+601.
+
+.10
+
+601+
+
++- most have two
+
+last char can only be digit or .
+
+first char can only be +-digit or .
+*/
+class Solution {
+    public boolean isNumber(String s) {
+        s = s.trim();
+        if (s.length() == 0) return false;
+        boolean hasDot = false, hasE = false, hasSign = false;
+        boolean hasDigit = false;
+        int signCount = 0;
+        for (int i=0; i<s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '.') {
+                if (hasDot || hasE) return false;
+                hasDot = true;
+            } else if (c == 'e') {
+                if (!hasDigit || hasE || i == s.length()-1) return false;
+                hasE = true;
+            } else if (c >= '0' && c <= '9') {
+                hasDigit = true;
+            } else if (c == '-' || c == '+') {
+                if (signCount == 2) return false;
+                if ((i > 0 && !hasE) || (hasE && s.charAt(i-1) != 'e')) return false;
+                if (i == s.length()-1) return false;
+                signCount++;
+            } else {
+                return false;
+            }
+        }
+        return hasDigit;
+    }
+}
