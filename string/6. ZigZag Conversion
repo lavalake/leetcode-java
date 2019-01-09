@@ -1,0 +1,23 @@
+use numRows of StringBuilder
+the row is index of the stringbuilder
+
+class Solution {
+    public String convert(String s, int numRows) {
+        if (numRows <= 1 || s.length() == 0) return s;
+        List<StringBuilder> res = new ArrayList<>();
+        for (int i=0; i<numRows; i++) {
+            res.add(new StringBuilder());
+        }
+        int index = 0, d = 1;
+        int[] dir = new int[]{1, -1};
+        for (int i=0; i<s.length(); i++) {
+            res.get(index).append(s.charAt(i));
+            if (i%(numRows-1) == 0) d = (d+1)%2;
+            index += dir[d];
+        }
+        for (int i=1; i<numRows; i++) {
+            res.get(0).append(res.get(i));
+        }
+        return res.get(0).toString();
+    }
+}
