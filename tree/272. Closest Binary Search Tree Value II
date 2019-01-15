@@ -1,0 +1,78 @@
+/*
+use to stack. one is node less than target, decreasing stack
+one is node large than target, increasing stack
+then compare the top of these two stack
+*/
+class Solution {
+    public List<Integer> closestKValues(TreeNode root, double target, int k) {
+        Deque<TreeNode> lessStack = new LinkedList<>();
+        Deque<TreeNode> large = new LinkedList<>();
+        List<Integer> res = new LinkedList<>();
+        initNextLarge(root, large, target);
+        initNextLess(root, lessStack, target);
+        //if (!lessStack.isEmpty() && !large.isEmpty() && lessStack.peek().val == large.peek().val) getNextLess(lessStack);
+        while (k > 0) {
+            if (lessStack.isEmpty()) {
+                res.add(large.peek().val);
+                getNextLarge(large);
+            } else if (large.isEmpty()) {
+                res.add(lessStack.peek().val);
+                getNextLess(lessStack);
+            } else {
+                if ((large.peek().val - target) < (target - lessStack.peek().val)) {
+                    res.add(large.peek().val);
+                    getNextLarge(large);
+                } else {
+                    res.add(lessStack.peek().val);
+                    getNextLess(lessStack);
+                }
+            }
+            k--;
+        }
+        return res;
+    }
+    private void initNextLarge(TreeNode root, Deque<TreeNode> large, double target) {
+        
+        while (root != null) {
+            if (root.val == target) {
+                large.push(root);
+                break;
+            } else if (root.val > target) {
+                large.push(root);
+                root = root.left;
+            } else {
+                root = root.right;
+            }
+        }
+    }
+    private void initNextLess(TreeNode root, Deque<TreeNode> lessStack, double target) {
+        
+        while (root != null) {
+            if (root.val == target) {
+                lessStack.push(root);
+                break;
+            } else if (root.val < target) {
+                lessStack.push(root);
+                root = root.right;
+            } else {
+                root = root.left;
+            }
+        }
+    }
+    private void getNextLarge(Deque<TreeNode> large) {
+        if (large.isEmpty()) return;
+        TreeNode root = large.pop().right;
+        while (root != null) {
+            large.push(root);
+            root = root.left;
+        }
+    }
+    private void getNextLess(Deque<TreeNode> less) {
+        if (less.isEmpty()) return;
+        TreeNode root = less.pop().left;
+        while (root != null) {
+            less.push(root);
+            root = root.right;
+        }
+    }
+}
