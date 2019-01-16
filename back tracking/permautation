@@ -23,3 +23,56 @@ this one only need to return false or true does not need to return all the cases
 3. Palindrome Permutation II
 https://leetcode.com/problems/palindrome-permutation-ii/description/
 
+
+47. Permutations II
+Given a collection of numbers that might contain duplicates, return all possible unique permutations.
+
+Example:
+
+Input: [1,1,2]
+Output:
+[
+  [1,1,2],
+  [1,2,1],
+  [2,1,1]
+]
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> ret = new ArrayList<>();
+        //Arrays.sort(nums);
+        helper(nums, 0, ret);
+        return ret;
+    }
+    
+    public void helper(int[] nums, int start, List<List<Integer>> ret) {
+        if(start == nums.length) {
+            List<Integer> item = new ArrayList<>();
+            for(int n : nums) {
+                item.add(n);
+            }
+            ret.add(item);
+            return;
+        }
+        Set<Integer> visited = new HashSet<>();
+        for(int i=start; i<nums.length; i++) {
+            //if(i > start && nums[i] == nums[i-1]) continue;
+            //use visited set to filter duplicated
+            //above compare with i-1 does not work because after swap, the array is not sorted
+            if (!visited.contains(nums[i])) {
+                visited.add(nums[i]);
+                swap(nums, start, i);
+            helper(nums, start+1, ret);
+            swap(nums, start, i);
+            }
+            
+            
+        }
+    }
+    
+    public void swap(int[] nums, int x, int y) {
+        int temp = nums[x];
+        nums[x] = nums[y];
+        nums[y] = temp;
+    }
+}
+
