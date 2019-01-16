@@ -1,0 +1,29 @@
+/*
+must use two map. one is from s to t, the other is  from t to s
+special case
+abc
+cac
+this case, c in t has to mappings to s (a c)
+*/class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        Map<Character, Character> mapS = new HashMap<>();
+        Map<Character, Character> mapT = new HashMap<>();
+        if (s.length() != t.length()) return false;
+        for (int i=0; i<s.length(); i++) {
+            //if ((map.containsKey(s.charAt(i))&& !map.containsKey(t.charAt(i)))
+            //    || (!map.containsKey(s.charAt(i)) && map.containsKey(t.charAt(i)))) return false;
+            if (mapS.containsKey(s.charAt(i)) && mapT.containsKey(t.charAt(i))) {
+                if (mapS.get(s.charAt(i)) != t.charAt(i) ||
+                   mapT.get(t.charAt(i)) != s.charAt(i))
+                    return false;
+            }else if (!mapS.containsKey(s.charAt(i)) && !mapT.containsKey(t.charAt(i))) {
+                mapS.put(s.charAt(i), t.charAt(i));
+                mapT.put(t.charAt(i), s.charAt(i));
+            } else {
+                return false;
+            }
+                
+        }
+        return true;
+    }
+}
