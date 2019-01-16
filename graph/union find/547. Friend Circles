@@ -1,0 +1,35 @@
+/*
+special case:
+1. ignore [i][i], this is not a firend circle
+2. the init firend circle is number of students
+3. everytime we find a union, we decrease the count
+*/
+class Solution {
+    public int findCircleNum(int[][] M) {
+        int total = M.length;
+        int[] parent = new int[total];
+        for (int i=0; i<M.length; i++) {
+            parent[i] = i;
+        }
+        for (int i=0; i<M.length; i++) {
+            for (int j=0; j<M.length; j++) {
+                if (i != j && M[i][j] == 1 && find(parent, i) != find(parent, j)) {
+                    union(parent, i, j);
+                    total--;
+                }
+            }
+        }
+        return total;
+    }
+    private void union(int[] p, int i, int j) {
+        if (find(p, i) != find(p, j)) p[find(p,i)] = find(p,j);
+    }
+    private int find(int[] p, int i) {
+        if (p[i] != i) {
+            int newP = find(p, p[i]);
+            p[i] = newP;
+            return newP;
+        } 
+        return i;
+    }
+}
