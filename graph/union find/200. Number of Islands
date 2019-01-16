@@ -1,3 +1,90 @@
+200. Number of Islands
+Given a 2d grid map of '1's (land) and '0's (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+
+Example 1:
+
+Input:
+11110
+11010
+11000
+00000
+
+Output: 1
+Example 2:
+
+Input:
+11000
+11000
+00100
+00011
+
+Output: 3
+/*
+flatten the matrix to 1D and use it as index for parent
+we only check union for left and up because left and up is already unioned
+everytime find a new island, res++, and then check left and up to union and update res
+*/
+class Solution {
+    int[] parent;
+    public int numIslands(char[][] grid) {
+        if (grid.length == 0 || grid[0].length == 0) return 0;
+        parent = new int[grid.length*grid[0].length];
+        initParent();
+        int res = 0;
+        for (int i=0; i<grid.length; i++) {
+            for (int j=0; j<grid[i].length; j++) {
+                if (grid[i][j] == '0') continue;
+                int index = i*grid[0].length+j;
+                //if (find(index) == index) res++;
+                res++;
+                if (i > 0 && grid[i-1][j]=='1') {
+                    int up = (i-1)*grid[0].length+j;
+                    if (find(up) != find(index)) {
+                        union(index, up);
+                        res--;
+                    }
+                }
+                if (j > 0 && grid[i][j-1]=='1') {
+                    int left = (i)*grid[0].length+j-1;
+                    if (find(left) != find(index)) {
+                        union(index, left);
+                        res--;
+                    }
+                }
+                /*
+                if (i < grid.length-1 && grid[i+1][j]==1) {
+                    int right = (i+1)*grid[0].length+j;
+                    if (find(right) != find(index)) {
+                        union(index, right);
+                        res--;
+                    }
+                }
+                if (j < grid[0].length-1 && grid[i][j+1]==1) {
+                    int down = (i)*grid[0].length+j+1;
+                    if (find(down) != find(index)) {
+                        union(index, down);
+                        res--;
+                    }
+                }*/
+                
+            }
+        }
+        return res;
+    }
+    private int find(int n) {
+        if (parent[n] == n) return n;
+        else return find(parent[n]);
+    }
+    private void initParent() {
+        for (int i=0; i<parent.length; i++) {
+            parent[i] = i;
+        }
+    }
+    private void union(int i, int j) {
+        parent[find(i)] = find(j);
+    }
+}
+
 https://leetcode.com/problems/number-of-islands-ii/description/
 A 2d grid map of m rows and n columns is initially filled with water. We may perform an addLand operation which turns the water at position (row, col) into a land. Given a list of positions to operate, count the number of islands after each addLand operation. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
 
