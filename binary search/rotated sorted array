@@ -2,18 +2,25 @@ roated sorted array关键是找到单调区间。
 153. Find Minimum in Rotated Sorted Array
 最小值一定不再单调区间内。所以可以排除单调区间。
 优先排除右部。如果array没有rotate，最小值在最左边。
+/*
+special case
+1 2 3
+when we chose monotical side, we chose right. if mid < right, then we think right side is monotical 
+so move right to mid
+if we check left, if the array is not rotated, then will have bug
+*/
 class Solution {
     public int findMin(int[] nums) {
-        int left = 0, right = nums.length - 1;
+        int left = 0, right = nums.length-1;
         while (left+1 < right) {
-            int mid = left + (right - left)/2;
-            if (nums[mid] < nums[right]) {//区间单调。左移
+            int mid = left + (right-left)/2;
+            if (nums[mid] < nums[right]) {
                 right = mid;
             } else {
                 left = mid;
             }
         }
-        return nums[left] < nums[right]?nums[left]:nums[right];
+        return Math.min(nums[left], nums[right]);
     }
 }
 
