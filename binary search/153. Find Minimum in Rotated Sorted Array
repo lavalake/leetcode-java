@@ -1,0 +1,21 @@
+/*
+special case
+1 2 3
+when we chose monotical side, we chose right. if mid < right, then we think right side is monotical 
+so move right to mid
+if we check left, if the array is not rotated, then will have bug
+*/
+class Solution {
+    public int findMin(int[] nums) {
+        int left = 0, right = nums.length-1;
+        while (left+1 < right) {
+            int mid = left + (right-left)/2;
+            if (nums[mid] < nums[right]) {
+                right = mid;
+            } else {
+                left = mid;
+            }
+        }
+        return Math.min(nums[left], nums[right]);
+    }
+}
