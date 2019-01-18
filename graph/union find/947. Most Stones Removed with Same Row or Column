@@ -1,0 +1,34 @@
+/*
+stones.length is number of stone
+we uinion row and col. in order to differentiate row and col, we use -(col+1)
+special case
+[0,1] [1,0]
+row 0 and col 0 will conflict. so use -(col+1)
+*/
+class Solution {
+    Map<Integer, Integer> parents;
+    int islands;
+    public int removeStones(int[][] stones) {
+        parents = new HashMap<>();
+        islands = 0;
+        for (int[] s : stones) {
+            //!!!!!!!!!col need +1 before ngetive because -0 is 0 and confilct with row 0!!!!!!!!
+            union(s[0], -(s[1]+1));
+        }
+        return stones.length - islands;
+    }
+    private void union(int x, int y) {
+        if (find(x) != find(y)) {
+            parents.put(find(x),find(y));
+            islands--;
+        }
+    }
+    private int find(int n) {
+        if (!parents.containsKey(n)) {
+            parents.put(n,n);
+            islands++;
+        }
+        if (parents.get(n) != n) return find(parents.get(n));
+        else return n;
+    }
+}
