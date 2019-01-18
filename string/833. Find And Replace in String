@@ -1,0 +1,27 @@
+class Solution {
+    public String findReplaceString(String S, int[] indexes, String[] sources, String[] targets) {
+        List<int[]> sorted = new ArrayList<>();
+        for (int i=0; i<indexes.length; i++) {
+            sorted.add(new int[]{indexes[i],i});
+        }
+        Collections.sort(sorted, new Comparator<int[]>() {
+            public int compare(int[] a, int [] b) {
+                return a[0] - b[0];
+            }
+        });
+        StringBuilder sb = new StringBuilder();
+        int start = 0;
+        for (int i=0; i<sorted.size(); i++) {
+            int[] next = sorted.get(i);
+            int index = next[0], pos = next[1];
+            if (S.substring(index, index+sources[pos].length()).equals(sources[pos])) {
+                sb.append(S.substring(start, index));
+                sb.append(targets[pos]);
+            } else {
+                sb.append(S.substring(start, index + sources[pos].length()));
+            }
+            start = index + sources[pos].length();
+        }
+        return sb.toString() + S.substring(start);
+    }
+}
