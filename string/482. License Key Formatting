@@ -1,0 +1,26 @@
+/*
+special case
+"---" 3 res will be 0
+"r" 1
+*/
+class Solution {
+    public String licenseKeyFormatting(String S, int K) {
+        if(S.length() == 0) return S;
+        StringBuilder res = new StringBuilder();
+        int cnt = K;
+        int index = S.length()-1;
+        while (index >= 0) {
+            if (S.charAt(index) != '-') {
+                res.append(Character.toUpperCase(S.charAt(index)));
+                cnt--;
+            }
+            if (cnt == 0) {
+                res.append("-");
+                cnt = K;
+            }
+            index--;
+        }
+        if (res.length() > 0 && res.charAt(res.length()-1) == '-') res.deleteCharAt(res.length()-1);
+        return res.reverse().toString();
+    }
+}
