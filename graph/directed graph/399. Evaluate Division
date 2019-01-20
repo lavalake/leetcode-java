@@ -3,7 +3,15 @@ https://leetcode.com/problems/evaluate-division/description/
 directed graph
 1. for every equations, there are two vertex, create two edge in graph.
 2. use a node to record the string and value in graph.
-
+How to define a graph with extra info except vertex?
+usually use Map<String, List<String>> to represent a graph
+if we want to store more information for the edges, two option:
+1. use a Map to store the vertex with edge
+    Map<String, Map<String, Integer>>
+2. define a node class to store information
+    Map<String, List<Node>>
+    
+    
 class Solution {
     public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
         Map<String, List<Node>> graph = new HashMap<>();
