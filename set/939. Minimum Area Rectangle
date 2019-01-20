@@ -1,3 +1,10 @@
+Here, we have explored the idea that if we have two points x1,y1 and x2,y2 , seeing this as diagonal, a rectangle with sides parallel to x and y axis, will have other two points as x1,y2 and x2,y1.
+Thus, we have used a set to store all points first for fater retrival. Then we are picking pair of points among all points (x1,y1 and x2,y2) -
+
+Checking if x1,y2 and x2,y1 are there in map
+If yes, calculate the area and update mininum area (make sure area 0 is not considered, that will be the case where either x1=x2 or y1=y2 or both)
+
+
 class Solution {
     public int minAreaRect(int[][] points) {
         Set<List<Integer>> pointSet = new HashSet<>();
