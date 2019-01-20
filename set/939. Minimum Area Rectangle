@@ -1,0 +1,28 @@
+class Solution {
+    public int minAreaRect(int[][] points) {
+        Set<List<Integer>> pointSet = new HashSet<>();
+        for (int[] p : points) {
+            pointSet.add(Arrays.asList(p[0],p[1]));
+        }
+        /*
+        Arrays.sort(points, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return a[0] - b[0];
+            }
+        });*/
+        int minArea = Integer.MAX_VALUE;
+        for (int i=0; i<points.length; i++) {
+            for (int j=i+1; j<points.length; j++) {
+                int x1 = points[i][0];
+                int y1 = points[i][1];
+                int x2 = points[j][0];
+                int y2 = points[j][1];
+                if (pointSet.contains(Arrays.asList(x1, y2)) && pointSet.contains(Arrays.asList(x2, y1))) {
+                    int newArea = Math.abs(x2-x1)*Math.abs(y2-y1);
+                    if (newArea != 0 && newArea < minArea) minArea = newArea;
+                }
+            }
+        }
+        return minArea == Integer.MAX_VALUE?0:minArea;
+    }
+}
