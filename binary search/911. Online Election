@@ -1,0 +1,71 @@
+/*
+https://leetcode.com/problems/online-election/discuss/173382/C++JavaPython-Binary-Search-in-Times
+Initialization part:
+
+In the order of time, we use map to count the number of votes for each person.
+Also, we update the current lead of votes for each time point.
+if (count[person] >= count[lead]) lead = person
+Time Complexity: O(N)
+
+Query part:
+Binary search t in times, find out the latest time point no later than t.
+Return the lead of votes at that time point.
+Time Complexity: O(logN)
+*/
+In an election, the i-th vote was cast for persons[i] at time times[i].
+
+Now, we would like to implement the following query function: TopVotedCandidate.q(int t) will return the number of the person that was leading the election at time t.  
+
+Votes cast at time t will count towards our query.  In the case of a tie, the most recent vote (among tied candidates) wins.
+
+ 
+
+Example 1:
+
+Input: ["TopVotedCandidate","q","q","q","q","q","q"], [[[0,1,1,0,0,1,0],[0,5,10,15,20,25,30]],[3],[12],[25],[15],[24],[8]]
+Output: [null,0,1,1,0,0,1]
+Explanation: 
+At time 3, the votes are [0], and 0 is leading.
+At time 12, the votes are [0,1,1], and 1 is leading.
+At time 25, the votes are [0,1,1,0,0,1], and 1 is leading (as ties go to the most recent vote.)
+This continues for 3 more queries at time 15, 24, and 8.
+class TopVotedCandidate {
+    int[] topCandidates;
+    int[] times;
+    public TopVotedCandidate(int[] persons, int[] times) {
+        this.times = times;
+        topCandidates = new int[persons.length];
+        Map<Integer, Integer> freq = new HashMap<>();
+        int preFreq = 0, prePerson = 0;
+        for (int i=0; i<persons.length; i++) {
+            int p = persons[i];
+            freq.put(p, freq.getOrDefault(p,0)+1);
+            if(freq.get(p) >= preFreq) {
+                topCandidates[i] = p;
+                preFreq = freq.get(p);
+                prePerson = p;
+            } else{
+                topCandidates[i] = prePerson;
+            }
+        }
+    }
+    
+    public int q(int t) {
+        int time = findTime(t);
+        return topCandidates[time];
+    }
+    private int findTime(int t) {
+        int left = 0, right = times.length-1;
+        while (left <= right) {
+            int mid = left+(right-left)/2;
+            if (times[mid] == t) {
+                return mid;
+            } else if (times[mid] > t) {
+                right = mid-1;
+            } else {
+                left = mid+1;
+            }
+        }
+        return right;
+    }
+}
