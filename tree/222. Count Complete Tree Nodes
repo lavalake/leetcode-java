@@ -1,0 +1,66 @@
+Given a complete binary tree, count the number of nodes.
+
+Note:
+
+Definition of a complete binary tree from Wikipedia:
+In a complete binary tree every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible. It can have between 1 and 2h nodes inclusive at the last level h.
+
+Example:
+
+Input: 
+    1
+   / \
+  2   3
+ / \  /
+4  5 6
+
+Output: 6
+
+https://leetcode.com/problems/count-complete-tree-nodes/discuss/61950/My-JAVA-solution-with-explanation-which-beats-99
+
+Basically my solution contains 2 steps.
+(1) Firstly, we need to find the height of the binary tree and count the nodes above the last level.
+(2) Then we should find a way to count the nodes on the last level.
+
+Here I used a kind of binary search. We define the "midNode" of the last level as a node following the path "root->left->right->right->...->last level".
+
+If midNode is null, then it means we should count the nodes on the last level in the left subtree.
+
+If midNode is not null, then we add half of the last level nodes to our result and then count the nodes on the last level in the right subtree.
+
+Of course I used some stop condition to make the code more efficient, e.g. when a tree has height 1, it means it only has 3 cases: 1. has right son; 2. only has left son; 3. has no son.
+
+class Solution {
+    public int countNodes(TreeNode root) {
+        if (root == null) return 0;
+        int height = findLeftHeight(root);
+        if (root.left == null) return 1;
+        return ((1<<(height-1))-1) + lastLevel(root, height);
+    }
+    private int lastLevel(TreeNode root, int height) {
+        if (root == null) return 0;
+        TreeNode temp = root.left;
+        int right = findRightHeight(temp);
+        if (right == height-1) {
+            if (right > 0) return (1<<(right-1)) + lastLevel(root.right, height-1);
+            else return 1;
+        }
+        else return lastLevel(root.left, height-1);
+    }
+    private int findLeftHeight(TreeNode root) {
+        int height = 0;
+        while (root != null) {
+            height++;
+            root = root.left;
+        }
+        return height;
+    }
+    private int findRightHeight(TreeNode root) {
+        int height = 0;
+        while (root != null) {
+            height++;
+            root = root.right;
+        }
+        return height;
+    }
+}
