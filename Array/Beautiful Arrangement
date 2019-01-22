@@ -42,6 +42,7 @@ class Solution {
 2. beautiful-arrangement I
 https://leetcode.com/problems/beautiful-arrangement/discuss/99707/Java-Solution-Backtracking
 Just try every possible number at each position...
+for every position, we need start from begining. need a visited array to recored visited
 
 public class Solution {
     int count = 0;
