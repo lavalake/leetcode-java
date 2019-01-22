@@ -46,29 +46,15 @@ class Solution {
         }
         for (int j=0; j<map.length; j++) {
             
-            char cl, cr;
-            char charLeft = target[left], charRight = target[right];
-            if (left==right) {
-                if (map[j][0]==map[j][1]) {
-                   cl = map[j][0];
-                    cr = target[right]; 
-                } else {
-                    continue;
-                }
-                
-            } else if(left == 0 && map[j][0] == '0') {
-                continue;
-            } else {
-                cl = map[j][0];
-                cr = map[j][1];
-            }
+            target[left] = map[j][0];
+            target[right] = map[j][1];
+            if (target.length != 1 && target[0] == '0') continue;
+            if (left == right && map[j][0] != map[j][1]) continue;
             
-            target[right] = cr;
-            target[left] = cl;
             
             dfs(map, target, left+1,right-1, res);
-            target[left] = charLeft;
-            target[right] = charRight;
+            //target[left] = charLeft;
+            //target[right] = charRight;
         }
     }
 }
