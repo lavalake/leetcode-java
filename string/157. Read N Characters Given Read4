@@ -24,3 +24,37 @@ public class Solution extends Reader4 {
         return total;
     }
 }
+
+
+158. Read N Characters Given Read4 II - Call multiple times
+public class Solution extends Reader4 {
+    /**
+     * @param buf Destination buffer
+     * @param n   Maximum number of characters to read
+     * @return    The number of characters read
+     */
+    int prevPos = 0;
+    int read4 = 0;
+    char[] tmp = new char[4];
+    public int read(char[] buf, int n) {
+        int total = 0;
+        while(total < n) {
+            if(prevPos == 0) {
+                read4 = read4(tmp);
+            }
+            
+            if(read4 == 0) break;
+            
+            //copy data
+            while(total < n && prevPos < read4) {
+                buf[total++] = tmp[prevPos++];
+            }
+            
+            if(prevPos >= read4) {
+                prevPos = 0;
+            }
+        }
+        
+        return total;
+    }
+}
