@@ -1,8 +1,8 @@
 http://www.cnblogs.com/grandyang/p/4322653.html
 use increasing stack to solve. 
 The key is to find the left most one larger then current bar and right most one larger than current bar.
-in increasing stack, the previous element is the first left element smaller than current. then the next element of the previouse
-one is the left most element larger than current bar. So we can pop the top and use the current top as the left index.
+in increasing stack, the previous element is the first left element smaller than current. then the next element of the 
+previouse one is the left most element larger than current bar. So we can pop the top and use the current top as the left index.
 the right index is the first one smaller than current. when never we meet a element smaller than current top, we find the right index.
 the algo is
 while (nums[i] < stack.peek())
