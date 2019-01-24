@@ -11,7 +11,9 @@ leetcode
 7
 回溯全集
 回溯是啥
-用爬山来比喻回溯，好比从山脚下找一条爬上山顶的路,起初有好几条道可走,当选择一条道走到某处时,又有几条岔道可供选择,只能选择其中一条道往前走,若能这样子顺利爬上山顶则罢了,否则走到一条绝路上时,只好返回到最近的一个路口,重新选择另一条没走过的道往前走。如果该路口的所有路都走不通,只得从该路口继续回返。照此规则走下去,要么找到一条到达山顶的路,要么最终试过所有可能的道,无法到达山顶。
+用爬山来比喻回溯，好比从山脚下找一条爬上山顶的路,起初有好几条道可走,当选择一条道走到某处时,又有几条岔道可供选择,只能选择其中一条道往前走,
+若能这样子顺利爬上山顶则罢了,否则走到一条绝路上时,只好返回到最近的一个路口,重新选择另一条没走过的道往前走。如果该路口的所有路都走不通,
+只得从该路口继续回返。照此规则走下去,要么找到一条到达山顶的路,要么最终试过所有可能的道,无法到达山顶。
 回溯是一种穷举，但与brute force有一些区别，回溯带了两点脑子的，并不多，brute force一点也没带。
 第一点脑子是回溯知道回头；相反如果是brute force,发现走不通立刻跳下山摔死，换第二条命从头换一条路走。
 第二点脑子是回溯知道剪枝；如果有一条岔路上放了一坨屎，那这条路我们不走，就可以少走很多不必要走的路。
@@ -36,9 +38,11 @@ Find all paths to success 求所有解
 
 Find the best path to success 求最优解
 
-理解回溯：给一堆选择, 必须从里面选一个. 选完之后我又有了新的一组选择. This procedure is repeated over and over until you reach a final state. If you made a good sequence of choices, your final state is a goal state; if you didn't, it isn't.
+理解回溯：给一堆选择, 必须从里面选一个. 选完之后我又有了新的一组选择. This procedure is repeated over and over until you reach a final
+state. If you made a good sequence of choices, your final state is a goal state; if you didn't, it isn't.
 
-回溯可以抽象为一棵树，我们的目标可以是找这个树有没有good leaf，也可以是问有多少个good leaf，也可以是找这些good leaf都在哪，也可以问哪个good leaf最好，分别对应上面所说回溯的问题分类。
+回溯可以抽象为一棵树，我们的目标可以是找这个树有没有good leaf，也可以是问有多少个good leaf，也可以是找这些good leaf都在哪，也可以问哪个good 
+leaf最好，分别对应上面所说回溯的问题分类。
 good leaf都在leaf上。good leaf是我们的goal state，leaf node是final state，是解空间的边界。
 
 对于第一类问题(问有没有解)，基本都是长着个样子的，理解了它，其他类别迎刃而解：
@@ -55,7 +59,9 @@ boolean solve(Node n) {
     }
 }
 请读以下这段话以加深理解：
-Notice that the algorithm is expressed as a boolean function. This is essential to understanding the algorithm. If solve(n) is true, that means node n is part of a solution--that is, node n is one of the nodes on a path from the root to some goal node. We say that n is solvable. If solve(n) is false, then there is no path that includes n to any goal node.
+Notice that the algorithm is expressed as a boolean function. This is essential to understanding the algorithm. If solve(n) 
+is true, that means node n is part of a solution--that is, node n is one of the nodes on a path from the root to some goal 
+node. We say that n is solvable. If solve(n) is false, then there is no path that includes n to any goal node.
 
 还不懂的话请通读全文吧：Backtracking - David Matuszek
 
@@ -139,7 +145,8 @@ public static boolean solve1(int i, List<Integer> matrix, int n) {
     }
 }
 2.求解的个数
-怎么做：一行一行的放queen，每行尝试n个可能。这回因为要找所有，返回值就没有了意义，用void即可。在搜索时，如果有一个可达，仍要继续尝试；每个子选项都试完了，返回.
+怎么做：一行一行的放queen，每行尝试n个可能。这回因为要找所有，返回值就没有了意义，用void即可。在搜索时，如果有一个可达，仍要继续尝试；
+每个子选项都试完了，返回.
 
 边界条件leaf:放完第n行 或者 该放第n+1行(出界，返回)
 
