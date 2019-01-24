@@ -3,7 +3,12 @@
 sum[i][j] = sum[0][j] - sum[0][i-1]
 注意， 初始条件 ［0，0］。 从第一个开始的sub array
 
-如果都是正整数，则可以考虑使用two pointer
+1. 如果都是正整数，则可以考虑使用two pointer
+2. if not positive, should use map to record the index and presum
+3. continuse vs non-continuouse
+
+
+
 560. Subarray Sum Equals K
 https://leetcode.com/problems/subarray-sum-equals-k/description/
 https://leetcode.com/problems/subarray-sum-equals-k/discuss/102106/Java-Solution-PreSum-+-HashMap
@@ -42,7 +47,8 @@ class Solution {
 }
 
 523. Continuous Subarray Sum
-Given a list of non-negative numbers and a target integer k, write a function to check if the array has a continuous subarray of size at least 2 that sums up to the multiple of k, that is, sums up to n*k where n is also an integer.
+Given a list of non-negative numbers and a target integer k, write a function to check if the array has a continuous subarray
+of size at least 2 that sums up to the multiple of k, that is, sums up to n*k where n is also an integer.
 
 Example 1:
 Input: [23, 2, 4, 6, 7],  k=6
@@ -56,8 +62,12 @@ Some special corner casee
 [0, 0], 100 -> true;
 [1,5], -6 -> true;
 
+/*
 we need check k == 0 case first, then we do not need to consider k == 0. 
 that will make our job easier
+because this problem is non-negatvie numbers. so we only need to check consecutive 0. 
+if not non-negative, we need check if(k==0) or not
+*/
 
 class Solution {
     public boolean checkSubarraySum(int[] nums, int k) {
@@ -102,7 +112,8 @@ Note that [10, 5, 2] is not included as the product of 100 is not strictly less 
 这一题因为nums[i]都是正整数，我们可以用two pointer来做。
 https://leetcode.com/problems/subarray-product-less-than-k/discuss/108861/JavaC++-Clean-Code-with-Explanation
 The idea is always keep an max-product-window less than K;
-Every time shift window by adding a new number on the right(j), if the product is greater than k, then try to reduce numbers on the left(i), until the subarray product fit less than k again, (subarray could be empty);
+Every time shift window by adding a new number on the right(j), if the product is greater than k, then try to reduce numbers 
+on the left(i), until the subarray product fit less than k again, (subarray could be empty);
 Each step introduces x new subarrays, where x is the size of the current window (j + 1 - i);
 example:
 for window (5, 2), when 6 is introduced, it add 3 new subarray: (5, (2, (6)))
@@ -127,7 +138,8 @@ class Solution {
 
 
 325. Maximum Size Subarray Sum Equals k
-Given an array nums and a target value k, find the maximum length of a subarray that sums to k. If there isn't one, return 0 instead.
+Given an array nums and a target value k, find the maximum length of a subarray that sums to k. If there isn't one, return 0 
+instead.
 
 Note:
 The sum of the entire nums array is guaranteed to fit within the 32-bit signed integer range.
@@ -159,7 +171,8 @@ class Solution {
 
 
 209. Minimum Size Subarray Sum
-Given an array of n positive integers and a positive integer s, find the minimal length of a contiguous subarray of which the sum ≥ s. If there isn't one, return 0 instead.
+Given an array of n positive integers and a positive integer s, find the minimal length of a contiguous subarray of which 
+the sum ≥ s. If there isn't one, return 0 instead.
 
 Example: 
 
@@ -189,3 +202,5 @@ this solution use sliding window or two pointer. which is more general. because 
 prolem with sum equals to target or less/large than target. presum map solution only fit for equals
 https://www.geeksforgeeks.org/find-subarray-with-given-sum/
 but if there are negative numbers in the array, this sliding window does not work. We should use presum map.
+
+https://www.geeksforgeeks.org/largest-subarray-with-equal-number-of-0s-and-1s/
