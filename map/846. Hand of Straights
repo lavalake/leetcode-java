@@ -1,0 +1,18 @@
+class Solution {
+    public boolean isNStraightHand(int[] hand, int W) {
+        Map<Integer,Integer> map = new TreeMap<>();
+        for (int n : hand) {
+            map.put(n, map.getOrDefault(n,0)+1);
+        }
+        for (int h : map.keySet()) {
+            if (map.get(h) > 0) {
+                for (int j=1; j<W; j++) {
+                    if (map.get(h+j) == null) return false;
+                    if (map.get(h+j) < map.get(h)) return false;
+                    map.put(h+j, map.get(h+j)-map.get(h));
+                }
+            }
+        }
+        return true;
+    }
+}
