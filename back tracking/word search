@@ -22,10 +22,16 @@ class Solution {
         if (board[row][col] != word[index]) return false;
         visited[row][col] = true;
         //no need to check row and col here because it's checked in the entry for next level
+        int[][] dir = new int[][]{{-1,0}, {1,0}, {0,-1}, {0,1}};
+        for (int i=0; i<dir.length; i++) {
+            if (dfs(board, row+dir[i][0], col+dir[i][1], index+1, word, visited)) return true;
+        }
+        /*
         if (dfs(board, row-1, col, index+1, word, visited)) return true;
         if (dfs(board, row+1, col, index+1, word, visited)) return true;
         if (dfs(board, row, col-1, index+1, word, visited)) return true;
         if (dfs(board, row, col+1, index+1, word, visited)) return true;
+        */
         visited[row][col] = false;
         return false;
     }
@@ -99,3 +105,13 @@ Then go through the board and search the trie for every char, if it exist and if
             return isLeaf;
         }
     }
+
+
+126. Word Ladder II
+
+https://leetcode.com/problems/word-ladder-ii/description/
+
+140. Word Break II
+https://leetcode.com/problems/word-break-ii/description/
+
+425. Word Squares
