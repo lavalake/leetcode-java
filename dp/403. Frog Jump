@@ -67,8 +67,7 @@ class Solution {
 }
 
 DP
-https://leetcode.com/problems/frog-jump/discuss/197564/Readable-And-Short-Java-DP-Solution
-class Solution {
+https://leetcode.com/problems/frog-jump/discuss/193816/Concise-and-fast-DP-solution-using-2D-array-instead-of-HashMap-with-text-and-video-explanation.class Solution {
     public boolean canCross(int[] stones) {
         if(stones == null || stones.length == 0) return false;
         Map<Integer, Integer> map = new HashMap<>();
