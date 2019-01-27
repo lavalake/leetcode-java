@@ -30,7 +30,7 @@ class Solution {
         
             for (int j=0; j<nums.length; j++) {
                 for (int i=sum/2; i>=nums[j]; i--) {
-                    dp[i] = dp[i]?dp[i]:dp[i-nums[j]];
+                    dp[i] = dp[i]||dp[i-nums[j]];
                 }
                 
             }
