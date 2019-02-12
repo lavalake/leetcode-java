@@ -26,6 +26,24 @@ class Solution {
     
 }
 
+/*thisi is memorization*/
+class Solution {
+    public int rob(int[] nums) {
+        Map<Integer, Integer> mem = new HashMap<>();
+         return search(0, nums, mem);
+    }
+    private int search(int i, int[] nums, Map<Integer, Integer> mem) {
+        if(i > nums.length-1) return 0;
+        if (mem.containsKey(i)) {
+            return mem.get(i);
+        }
+        int wt = search(i+2, nums, mem)+nums[i];
+        int wto = search(i+1, nums, mem);
+        int value = Math.max(wt,wto);
+        mem.put(i, value);
+        return value;
+    }
+}
 
 2. paint fence
 
