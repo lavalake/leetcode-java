@@ -1,0 +1,47 @@
+https://leetcode.com/problems/array-of-doubled-pairs/description/
+Given an array of integers A with even length, return true if and only if it is possible to reorder it such that A[2 * i + 1] = 2 * A[2 * i] for every 0 <= i < len(A) / 2.
+
+ 
+
+Example 1:
+
+Input: [3,1,3,6]
+Output: false
+https://leetcode.com/problems/array-of-doubled-pairs/discuss/203183/JavaC++Python-Match-from-the-Smallest-or-Biggest-100
+/*
+special case
+
+4 8 16 2
+
+0 1 1 2 2 4
+
+so we must sort the array
+*/
+class Solution {
+    public boolean canReorderDoubled(int[] A) {
+        Map<Integer, Integer> mem = new TreeMap<>();
+        for (int n : A)  {
+            mem.put(n, mem.getOrDefault(n,0)+1);
+        }
+        for (int n : mem.keySet()){
+            if (mem.get(n) == 0) continue;
+            if (n == 0) {
+                if (mem.get(0) >= 2) {
+                    mem.put(0, mem.get(0)-2);
+                } else {
+                    return false;
+                }
+                continue;
+            }
+            int want = n < 0?n/2:n*2;
+            if (!mem.containsKey(want) || mem.get(want) == 0) {
+                return false;
+            }
+            else {
+                mem.put(n,mem.get(n)-1);
+                mem.put(want, mem.get(want)-1);
+            }
+        }
+        return true;
+    }
+}
