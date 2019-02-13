@@ -2,17 +2,29 @@ https://leetcode.com/problems/champagne-tower/discuss/118660/20ms-C++-Easy-under
 
 If the glass >=1, we should split the diff (glass - 1) into next level.
 
-double champagneTower(int poured, int query_row, int query_glass) {
-        double result[101][101] = {0.0};
-        result[0][0] = poured;
-        for (int i = 0; i < 100; i++) {
-            for (int j = 0; j <= i; j++) {
-                if (result[i][j] >= 1) {
-                    result[i + 1][j] += (result[i][j] - 1) / 2.0;
-                    result[i + 1][j + 1] += (result[i][j] - 1) / 2.0;
-                    result[i][j] = 1;
+/*
+special case
+4, 0, 0
+4, 1, 1
+so need to check whehter it's larger than 1 when return
+*/
+class Solution {
+    public double champagneTower(int poured, int query_row, int query_glass) {
+        double[] row = new double[query_row+1];
+        row[0] = poured;
+        for (int i=1; i<=query_row; i++) {
+            double[] temp = new double[query_row+1];
+            for (int j=0; j<i ; j++) {
+                //need to check whether cur is larger than 1
+                if (row[j] > 1) {
+                    temp[j] += (row[j] - 1)/2.0;
+                    temp[j+1] += (row[j] - 1)/2.0;
                 }
+                    
+                
             }
+            row = temp;
         }
-        return result[query_row][query_glass];
+        return row[query_glass]>1?1:row[query_glass];
     }
+}
