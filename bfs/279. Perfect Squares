@@ -1,0 +1,16 @@
+https://leetcode.com/problems/perfect-squares/discuss/71475/Short-Python-solution-using-BFS
+The basic idea of this solution is a BSF search for shortest path, take 12 as an example, as shown below, the shortest path is 12-8-4-0:
+
+class Solution {
+    public int numSquares(int n) {
+        int[] dp = new int[n+1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        for (int i=1; i<=Math.sqrt(n); i++) {
+            for (int j=i*i; j<=n; j++) {
+                dp[j]=Math.min(dp[j], dp[j-i*i]+1);
+            }
+        }
+        return dp[n];
+    }
+}
