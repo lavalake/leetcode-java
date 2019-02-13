@@ -1,0 +1,5 @@
+Comparator<double[]> cmp = new Comparator<double[]>(){
+            public int compare(double[] a, double[] b) {
+                return Double.compare(a[1],b[1]);
+            }
+        };
