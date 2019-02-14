@@ -1,0 +1,4 @@
+for every bar, we need to find the left and right bar lower than it.
+Then the rectangle is (right-left)*barHeight
+keep a increasing stack. Then we found a bar less than top, we found the right bar for stack top bar. the left bar of stack top
+is the new top bar.
