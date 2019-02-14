@@ -35,6 +35,8 @@ Explanation: The given directed graph will be like this:
      This problem is very similar to "Redundant Connection". But the description on the parent/child relationships is much 
      better clarified.
 
+https://leetcode.com/problems/redundant-connection-ii/discuss/108058/one-pass-disjoint-set-solution-with-explain
+
 There are two cases for the tree structure to be invalid.
 1) A node having two parents;
    including corner case: e.g. [[4,2],[1,5],[5,2],[5,3],[2,4]]
