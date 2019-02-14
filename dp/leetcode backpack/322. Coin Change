@@ -15,19 +15,25 @@ For backpack problem, we need the maximum value for target space.
 For this, we need minimum number for the target space.
 So we init every sum to MAX at first. if it's not MAX, we set it to the count of coins to reach this sum.
 If it's not MAX, we know we can get this amount. 
+/*
+spcial case
+[2] 3
+can not make change.
+when calculate dp[3] we need dp[1]. but dp[1] is invalid. 
+so we need check whether dp[1] is valid first
+*/
 class Solution {
     public int coinChange(int[] coins, int amount) {
-        int[] cnt = new int[amount+1];
-        int[] sum = new int[amount+1];
-        for (int i=1; i<=amount; i++)
-            sum[i] = Integer.MAX_VALUE;
-        for (int i=1; i<=amount; i++) {
-            for (int j=0; j<coins.length; j++) {
-                if (i >= coins[j])
-                    sum[i] = sum[i-coins[j]]!=Integer.MAX_VALUE?Math.min(sum[i], sum[i-coins[j]]+1):sum[i];
+        int[] dp = new int[amount+1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        for (int i=0; i<coins.length; i++) {
+            for (int j=coins[i]; j<=amount; j++) {
+                //need to check dp[j-coins[i]] is valid or not
+                dp[j] = dp[j-coins[i]]==Integer.MAX_VALUE?dp[j]:Math.min(dp[j], dp[j-coins[i]]+1);
             }
         }
-        return sum[amount]==Integer.MAX_VALUE?-1:sum[amount];
+        return dp[amount]==Integer.MAX_VALUE?-1:dp[amount];
     }
 }
 
